@@ -33,7 +33,10 @@ def home(request):
 
 @login_required(login_url=reverse_lazy("app:login"))
 def home_page(request):
-    products = Product.objects.all()[:8]  # Show first 8 products in featured section
+    try:
+        products = Product.objects.all()[:8]  # Show first 8 products in featured section
+    except Exception as e:
+        products = []
     return render(request, "app/home.html", {"products": products})
 
 
@@ -64,7 +67,10 @@ def fertilizers(request):
 
 @login_required(login_url=reverse_lazy("app:login"))
 def marketplace(request):
-    products = Product.objects.all()[:12]  # Show first 12 products
+    try:
+        products = Product.objects.all()[:12]  # Show first 12 products
+    except Exception as e:
+        products = []
     return render(request, "app/marketplace.html", {"products": products})
 
 
