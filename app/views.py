@@ -91,6 +91,98 @@ def support(request):
 
 
 @login_required(login_url=reverse_lazy("app:login"))
+def search(request):
+    from django.db.models import Q
+    query = request.GET.get('q', '').strip()
+    min_price = request.GET.get('min_price', '')
+    max_price = request.GET.get('max_price', '')
+    category = request.GET.get('category', '')
+    sort = request.GET.get('sort', '')
+    
+    products = Product.objects.all()
+    
+    if query:
+        products = products.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(composition__icontains=query)
+        )
+    
+    if min_price:
+        products = products.filter(discounted_price__gte=float(min_price))
+    if max_price:
+        products = products.filter(discounted_price__lte=float(max_price))
+    
+    if category:
+        products = products.filter(category=category)
+    
+    if sort == 'price_low':
+        products = products.order_by('discounted_price')
+    elif sort == 'price_high':
+        products = products.order_by('-discounted_price')
+    elif sort == 'name':
+        products = products.order_by('title')
+    
+    return render(request, "app/search.html", {
+        'products': products,
+        'query': query,
+        'min_price': min_price,
+        'max_price': max_price,
+        'category': category,
+        'sort': sort,
+    })
+
+
+@login_required(login_url=reverse_lazy("app:login"))
+def search(request):
+    query = request.GET.get('q', '').strip()
+    min_price = request.GET.get('min_price', '')
+    max_price = request.GET.get('max_price', '')
+    category = request.GET.get('category', '')
+    sort = request.GET.get('sort', '')
+    
+    products = Product.objects.all()
+    
+    # Search by title, description, composition
+    if query:
+        from django.db.models import Q
+        products = products.filter(
+            Q(title__icontains=query) |
+            Q(description__icontains=query) |
+            Q(composition__icontains=query) |
+            Q(prodapp__icontains=query)
+        )
+    
+    # Filter by price range
+    if min_price:
+        products = products.filter(discounted_price__gte=float(min_price))
+    if max_price:
+        products = products.filter(discounted_price__lte=float(max_price))
+    
+    # Filter by category
+    if category:
+        products = products.filter(category=category)
+    
+    # Sort products
+    if sort == 'price_low':
+        products = products.order_by('discounted_price')
+    elif sort == 'price_high':
+        products = products.order_by('-discounted_price')
+    elif sort == 'name':
+        products = products.order_by('title')
+    
+    context = {
+        'products': products,
+        'query': query,
+        'min_price': min_price,
+        'max_price': max_price,
+        'category': category,
+        'sort': sort,
+    }
+    return render(request, "app/search.html", context)
+
+
+@login_required(login_url=reverse_lazy("app:login"))
 def prediction(request):
     return render(request, "app/prediction.html")
 
