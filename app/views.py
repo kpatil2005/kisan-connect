@@ -33,11 +33,17 @@ def home(request):
 
 @login_required(login_url=reverse_lazy("app:login"))
 def home_page(request):
+    context = {'products': []}
     try:
-        products = Product.objects.all()[:8]  # Show first 8 products in featured section
+        from .models import Product
+        products = Product.objects.all()[:8]
+        context['products'] = products
     except Exception as e:
-        products = []
-    return render(request, "app/home.html", {"products": products})
+        # Log error but don't crash
+        print(f"Error loading products: {e}")
+        context['products'] = []
+    
+    return render(request, "app/home.html", context)
 
 
 @login_required(login_url=reverse_lazy("app:login"))
@@ -67,11 +73,16 @@ def fertilizers(request):
 
 @login_required(login_url=reverse_lazy("app:login"))
 def marketplace(request):
+    context = {'products': []}
     try:
-        products = Product.objects.all()[:12]  # Show first 12 products
+        from .models import Product
+        products = Product.objects.all()[:12]
+        context['products'] = products
     except Exception as e:
-        products = []
-    return render(request, "app/marketplace.html", {"products": products})
+        print(f"Error loading products: {e}")
+        context['products'] = []
+    
+    return render(request, "app/marketplace.html", context)
 
 
 @login_required(login_url=reverse_lazy("app:login"))
