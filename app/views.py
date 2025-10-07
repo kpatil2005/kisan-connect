@@ -63,7 +63,8 @@ def fertilizers(request):
 
 @login_required(login_url=reverse_lazy("app:login"))
 def marketplace(request):
-    return render(request, "app/marketplace.html")
+    products = Product.objects.all()[:12]  # Show first 12 products
+    return render(request, "app/marketplace.html", {"products": products})
 
 
 @login_required(login_url=reverse_lazy("app:login"))
