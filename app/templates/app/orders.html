@@ -1,0 +1,70 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}My Orders{% endblock title %}
+
+{% block main-content %}
+<div class="container my-5">
+    <h3 class="mb-4">Welcome <span class="text-capitalize">{{ request.user.username }}</span></h3>
+
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-2 mb-4">
+            <ul class="list-unstyled">
+                <li class="d-grid mb-2">
+                    <a href="{% url 'app:orders' %}" class="btn btn-primary w-100">Orders</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Orders List -->
+        <div class="col-md-10">
+            {% for op in orders %}
+            <div class="card mb-4 shadow-sm border-0">
+                <div class="row g-0 align-items-center p-3">
+                    <!-- Product Image -->
+                    <div class="col-md-2 text-center">
+                        <img src="{{ op.product.product_image.url }}" class="img-fluid rounded" style="max-height:100px;">
+                    </div>
+
+                    <!-- Product Details -->
+                    <div class="col-md-7">
+                        <p class="mb-1"><strong>Product:</strong> {{ op.product.title }}</p>
+                        <p class="mb-1"><strong>Quantity:</strong> {{ op.quantity }}</p>
+                        <p class="mb-1"><strong>Price:</strong> ₹{{ op.total_cost }}</p>
+                    </div>
+
+                    <!-- Status and Progress -->
+                    <div class="col-md-3">
+                        <p class="mb-2"><strong>Order Status:</strong>
+                            {% if op.status|lower == 'on the way' %}
+                                <span class="badge bg-warning text-dark">On the Way</span>
+                            {% elif op.status|lower == 'delivered' %}
+                                <span class="badge bg-success">Delivered</span>
+                            {% elif op.status|lower == 'cancel' %}
+                                <span class="badge bg-danger">Cancelled</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ op.status }}</span>
+                            {% endif %}
+                        </p>
+                        <div class="progress" style="height: 10px;">
+                            {% if op.status|lower == 'on the way' %}
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: 70%;"></div>
+                            {% elif op.status|lower == 'delivered' %}
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%;"></div>
+                            {% elif op.status|lower == 'cancel' %}
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;"></div>
+                            {% else %}
+                            <div class="progress-bar bg-secondary" role="progressbar" style="width: 50%;"></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">You have no orders yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock main-content %}

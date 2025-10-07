@@ -1,0 +1,94 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Category{% endblock %}
+
+{% block main-content %}
+<div class="container my-5">
+    <div class="row">
+        <!-- Sidebar Categories -->
+        <div class="col-md-3 mb-4">
+            <div class="list-group">
+                {% for val in title %}
+                <a href="{% url 'app:category' val %}" class="list-group-item list-group-item-action">
+                    {{ val }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div class="col-md-9">
+            <div class="row g-4">
+                {% for prod in product %}
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="product-card position-relative overflow-hidden rounded shadow-sm">
+                        <!-- Ribbon -->
+                        {% if prod.discounted_price < prod.selling_price %}
+                        <div class="ribbon position-absolute top-0 start-0 bg-danger text-white px-2 py-1 fw-bold">SALE</div>
+                        {% endif %}
+
+                        <a href="{% url 'app:product-detail' prod.id %}">
+                            <img src="{{ prod.product_image.url }}" class="w-100" style="height:250px; object-fit:cover;" alt="{{ prod.title }}">
+                        </a>
+
+                        <!-- Info Overlay -->
+                        <div class="product-info position-absolute bottom-0 start-0 w-100 p-2 text-center bg-white bg-opacity-80">
+                            <h6 class="mb-1 fw-bold text-truncate">{{ prod.title }}</h6>
+                            <div class="d-flex justify-content-center align-items-center gap-2">
+                                <span class="badge bg-danger fs-6">Rs. {{ prod.discounted_price }}/-</span>
+                                {% if prod.discounted_price < prod.selling_price %}
+                                <span class="text-muted text-decoration-line-through small">{{ prod.selling_price }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Product Card Effects */
+.product-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.product-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Image Zoom */
+.product-card img {
+    transition: transform 0.5s ease;
+}
+.product-card:hover img {
+    transform: scale(1.12);
+}
+
+/* Ribbon */
+.ribbon {
+    transform: rotate(-15deg);
+    font-size: 0.8rem;
+    z-index: 10;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Overlay info styling */
+.product-info {
+    backdrop-filter: blur(5px);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Smooth hover glow effect */
+.product-card:hover .product-info {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+}
+</style>
+{% endblock main-content %}

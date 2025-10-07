@@ -1,0 +1,340 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}My Addresses{% endblock %}
+
+{% block main-content %}
+<style>
+  :root {
+    --farm-green: #4CAF50;
+    --light-green: #E8F5E8;
+    --dark-green: #2E7D32;
+    --light-gray: #F8F9FA;
+    --border-gray: #E0E0E0;
+    --text-dark: #2C2C2C;
+    --text-light: #666666;
+  }
+
+  .main-container {
+    background: #F5F5F5;
+    padding: 1rem 0;
+    height: calc(100vh - 120px);
+    overflow: hidden;
+  }
+  
+  .welcome-text {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+    text-align: center;
+  }
+  
+  .sidebar-nav {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 1rem;
+    height: fit-content;
+    border: 1px solid var(--border-gray);
+  }
+  
+  .nav-btn {
+    display: block;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-weight: 500;
+    text-align: left;
+    font-size: 0.9rem;
+  }
+  
+  .nav-btn.active {
+    background: var(--farm-green);
+    color: white;
+  }
+  
+  .nav-btn:not(.active) {
+    background: var(--light-gray);
+    color: var(--text-light);
+  }
+  
+  .nav-btn:not(.active):hover {
+    background: var(--light-green);
+    color: var(--dark-green);
+    text-decoration: none;
+  }
+  
+  .addresses-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid var(--border-gray);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .addresses-header {
+    background: var(--farm-green);
+    padding: 1rem;
+    color: white;
+    flex-shrink: 0;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .addresses-header h4 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  
+  .addresses-body {
+    padding: 1rem;
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .addresses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    height: fit-content;
+  }
+  
+  .address-card {
+    background: white;
+    border: 1px solid var(--border-gray);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    transition: all 0.2s ease;
+  }
+  
+  .address-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transform: translateY(-1px);
+  }
+  
+  .address-name {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-gray);
+  }
+  
+  .address-detail {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: flex-start;
+  }
+  
+  .address-label {
+    font-weight: 500;
+    color: var(--text-dark);
+    min-width: 70px;
+    flex-shrink: 0;
+  }
+  
+  .address-value {
+    color: var(--text-light);
+    flex: 1;
+  }
+  
+  .edit-btn {
+    background: var(--farm-green);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+  
+  .edit-btn:hover {
+    background: var(--dark-green);
+    color: white;
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+  
+  .no-addresses {
+    text-align: center;
+    color: var(--text-light);
+    padding: 4rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .no-addresses-icon {
+    font-size: 4rem;
+    color: var(--border-gray);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  
+  .sidebar-title {
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .add-address-btn {
+    background: var(--dark-green);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  
+  .add-address-btn:hover {
+    background: #1B5E20;
+    color: white;
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+  
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
+    .addresses-grid {
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+    }
+    
+    .main-container {
+      height: auto;
+      min-height: calc(100vh - 120px);
+    }
+    
+    .addresses-container {
+      height: auto;
+    }
+    
+    .address-card {
+      padding: 0.8rem;
+    }
+    
+    .addresses-header {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .welcome-text {
+      font-size: 1.1rem;
+    }
+    
+    .main-container {
+      padding: 0.5rem 0;
+    }
+    
+    .addresses-header {
+      padding: 0.8rem;
+    }
+    
+    .addresses-body {
+      padding: 0.8rem;
+    }
+  }
+</style>
+
+<div class="main-container">
+  <div class="container-fluid px-3">
+    <h3 class="welcome-text">
+      Welcome, <span class="text-capitalize">{{ request.user.username }}</span>
+    </h3>
+
+    <div class="row h-100">
+      <!-- Compact Sidebar -->
+      <div class="col-lg-2 col-md-3 mb-2">
+        <div class="sidebar-nav">
+          <h6 class="sidebar-title">Account</h6>
+          <div>
+            <a href="{% url 'app:profile' %}" class="nav-btn">
+              Profile
+            </a>
+            <a href="{% url 'app:addresses' %}" class="nav-btn active">
+              Addresses
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content: Addresses -->
+      <div class="col-lg-10 col-md-9">
+        <div class="addresses-container">
+          <div class="addresses-header">
+            <h4>My Addresses</h4>
+           <a href="{% url 'app:profile' %}" class="nav-btn">+ Add New</a>
+          </div>
+          
+          <div class="addresses-body">
+            {% if addresses %}
+              <div class="addresses-grid">
+                {% for address in addresses %}
+                  <div class="address-card">
+                    <div class="address-name">{{ address.name }}</div>
+                    
+                    <div class="address-detail">
+                      <span class="address-label">Locality:</span>
+                      <span class="address-value">{{ address.locality }}</span>
+                    </div>
+                    
+                    <div class="address-detail">
+                      <span class="address-label">City:</span>
+                      <span class="address-value">{{ address.city }}</span>
+                    </div>
+                    
+                    <div class="address-detail">
+                      <span class="address-label">State:</span>
+                      <span class="address-value">{{ address.state }}</span>
+                    </div>
+                    
+                    <div class="address-detail">
+                      <span class="address-label">Zipcode:</span>
+                      <span class="address-value">{{ address.zipcode }}</span>
+                    </div>
+                    
+                    <div class="address-detail">
+                      <span class="address-label">Mobile:</span>
+                      <span class="address-value">{{ address.mobile }}</span>
+                    </div>
+                    
+                    <a href="{% url 'app:update_address' address.id %}" class="edit-btn">
+                      Edit Address
+                    </a>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="no-addresses">
+                <span class="no-addresses-icon">📍</span>
+                <p>You have no saved addresses yet.</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

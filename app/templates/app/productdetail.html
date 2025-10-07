@@ -1,0 +1,81 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.title }}{% endblock %}
+
+{% block main-content %}
+<div class="container my-5">
+    <div class="row g-5 align-items-center">
+
+        <!-- Product Image -->
+        <div class="col-lg-6 text-center">
+            <div class="p-4 border rounded-4 shadow-sm bg-white">
+                <img src="{{ product.product_image.url }}" 
+                     class="img-fluid rounded-4"
+                     style="max-height: 420px; object-fit: contain;"
+                     alt="{{ product.title }}">
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-lg-6">
+            <!-- Title -->
+            <h1 class="fw-bold mb-4 display-4">
+                {{ product.title }}
+            </h1>
+
+            <!-- Pricing -->
+            <div class="mb-4">
+                <h2 class="text-success fw-bold mb-2 fs-1">₹{{ product.discounted_price }}</h2>
+                <p class="mb-0">
+                    <span class="text-muted fs-5 text-decoration-line-through me-3">
+                        ₹{{ product.selling_price }}
+                    </span>
+                    <span class="badge bg-danger fs-6 py-2 px-3 rounded-pill">
+                        Special Offer
+                    </span>
+                </p>
+            </div>
+
+            <!-- Features -->
+            <div class="mb-5">
+                <h4 class="fw-semibold mb-3">Product Features</h4>
+                <p class="fs-5 text-secondary lh-lg" style="max-width: 520px;">
+                    {{ product.description }}
+                </p>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex flex-wrap gap-3">
+                <form action="{% url 'app:addtocart' %}" method="GET" class="m-0">
+                    <input type="hidden" name="prod_id" value="{{ product.id }}">
+                    <button type="submit" 
+                            class="btn btn-danger btn-lg px-5 d-flex align-items-center gap-2 shadow-sm"
+                            style="transition: transform 0.2s ease;">
+                        <i class="bi bi-cart-fill fs-5"></i> Add to Cart
+                    </button>
+                </form>
+
+                <a href="{% url 'app:showcart' %}" 
+                   class="btn btn-success btn-lg px-5 d-flex align-items-center gap-2 shadow-sm"
+                   style="transition: transform 0.2s ease;">
+                    <i class="bi bi-lightning-fill fs-5"></i> Buy Now
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+  // Optional: Add hover scaling effect for buttons
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('mouseenter', () => {
+      btn.style.transform = 'scale(1.05)';
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'scale(1)';
+    });
+  });
+</script>
+{% endblock %}

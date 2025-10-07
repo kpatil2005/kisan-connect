@@ -1,0 +1,106 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Cart{% endblock title %}
+
+{% block main-content %}
+
+<div class="container my-5">
+
+  <div class="row">
+    {% if cart %}
+      <!-- Shopping Cart -->
+       <br></br>
+      <h1 class="text-center mb-5 fw-bold text-primary">🛒 Your Shopping Cart</h1>
+
+      <!-- Cart Items -->
+      <div class="col-lg-8 col-md-7">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            {% for item in cart %}
+            <div class="row align-items-center border-bottom py-3">
+              
+              <!-- Product Image -->
+              <div class="col-4 col-sm-3 text-center">
+                <img src="{{ item.product.product_image.url }}" 
+                     alt="{{ item.product.title }}"
+                     class="img-fluid rounded shadow-sm"
+                     style="max-height: 140px; object-fit: contain;">
+              </div>
+              
+              <!-- Product Info -->
+              <div class="col-8 col-sm-9">
+                <h5 class="fw-bold mb-1">{{ item.product.title }}</h5>
+                <p class="text-muted small mb-2">{{ item.product.description|truncatechars:80 }}</p>
+
+                <!-- Quantity Controls -->
+                <div class="d-flex align-items-center mb-2">
+                  <label class="me-2 fw-semibold">Quantity:</label>
+                  <a class="minus-cart btn btn-sm btn-outline-secondary me-2" pid="{{ item.product.id }}">
+                    <i class="fas fa-minus"></i>
+                  </a>
+                  <span id="quantity" class="px-3 fw-bold">{{ item.quantity }}</span>
+                  <a class="plus-cart btn btn-sm btn-outline-secondary ms-2" pid="{{ item.product.id }}">
+                    <i class="fas fa-plus"></i>
+                  </a>
+                </div>
+
+                <!-- Price & Remove -->
+                <div class="d-flex justify-content-between align-items-center mt-2">
+                  <p class="mb-0 text-success fw-semibold">
+                    Rs. {{ item.product.discounted_price }}
+                  </p>
+                  <a href="#" class="remove-cart btn btn-sm btn-outline-danger" pid="{{ item.product.id }}">
+                    <i class="fas fa-trash-alt me-1"></i> Remove
+                  </a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="col-lg-4 col-md-5 mt-4 mt-md-0">
+        <div class="card shadow border-0">
+          <div class="card-body">
+            <h4 class="fw-bold text-center mb-3">Order Summary</h4>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Subtotal</span>
+                <span id="amount">Rs. {{ amount }}</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>Shipping</span>
+                <span>Rs. 40</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span class="fw-bold">Total (incl. GST)</span>
+                <span id="totalamount" class="fw-bold text-success">Rs. {{ totalamount }}</span>
+              </li>
+            </ul>
+
+            <!-- Checkout Button -->
+            <div class="d-grid mt-4">
+              <a href="{% url 'app:checkout' %}" class="btn btn-lg btn-primary shadow-sm">
+                <i class="fas fa-lock me-2"></i> Place Secure Order
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {% else %}
+      <!-- Empty Cart -->
+      <div class="text-center py-5">
+        <h1 class="mb-3 fw-bold text-muted">🛍️ Your Cart is Empty</h1>
+        <p class="text-muted">Looks like you haven’t added anything yet.</p>
+        <a href="{% url 'app:home' %}" class="btn btn-outline-primary mt-3">
+          <i class="fas fa-shopping-bag me-1"></i> Continue Shopping
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock main-content %}

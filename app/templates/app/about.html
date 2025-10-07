@@ -1,0 +1,99 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}About{% endblock title %}
+
+{% block main-content %}
+<div class="container mt-5">
+    <!-- Hero Section -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6 text-center text-md-start">
+            <h1 class="fw-bold text-success mb-3">About <span class="text-dark">Kisan Setu</span></h1>
+            <p class="fs-5 text-muted">
+                Empowering farmers with technology, fair trade, and a sustainable future. 
+                Kisan Setu is not just a marketplace – it’s a movement to strengthen agriculture 
+                and connect farming communities across India.
+            </p>
+            <a href="{% url 'app:contact' %}" class="btn btn-success btn-lg rounded-pill px-4 shadow">
+                📞 Contact Us
+            </a>
+        </div>
+        <div class="col-md-6 text-center">
+           <img src="{% static 'app/images/logo.png' %}" class="img-fluid rounded-4 shadow" alt="Farmers">
+
+        </div>
+    </div>
+
+    <!-- Mission & Vision Cards -->
+    <div class="row text-center g-4">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 h-100 p-4">
+                <div class="card-body">
+                    <h3 class="fw-bold text-success">🌱 Our Mission</h3>
+                    <p class="text-muted mt-3">
+                        To empower farmers with digital tools, transparent pricing, and direct market access. 
+                        We aim to reduce middlemen and create opportunities for higher profits and sustainable growth.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 h-100 p-4">
+                <div class="card-body">
+                    <h3 class="fw-bold text-success">🚜 Our Vision</h3>
+                    <p class="text-muted mt-3">
+                        A connected farming ecosystem where every farmer has equal access to modern 
+                        resources, buyers, and suppliers, ensuring prosperity for generations to come.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why Choose Us -->
+    <div class="row mt-5">
+        <div class="col-md-12 text-center mb-4">
+            <h2 class="fw-bold">Why Choose <span class="text-success">Kisan Setu?</span></h2>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 text-center h-100">
+                <h4 class="fw-bold">🤝 Direct Connection</h4>
+                <p class="text-muted">
+                    Farmers connect directly with buyers and suppliers, reducing dependency on middlemen.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 text-center h-100">
+                <h4 class="fw-bold">📊 Fair & Transparent Pricing</h4>
+                <p class="text-muted">
+                    Our platform ensures clarity in transactions, so farmers get the right value for their produce.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 text-center h-100">
+                <h4 class="fw-bold">💡 Technology & Innovation</h4>
+                <p class="text-muted">
+                    We provide modern tools, market insights, and digital solutions for better productivity.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="row mt-5 text-center">
+        <div class="col-md-12">
+            <div class="p-5 rounded-4 shadow-lg bg-success text-white">
+                <h2 class="fw-bold">Be a Part of the Change</h2>
+                <p class="fs-5">
+                    Together, let’s build a future where farming is more profitable, sustainable, and respected.  
+                    Kisan Setu is your trusted partner on this journey.
+                </p>
+                <a href="{% url 'app:contact' %}" class="btn btn-light btn-lg rounded-pill px-4 mt-3 shadow">
+                    📩 Get in Touch
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main-content %}

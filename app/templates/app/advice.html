@@ -1,0 +1,693 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Weather & Farming Advice{% endblock title %}
+
+
+
+{% block main-content %}
+{% if user.is_authenticated %}
+<div class="farming-weather-container">
+
+  
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="header-icon">🌾</div>
+      <h1 class="main-title">Weather & Farming Advisory</h1>
+      <p class="subtitle">Get accurate weather data and expert farming recommendations</p>
+    </div>
+  </div>
+
+
+  <!-- Location Search -->
+  <div class="search-container">
+    <div class="search-box">
+      <form method="POST" class="location-form">
+        {% csrf_token %}
+        <div class="form-header">
+          <h3>📍 Select Your Location</h3>
+        </div>
+        <div class="input-wrapper">
+          <input type="text" name="city" id="city" 
+                 class="location-input" 
+                 placeholder="Enter city or village name" 
+                 required>
+          <button type="submit" class="get-advice-btn">
+            Get Advice
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  {% if error %}
+    <div class="alert-box error">
+      <strong>⚠️ Error:</strong> {{ error }}
+    </div>
+  {% elif city %}
+    
+    <!-- Current Weather Section -->
+    <div class="weather-section">
+      <div class="section-title">
+        <h2>Current Weather - {{ city }}</h2>
+        <span class="weather-status">{{ description }}</span>
+      </div>
+      
+      <div class="weather-cards">
+        <div class="info-card temp-card">
+          <div class="card-header">
+            <span class="card-icon">🌡️</span>
+            <span class="card-title">Temperature</span>
+          </div>
+          <div class="card-body">
+            <div class="main-value">{{ temp }}°C</div>
+            <div class="sub-value">Feels like {{ feels_like }}°C</div>
+          </div>
+        </div>
+        
+        <div class="info-card humidity-card">
+          <div class="card-header">
+            <span class="card-icon">💧</span>
+            <span class="card-title">Humidity</span>
+          </div>
+          <div class="card-body">
+            <div class="main-value">{{ humidity }}%</div>
+            <div class="humidity-indicator">
+              <div class="humidity-bar">
+                <div class="humidity-level" style="width: {{ humidity }}%"></div>
+              </div>
+              <div class="humidity-labels">
+                <span>Low</span>
+                <span>Optimal</span>
+                <span>High</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="info-card pressure-card">
+          <div class="card-header">
+            <span class="card-icon">🔵</span>
+            <span class="card-title">Pressure</span>
+          </div>
+          <div class="card-body">
+            <div class="main-value">{{ pressure }}</div>
+            <div class="sub-value">hPa</div>
+          </div>
+        </div>
+        
+        <div class="info-card wind-card">
+          <div class="card-header">
+            <span class="card-icon">🌬️</span>
+            <span class="card-title">Wind Speed</span>
+          </div>
+          <div class="card-body">
+            <div class="main-value">{{ wind_speed }}</div>
+            <div class="sub-value">m/s</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Farming Recommendations -->
+    <div class="recommendations-section">
+      <div class="section-title">
+        <h2>🌱 Today's Farming Recommendations</h2>
+      </div>
+      
+      <div class="advice-grid">
+        <!-- English Advice -->
+        <div class="advice-box english-box">
+          <div class="advice-header">
+            <div class="language-info">
+              <span class="language-label">ENGLISH</span>
+              <h3>Farming Advice</h3>
+            </div>
+            <div class="voice-controls">
+              <button class="voice-btn" onclick="speak('en')" title="Listen">
+                🔊 Listen
+              </button>
+              <button class="stop-btn" onclick="stopSpeech()" title="Stop">
+                ⏹️ Stop
+              </button>
+            </div>
+          </div>
+          <div class="advice-content">
+            <div class="advice-items">
+              {% for line in advice_en.splitlines %}
+              <div class="advice-item">
+                <p class="item-text">{{ line|safe }}</p>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Marathi Advice -->
+        <div class="advice-box marathi-box">
+          <div class="advice-header">
+            <div class="language-info">
+              <span class="language-label">मराठी</span>
+              <h3>शेती सल्ला</h3>
+            </div>
+            <div class="voice-controls">
+              <button class="voice-btn" onclick="speak('mr')" title="ऐका">
+                🔊 ऐका
+              </button>
+              <button class="stop-btn" onclick="stopSpeech()" title="थांबवा">
+                ⏹️ थांबवा
+              </button>
+            </div>
+          </div>
+          <div class="advice-content">
+            <div class="advice-items">
+              {% for line in advice_mr.splitlines %}
+              <div class="advice-item">
+                <p class="item-text">{{ line|safe }}</p>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <!-- Welcome Message for First Time -->
+    <div class="welcome-message">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='80' fill='%2352734D' opacity='0.1'/%3E%3Ctext x='100' y='110' text-anchor='middle' font-size='60'%3E🌱%3C/text%3E%3C/svg%3E" alt="Welcome" class="welcome-icon">
+      <h3>Welcome to Weather & Farming Advisory</h3>
+      <p>Enter your location above to get started with personalized farming recommendations based on real-time weather conditions.</p>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+let synth = window.speechSynthesis;
+
+function speak(lang) {
+    stopSpeech(); // Stop previous speech
+
+    let text = "";
+    let speechLang = "en-IN";
+
+    if(lang === 'en') {
+        text = document.querySelector(".english-box .advice-items")?.innerText || "";
+        speechLang = "en-IN";
+    } else if(lang === 'mr') {
+        text = document.querySelector(".marathi-box .advice-items")?.innerText || "";
+        let voices = synth.getVoices();
+        let mrVoice = voices.find(v => v.lang.startsWith("mr")) || voices.find(v => v.lang.startsWith("hi"));
+        speechLang = mrVoice ? mrVoice.lang : "hi-IN";
+    }
+
+    if(!text) return;
+
+    let sentences = text.match(/[^\.!\?]+[\.!\?]?/g) || [text];
+
+    function speakSentence(index) {
+        if(index >= sentences.length) return;
+
+        let utterance = new SpeechSynthesisUtterance(sentences[index].trim());
+        utterance.lang = speechLang;
+        utterance.rate = lang === 'mr' ? 0.9 : 1;
+        utterance.pitch = 1;
+
+        utterance.onend = function() {
+            setTimeout(() => speakSentence(index + 1), 300);
+        };
+
+        synth.speak(utterance);
+    }
+
+    speakSentence(0);
+}
+
+function stopSpeech() {
+    synth.cancel();
+}
+</script>
+
+<style>
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container */
+.farming-weather-container {
+    min-height: 100vh;
+    background-color: #FAFAF5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* Header Section */
+.header-section {
+    background-color: #2B5F2F;
+    padding: 2rem 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.header-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.main-title {
+    color: white;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: #E8F5E9;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+/* Search Container */
+.search-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.search-box {
+    background: white;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.form-header h3 {
+    color: #2B5F2F;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.input-wrapper {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.location-input {
+    flex: 1;
+    min-width: 250px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #D4D4D4;
+    border-radius: 4px;
+    background-color: #FFFFFF;
+    transition: border-color 0.3s;
+}
+
+.location-input:focus {
+    outline: none;
+    border-color: #52734D;
+}
+
+.get-advice-btn {
+    padding: 0.75rem 2rem;
+    background-color: #52734D;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.get-advice-btn:hover {
+    background-color: #2B5F2F;
+}
+
+/* Alert Box */
+.alert-box {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    border-left: 4px solid;
+}
+
+.alert-box.error {
+    background-color: #FFF3E0;
+    border-left-color: #E65100;
+    color: #E65100;
+}
+
+/* Weather Section */
+.weather-section {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.section-title {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #E0E0E0;
+}
+
+.section-title h2 {
+    color: #2B5F2F;
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.weather-status {
+    float: right;
+    background-color: #E8F5E9;
+    color: #2B5F2F;
+    padding: 0.25rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+/* Weather Cards */
+.weather-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-card {
+    background: white;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: box-shadow 0.3s;
+}
+
+.info-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #F0F0F0;
+}
+
+.card-icon {
+    font-size: 1.5rem;
+}
+
+.card-title {
+    color: #666;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.main-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2B5F2F;
+}
+
+.sub-value {
+    color: #888;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+/* Humidity Indicator */
+.humidity-indicator {
+    margin-top: 1rem;
+}
+
+.humidity-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #E0E0E0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.humidity-level {
+    height: 100%;
+    background-color: #4CAF50;
+    transition: width 0.5s;
+}
+
+.humidity-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #999;
+}
+
+/* Recommendations Section */
+.recommendations-section {
+    max-width: 1200px;
+    margin: 3rem auto 2rem;
+    padding: 0 1rem;
+}
+
+/* Advice Grid */
+.advice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 1.5rem;
+}
+
+.advice-box {
+    background: white;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.advice-header {
+    background-color: #F5F5F0;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 2px solid #E0E0E0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.language-info h3 {
+    color: #2B5F2F;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+}
+
+.language-label {
+    background-color: #52734D;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.marathi-box .language-label {
+    background-color: #FF6B35;
+}
+
+/* Voice Controls */
+.voice-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.voice-btn, .stop-btn {
+    padding: 0.5rem 1rem;
+    background-color: white;
+    color: #2B5F2F;
+    border: 2px solid #52734D;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.voice-btn:hover, .stop-btn:hover {
+    background-color: #52734D;
+    color: white;
+}
+
+.stop-btn {
+    border-color: #D32F2F;
+    color: #D32F2F;
+    padding: 0.5rem 0.75rem;
+}
+
+.stop-btn:hover {
+    background-color: #D32F2F;
+    color: white;
+}
+
+/* Advice Content */
+.advice-content {
+    padding: 1.5rem;
+    background-color: #FAFAFA;
+}
+
+.advice-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.advice-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: white;
+    border-left: 3px solid #52734D;
+    border-radius: 4px;
+}
+
+.marathi-box .advice-item {
+    border-left-color: #FF6B35;
+}
+
+.item-marker {
+    color: #52734D;
+    font-size: 0.9rem;
+    margin-top: 2px;
+}
+
+.marathi-box .item-marker {
+    color: #FF6B35;
+}
+
+.item-text {
+    flex: 1;
+    color: #333;
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* Welcome Message */
+.welcome-message {
+    max-width: 600px;
+    margin: 4rem auto;
+    text-align: center;
+    padding: 2rem;
+}
+
+.welcome-icon {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 1.5rem;
+}
+
+.welcome-message h3 {
+    color: #2B5F2F;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.welcome-message p {
+    color: #666;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 1.5rem;
+    }
+    
+    .weather-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .advice-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .input-wrapper {
+        flex-direction: column;
+    }
+    
+    .location-input {
+        width: 100%;
+    }
+    
+    .get-advice-btn {
+        width: 100%;
+    }
+    
+    .advice-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .weather-status {
+        float: none;
+        display: inline-block;
+        margin-top: 0.5rem;
+    }
+    
+    .section-title {
+        text-align: center;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .header-section {
+        background-color: white;
+        color: #2B5F2F;
+    }
+    
+    .main-title {
+        color: #2B5F2F;
+    }
+    
+    .search-container,
+    .voice-controls,
+    .welcome-message {
+        display: none;
+    }
+    
+    .info-card,
+    .advice-box {
+        border: 1px solid #333;
+    }
+}
+</style>
+
+{% else %}
+    <div class="login-required">
+        <h2>🔒 Login Required</h2>
+        <p>You must <a href="{% url 'app:login' %}?next=/weather/">login</a> to access Weather & Farming Advice.</p>
+    </div>
+{% endif %}
+{% endblock main-content %}

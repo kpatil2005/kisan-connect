@@ -1,0 +1,1105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Kisan Connect - Empowering Farmers{% endblock %}</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  
+  <style>
+    /* ===== GLOBAL STYLES ===== */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --primary-green: #006400;
+        --secondary-green: #4CAF50;
+        --accent-gold: #FFD700;
+        --accent-yellow: #ebc907;
+        --light-bg: #ffffff;
+        --white: #ffffff;
+        --text-dark: #333333;
+        --text-light: #666666;
+        --border-radius: 12px;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+        font-family: "Open Sans", sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        background-color: var(--light-bg);
+        overflow-x: hidden;
+    }
+
+    .oswald-nomo {
+        font-family: "Oswald", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-style: normal;
+    }
+
+    /* ===== NAVIGATION BAR OVERRIDE ===== */
+    .navbar {
+        background: var(--primary-green) !important;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+        padding: 15px 0;
+    }
+
+    .navbar-brand {
+        font-family: "Oswald", sans-serif;
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: white !important;
+    }
+
+    .navbar-nav .nav-link {
+        color: white !important;
+        font-weight: 600;
+        padding: 12px 16px !important;
+        border-radius: 8px;
+        transition: var(--transition);
+        margin: 0 2px;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: var(--accent-gold) !important;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .dropdown-menu {
+        background: var(--white);
+        border: none;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        animation: fadeInDown 0.3s ease;
+    }
+
+    .dropdown-item {
+        color: var(--text-dark);
+        padding: 12px 20px;
+        transition: var(--transition);
+    }
+
+    .dropdown-item:hover {
+        background: var(--light-bg);
+        color: var(--secondary-green);
+    }
+
+    /* ===== HERO SECTION ===== */
+    header {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: white;
+        overflow: hidden;
+    }
+
+    #background-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -2;
+    }
+
+    header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: -1;
+    }
+
+    header h1 {
+        font-family: "Oswald", sans-serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        animation: fadeInUp 1s ease 0.3s both;
+    }
+
+    header p {
+        font-size: clamp(1.1rem, 2vw, 1.3rem);
+        margin-bottom: 30px;
+        max-width: 600px;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        animation: fadeInUp 1s ease 0.6s both;
+    }
+
+    /* ===== BUTTON STYLES ===== */
+    .btn-custom {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--accent-yellow), var(--accent-gold));
+        color: var(--text-dark);
+        padding: 15px 30px;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        box-shadow: 0 4px 15px rgba(235, 201, 7, 0.3);
+        animation: fadeInUp 1s ease 0.9s both;
+        position: relative;
+        overflow: hidden;
+        border: none;
+    }
+
+    .btn-custom::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: var(--transition);
+    }
+
+    .btn-custom:hover::before {
+        left: 100%;
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(235, 201, 7, 0.4);
+        color: var(--text-dark);
+        text-decoration: none;
+    }
+
+    /* ===== SECTION STYLES ===== */
+    .custom-section {
+        padding: 80px 0;
+    }
+
+    .custom-section:nth-child(even) {
+        background: var(--white);
+    }
+
+    .custom-section:nth-child(odd) {
+        background: var(--light-bg);
+    }
+
+    /* ===== SECTION CONTENT STYLES ===== */
+    .section-title {
+        font-family: "Oswald", sans-serif;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: var(--primary-green);
+        position: relative;
+    }
+
+    .section-text {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: var(--text-light);
+        margin-bottom: 30px;
+    }
+
+    /* Video Styling */
+    .styled-video {
+        width: 100%;
+        max-width: 500px;
+        height: 300px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        border: 3px solid var(--primary-green);
+        object-fit: cover;
+        transition: var(--transition);
+    }
+
+    .styled-video:hover {
+        transform: scale(1.02);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ===== ABOUT SECTION ===== */
+    #about {
+        padding: 80px 40px;
+        background: linear-gradient(135deg, #f9f9f9, #ffffff);
+        margin: 40px auto;
+        width: 90%;
+        max-width: 1100px;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    #about h2 {
+        font-family: "Oswald", sans-serif;
+        font-size: clamp(2.2rem, 4vw, 3rem);
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: var(--secondary-green);
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    #about h2::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--accent-yellow));
+        border-radius: 2px;
+    }
+
+    #about p {
+        font-size: 1.2rem;
+        color: var(--text-light);
+        line-height: 1.8;
+        margin: 0 auto 25px;
+        max-width: 900px;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+        background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+        color: white;
+        padding: 30px 20px;
+        text-align: center;
+        margin-top: 0;
+    }
+
+    footer p {
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    /* ===== CHAT STYLES ===== */
+    #chat-toggle-btn {
+        position: fixed;
+        bottom: 25px;
+        right: 25px;
+        background: linear-gradient(135deg, var(--secondary-green), #45a049);
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        transition: var(--transition);
+        z-index: 1000;
+    }
+
+    #chat-toggle-btn:hover {
+        transform: scale(1.1);
+        box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
+    }
+
+    #chat-window {
+        display: none;
+        position: fixed;
+        bottom: 95px;
+        right: 25px;
+        width: 360px;
+        max-height: 500px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+        flex-direction: column;
+        z-index: 1000;
+        animation: slideInUp 0.3s ease;
+    }
+
+    #chat-window.active {
+        display: flex;
+    }
+
+    #chat-header {
+        background: linear-gradient(135deg, var(--secondary-green), #45a049);
+        color: white;
+        padding: 18px;
+        font-weight: 600;
+        font-size: 18px;
+        text-align: center;
+    }
+
+    #chat-messages {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        background: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-height: 300px;
+    }
+
+    .chat-message {
+        max-width: 85%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        font-size: 14px;
+        line-height: 1.5;
+        word-wrap: break-word;
+        animation: messageSlide 0.3s ease;
+    }
+
+    .chat-message.user {
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
+        color: #155724;
+        align-self: flex-end;
+        border-bottom-right-radius: 6px;
+    }
+
+    .chat-message.bot {
+        background: linear-gradient(135deg, #e9ecef, #dee2e6);
+        color: #212529;
+        align-self: flex-start;
+        border-bottom-left-radius: 6px;
+        white-space: pre-line;
+    }
+
+    #chat-input-container {
+        padding: 15px;
+        border-top: 1px solid #e0e0e0;
+        display: flex;
+        gap: 10px;
+        background: white;
+    }
+
+    #chat-input {
+        flex: 1;
+        border: 2px solid #e0e0e0;
+        border-radius: 20px;
+        padding: 12px 16px;
+        font-size: 14px;
+        outline: none;
+        transition: var(--transition);
+    }
+
+    #chat-input:focus {
+        border-color: var(--secondary-green);
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+    }
+
+    #chat-send-btn {
+        border: none;
+        background: linear-gradient(135deg, var(--secondary-green), #45a049);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: var(--transition);
+    }
+
+    #chat-send-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes messageSlide {
+        from {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    /* ===== RESPONSIVE OVERRIDES ===== */
+    @media (max-width: 768px) {
+        .navbar-nav {
+            text-align: center;
+        }
+        
+        .navbar-nav .nav-link {
+            margin: 5px 0;
+        }
+        
+        header {
+            height: 70vh;
+            padding: 0 20px;
+        }
+        
+        .custom-section {
+            padding: 50px 0;
+        }
+        
+        .btn-custom {
+            padding: 12px 24px;
+            font-size: 15px;
+        }
+        
+        #chat-window {
+            width: calc(100vw - 40px);
+            right: 20px;
+            left: 20px;
+        }
+        
+        #about {
+            width: 95%;
+            padding: 50px 25px;
+        }
+    }
+
+    /* ===== UTILITY CLASSES ===== */
+    .text-center {
+        text-align: center;
+    }
+
+    .mb-0 {
+        margin-bottom: 0;
+    }
+
+    .mt-0 {
+        margin-top: 0;
+    }
+
+    /* ===== ACCESSIBILITY ===== */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
+
+    /* Focus styles for accessibility */
+    a:focus,
+    button:focus,
+    input:focus {
+        outline: 2px solid var(--secondary-green);
+        outline-offset: 2px;
+    }
+  </style>
+
+  {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
+    <div class="container-fluid">
+      <!-- Logo only (left aligned) -->
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+        <img src="{% static 'app/images/logo.png' %}" alt="Kisan Connect Logo" width="45" height="45" class="me-2">
+        <span class="oswald-nomo">Kisan Connect</span>
+      </a>
+
+      <!-- Mobile toggle button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Menu items -->
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'app:home' %}"><i class="bi bi-house-fill me-1"></i>Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'app:schemes' %}">
+  <i class="bi bi-file-earmark-text me-1"></i>Schemes
+</a>
+
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="adviceDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              <i class="bi bi-lightbulb me-1"></i>Advice
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="adviceDropdown">
+              <li><a class="dropdown-item" href="{% url 'app:weather' %}"><i class="bi bi-cloud-sun me-2"></i>Weather</a></li>
+              <li><a class="dropdown-item" href="{% url 'app:crops' %}"><i class="bi bi-flower1 me-2"></i>Crop Selection</a></li>
+              <li><a class="dropdown-item" href="{% url 'app:fertilizers' %}"><i class="bi bi-droplet me-2"></i>Fertilizers</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'app:marketplace' %}"><i class="bi bi-shop me-1"></i>Marketplace</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'app:forum' %}"><i class="bi bi-chat-dots me-1"></i>Forum</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'app:news' %}"><i class="bi bi-newspaper me-1"></i>News</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'app:support' %}"><i class="bi bi-headset me-1"></i>Support</a>
+          </li>
+          
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'app:prediction' %}"><i class="bi bi-graph-up me-1"></i>Yield Prediction</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle me-1"></i>{{ user.username }}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <li><a class="dropdown-item" href="{% url 'app:profile' %}"><i class="bi bi-person me-2"></i>Profile</a></li>
+                <li><a class="dropdown-item" href="{% url 'app:orders' %}"><i class="bi bi-bag me-2"></i>My Orders</a></li>
+                <li><a class="dropdown-item" href="{% url 'app:showcart' %}"><i class="bi bi-cart me-2"></i>Cart</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'app:logout' %}"><i class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'app:login' %}"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'app:customerregistration' %}"><i class="bi bi-person-plus me-1"></i>Register</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+ <header id="home" class="position-relative">
+  <video autoplay loop muted playsinline class="w-100 h-100 position-absolute top-0 start-0" style="object-fit: cover; z-index: -1;">
+    <source src="{% static 'app/images/background.mp4' %}" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="d-flex flex-column justify-content-center align-items-center text-center position-relative" style="height: 100vh; z-index: 1; padding: 0 15px;">
+    <h1 class="display-3 fw-bold mb-3" style="color: #fff; text-shadow: 2px 2px 10px rgba(0,0,0,0.4);">
+      Empowering Farmers, Inspiring Growth
+    </h1>
+    <p class="lead mb-4" style="color: #fff; font-size: 1.5rem; text-shadow: 1px 1px 8px rgba(0,0,0,0.3);">
+      Access government schemes, expert advice, and connect with a thriving farming community.
+    </p>
+    <a href="{% url 'app:schemes' %}" class="btn btn-success btn-lg shadow" style="border-radius: 50px;">Explore Opportunities</a>
+  </div>
+</header>
+
+<!-- Login/Register Section -->
+{% if not user.is_authenticated %}
+<section id="auth-section" class="py-5" style="background: linear-gradient(135deg, #28a745, #20c997);">
+  <div class="container">
+    <div class="row justify-content-center text-center text-white">
+      <div class="col-lg-8">
+        <h2 class="display-4 fw-bold mb-3">🔐 Access All Features</h2>
+        <p class="lead mb-4">
+          Login to access marketplace, weather advice, community forum, disease detection, and all premium farming tools.
+        </p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a href="{% url 'app:login' %}" class="btn btn-light btn-lg px-4 py-3 fw-bold" style="border-radius: 50px;">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Login Now
+          </a>
+          <a href="{% url 'app:customerregistration' %}" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold" style="border-radius: 50px;">
+            <i class="bi bi-person-plus me-2"></i>Register Free
+          </a>
+        </div>
+        <small class="d-block mt-3 opacity-75">Join thousands of farmers already using our platform!</small>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<section id="marketplace-intro" class="py-5" style="background: linear-gradient(135deg, #fdfbfb, #ebedee);">
+  <div class="container my-5">
+  <div class="row align-items-center">
+    
+    <!-- Left Content -->
+    <div class="col-lg-6 mb-4 mb-lg-0">
+      <h1 class="fw-bold" style="color:#2c3e50;">🌾 Welcome to Our Marketplace</h1>
+      <p class="lead text-muted mt-3">
+        Discover high-quality seeds, organic fertilizers, modern farming tools, and crop protection products – 
+        all in one place. Our marketplace connects farmers with trusted suppliers to ensure better yield and 
+        sustainable farming practices.
+      </p>
+      <ul class="list-unstyled mt-4">
+        <li class="mb-2">✅ Trusted & Verified Products</li>
+        <li class="mb-2">✅ Affordable Prices with Discounts</li>
+        <li class="mb-2">✅ Fast & Reliable Delivery</li>
+        <li class="mb-2">✅ 24/7 Support for Farmers</li>
+      </ul>
+      <a href="{% url 'app:schemes' %}" class="btn btn-success btn-lg mt-4">Explore Marketplace</a>
+    </div>
+
+    <!-- Right Image/Video -->
+    <div class="col-lg-6 text-center">
+      <div style="position: relative; width: 130%; max-width: 1500px; margin-left: -50px;">
+        
+        <!-- Laptop Frame -->
+        <img src="{% static 'app/images/laptop_frame.png' %}" 
+             alt="Laptop Frame" 
+             style="width: 100%; height: auto; display: block;">
+        
+        <!-- Video inside Laptop -->
+        <div style="position: absolute; 
+                    top: 28%;     
+                    left: 15%;    
+                    width: 70%;   
+                    height: 42%;  
+                    overflow: hidden; 
+                    border-radius: 10px;">
+          <video autoplay loop muted playsinline 
+                 style="width: 100%; height: 100%; object-fit: cover;">
+            <source src="{% static 'app/images/marketplace.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<div class="upcoming-features text-center" style="padding:50px 20px; border-radius:15px; margin-bottom:3rem;"> 
+</div>
+<h1 class="text-center" style="font-size:3rem; font-weight:900; margin-bottom:1rem;">
+  🌾 Empower Your Farm, Every Day
+</h1>
+<p class="text-center" style="font-size:1.2rem; margin-bottom:2rem;">
+  Access tools, seeds, weather updates, and expert advice — everything you need to grow smarter and stronger.
+</p>
+
+<!-- Space for Upcoming Features -->
+<div class="upcoming-features text-center" style="padding:50px 20px; border-radius:15px; margin-bottom:3rem;"> 
+</div>
+
+
+
+ <!-- Marketplace Showcase Section -->
+<section id="marketplace" class="custom-section">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <h2 class="section-title">🛒 Smart Farming Marketplace</h2>
+        <p class="section-text">
+          Explore a wide range of seeds, fertilizers, and farming tools. Connect with trusted suppliers and make informed purchases to boost your farm's productivity.
+        </p>
+        <a href="{% url 'app:schemes' %}" class="btn-custom">Visit Marketplace</a>
+      </div>
+ <div class="col-lg-6 text-center">
+        <video autoplay loop muted playsinline class="styled-video">
+          <source src="{% static 'app/images/Farming_AI_Project_Intro_Video.mp4' %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+     
+
+    </div>
+  </div>
+</section>
+
+
+ <!-- Weather & Farming Advice Section -->
+<section id="advice" class="custom-section">
+  <div class="container">
+    <div class="row align-items-center">
+
+       <div class="col-lg-6 order-lg-1 text-center">
+        <video autoplay loop muted playsinline class="styled-video">
+          <source src="{% static 'app/images/Smart_Farming_Tradition_Meets_Future.mp4' %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+        <h2 class="section-title">🌤 Weather & Farming Insights</h2>
+        <p class="section-text">
+          Stay updated with real-time weather, temperature, humidity, and get practical farming tips to maximize crop yield and prevent crop damage.
+        </p>
+        <a href="{% url 'app:farming_advice' %}" class="btn-custom">View Advice</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- Forum Section -->
+<section id="forum" class="custom-section">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <!-- Left Content -->
+      <div class="col-lg-6 mb-4 mb-lg-0">
+        <h2 class="section-title">💬 Join the Farmer Community</h2>
+        <p class="section-text">
+          Connect with other farmers, ask questions, share knowledge, and learn from experienced agricultural professionals in our vibrant community.
+        </p>
+        <a href="{% url 'app:forum' %}" class="btn-custom">Join Forum</a>
+      </div>
+
+      <!-- Right Video -->
+      <div class="col-lg-6 text-center">
+        <video autoplay loop muted playsinline class="styled-video">
+          <source src="{% static 'app/images/WhatsApp Video 2025-08-29 at 00.25.46_e37d6aa1.mp4' %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- News Section -->
+  <section id="news" class="custom-section">
+    <div class="container">
+      <div class="row align-items-center">
+         <div class="col-lg-6 text-center">
+          <video autoplay loop muted playsinline class="styled-video">
+            <source src="{% static 'app/images/Peaceful_Indian_Village_Life_Video.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <h2 class="section-title">📰 Latest Farming News</h2>
+          <p class="section-text">Stay updated with the latest agricultural news, policy changes, market trends, and technological innovations affecting the farming industry.</p>
+          <a href="{% url 'app:news' %}" class="btn-custom">Read More</a>
+        </div>
+       
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <!-- AI Disease Detection Section -->
+  <section id="disease-detection" class="custom-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <h2 class="section-title">🔬 AI-Powered Disease Detection</h2>
+          <p class="section-text">Utilize computer vision to analyze your crop photos and accurately detect common diseases, helping you protect your harvest with advanced AI technology.</p>
+          <a href="{% url 'app:capture_and_predict' %}" class="btn-custom">Detect Disease</a>
+        </div>
+        <div class="col-lg-6 text-center">
+          <video autoplay loop muted playsinline class="styled-video">
+            <source src="{% static 'app/images/Farming_AI_Project_Intro_Video.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Government Schemes Section -->
+  <section id="schemes" class="custom-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+          <h2 class="section-title">📜 Find Government Schemes</h2>
+          <p class="section-text">Get access to the best government schemes tailored for you. Discover subsidies, loans, and support programs designed specifically for farmers.</p>
+          <a href="{% url 'app:schemes' %}" class="btn-custom">Find Schemes</a>
+        </div>
+        <div class="col-lg-6 order-lg-1 text-center">
+          <video autoplay loop muted playsinline class="styled-video">
+            <source src="{% static 'app/images/Government_Scheme_Finder_Intro_Video.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crop Yield Prediction Section -->
+  <section id="prediction" class="custom-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <h2 class="section-title">🌱 Crop Yield Prediction</h2>
+          <p class="section-text">Predict your crop yield easily using rainfall, temperature, and soil quality data. Make informed decisions for better harvests with data-driven insights.</p>
+          <a href="{% url 'app:prediction' %}" class="btn-custom">Predict Yield</a>
+        </div>
+        <div class="col-lg-6 text-center">
+          <video autoplay loop muted playsinline class="styled-video">
+            <source src="{% static 'app/images/Farmer_s_Futuristic_Farm_Vision.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+
+
+  <!-- Contact Section -->
+  <section id="contact" class="custom-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+          <h2 class="section-title">📞 Contact Us</h2>
+          <p class="section-text">If you need any help, have questions, or want to provide feedback, feel free to reach out. Our support team is here to assist you.</p>
+          <a href="{% url 'app:support' %}" class="btn-custom">Get in Touch</a>
+        </div>
+        <div class="col-lg-6 order-lg-1 text-center">
+          <video autoplay loop muted playsinline class="styled-video">
+            <source src="{% static 'app/images/WhatsApp Video 2025-08-29 at 00.30.32_6059262a.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- About Section Full Width -->
+<section id="about" class="py-5 position-relative" style="background-color: #e9f7ef;">
+  <!-- Optional background pattern or image -->
+  <div class="position-absolute top-0 start-0 w-100 h-100" style="background: url('{% static 'app/images/field-pattern.png' %}') no-repeat center center/cover; opacity: 0.05; z-index:0;"></div>
+
+  <div class="container position-relative" style="z-index: 1;">
+    
+    <!-- Section Header -->
+    <div class="row mb-5">
+      <div class="col text-center">
+        <h2 class="fw-bold">ℹ️ About <span class="text-success">Kisan Connect</span></h2>
+        <p class="text-muted fs-5 mt-3">
+          Empowering farmers with information, opportunities, and a connected farming community.
+        </p>
+      </div>
+    </div>
+
+    <!-- Content Row -->
+    <div class="row align-items-center g-4">
+      
+      <!-- Left Column (Text) -->
+      <div class="col-lg-6">
+        <h3 class="fw-bold text-success mb-3">🌾 Who We Are</h3>
+        <p class="text-muted fs-5 mb-3">
+          Kisan Connect is a one-stop digital platform designed to empower farmers by providing easy access to government schemes, expert farming advice, a marketplace for agricultural products, community discussions, and the latest farming news.
+        </p>
+        <p class="text-muted fs-5 mb-4">
+          We bridge traditional farming practices with modern technology, ensuring farmers have all the resources they need to grow sustainably and profitably.
+        </p>
+        <a href="{% url 'app:contact' %}" class="btn btn-success btn-lg rounded-pill px-4 shadow">
+          📩 Contact Us
+        </a>
+      </div>
+
+      <!-- Right Column (Image or Illustration) -->
+      <div class="col-lg-6 text-center">
+        <img src="{% static 'app/images/logo.png' %}" alt="Kisan Connect" class="img-fluid rounded-4 shadow-lg">
+      </div>
+
+    </div>
+
+    <!-- Mission & Vision Cards -->
+    <div class="row text-center g-4 mt-5">
+      <div class="col-md-6">
+        <div class="card shadow-lg border-0 h-100 p-4">
+          <div class="card-body">
+            <h4 class="fw-bold text-success">🌱 Our Mission</h4>
+            <p class="text-muted mt-3">
+              To empower farmers with digital tools, transparent pricing, and direct market access. Reducing middlemen and creating opportunities for higher profits and sustainable growth.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card shadow-lg border-0 h-100 p-4">
+          <div class="card-body">
+            <h4 class="fw-bold text-success">🚜 Our Vision</h4>
+            <p class="text-muted mt-3">
+              A connected farming ecosystem where every farmer has equal access to modern resources, buyers, and suppliers, ensuring prosperity for generations to come.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- Newsletter Section -->
+<div class="container-fluid bg-success text-white py-5 mt-5 position-relative overflow-hidden" style="background: url('{% static 'app/images/field-pattern.png' %}') no-repeat center center/cover;">
+  <div class="bg-success bg-opacity-90 position-absolute top-0 start-0 w-100 h-100" style="z-index: 0;"></div>
+  
+  <div class="container position-relative" style="z-index: 10;">
+    <div class="row align-items-center gy-4">
+      
+      <!-- Left Content -->
+      <div class="col-md-6">
+        <h2 class="display-3 fw-bold mb-3 border-bottom border-warning pb-2" style="max-width: 450px; letter-spacing: 1px;">
+          <i class="bi bi-envelope-fill me-3"></i>
+          Stay Updated with the Latest Agricultural Products
+        </h2>
+        <p class="lead mb-4 fs-5">
+          Get exclusive offers, expert farming tips, and seasonal advice delivered straight to your inbox. Don’t miss out on improving your yield!
+        </p>
+        <div class="d-flex align-items-center gap-3">
+          <img src="{% static 'app/images/logo.png' %}" alt="Happy Farmer" class="shadow-lg" style="height:70px; border: 3px solid #ffc107;">
+          <div>
+            <p class="mb-0 fs-6">Join <strong>10,000+</strong> happy farmers who trust us!</p>
+            <small class="opacity-75">100% spam-free. Unsubscribe anytime.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Content -->
+      <div class="col-md-6">
+        <form class="d-flex gap-3 flex-column flex-sm-row align-items-center" style="max-width: 550px; margin-left: auto;" novalidate>
+          <input type="email" class="form-control form-control-lg rounded-pill shadow-sm" placeholder="Enter your email" aria-label="Email" required>
+          <button type="submit" class="btn btn-warning btn-lg rounded-pill px-5 fw-bold shadow-sm newsletter-btn">
+            Subscribe <i class="bi bi-arrow-right ms-2"></i>
+          </button>
+        </form>
+        <div class="mt-2 text-warning fw-semibold small email-feedback" role="alert" style="display:none;">Please enter a valid email address.</div>
+        <small class="d-block mt-3 opacity-75">We respect your privacy and never share your information.</small>
+
+        <!-- Extra Benefits -->
+        <div class="d-flex justify-content-around mt-5 text-center">
+          <div>
+            <i class="bi bi-truck fs-1 mb-2"></i>
+            <p>Fast Delivery</p>
+          </div>
+          <div>
+            <i class="bi bi-patch-check fs-1 mb-2"></i>
+            <p>Trusted Quality</p>
+          </div>
+          <div>
+            <i class="bi bi-chat-dots fs-1 mb-2"></i>
+            <p>Expert Support</p>
+          </div>
+          <div>
+            <i class="bi bi-award fs-1 mb-2"></i>
+            <p>Best Offers</p>
+          </div>
+        </div>
+
+        <!-- Social Media -->
+        <div class="mt-4 text-center">
+          <a href="#" class="btn btn-outline-light btn-lg rounded-circle mx-1" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="btn btn-outline-light btn-lg rounded-circle mx-1" aria-label="Twitter"><i class="bi bi-twitter"></i></a>
+          <a href="#" class="btn btn-outline-light btn-lg rounded-circle mx-1" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="btn btn-outline-light btn-lg rounded-circle mx-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Button hover animation */
+  .newsletter-btn {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .newsletter-btn:hover {
+    transform: translateX(5px);
+    box-shadow: 0 8px 20px rgba(255, 193, 7, 0.6);
+  }
+
+  /* Input focus */
+  input.form-control:focus {
+    border-color: #ffc107;
+    box-shadow: 0 0 8px #ffc107;
+  }
+</style>
+
+<script>
+  // Simple email validation and feedback (vanilla JS)
+  document.querySelector('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const emailInput = this.querySelector('input[type="email"]');
+    const feedback = this.querySelector('.email-feedback');
+    const email = emailInput.value.trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      feedback.style.display = 'block';
+      emailInput.classList.add('is-invalid');
+    } else {
+      feedback.style.display = 'none';
+      emailInput.classList.remove('is-invalid');
+      alert('Thank you for subscribing!');
+      this.reset();
+    }
+  });
+</script>
+
+<!-- Standalone AI Chatbot -->
+<script src="{% static 'app/js/chatbot.js' %}"></script>
+
+</body>
+
+</html>

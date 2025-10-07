@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheme Finder</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='results.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <img class="logo" src="assets/logo.png" alt="Kisan Connect Logo">
+        <ul>
+            <li><a href="#home">🏡 Home</a></li>
+            <li><a href="form.html">📜 Schemes</a></li>
+            <li class="dropdown">
+                <a href="#">🌿 Advice</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#weather">☀️ Weather</a></li>
+                    <li><a href="#crops">🌾 Crop Selection</a></li>
+                    <li><a href="#fertilizers">🧪 Fertilizers</a></li>
+                </ul>
+            </li>
+            <li><a href="#marketplace">🛒 Marketplace</a></li>
+            <li><a href="#forum">💬 Forum</a></li>
+            <li><a href="#news">📰 News</a></li>
+            <li><a href="#contact">📞 Support</a></li>
+            <li><a href="SignUp_LogIn_Form.html">sign in</a></li>
+            <li><a href="predict.html">🌱 Yield Prediction</a></li>
+        </ul>
+    </nav>
+    <h2>Matching Schemes:</h2>
+    {% if schemes and schemes|length > 0 %}
+        <ul>
+            {% for scheme in schemes %}
+                <li>
+                    <strong>{{ scheme['name'] }}</strong><br>
+                    {{ scheme['description'] }}<br>
+                    Age Range: {{ scheme['ageRange']['min'] }} - {{ scheme['ageRange']['max'] }}<br>
+                    Income Limit: ₹{{ scheme['incomeLimit'] }}<br>
+                    Location: {{ scheme['location'] }}<br>
+                    Employment Type: {{ scheme['employmentType'] }}
+                </li>
+                <hr>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No schemes found for the given criteria.</p>
+    {% endif %}
+    <a href="/scheme_page">🔙 Back to Search</a>
+</body>
+</html>

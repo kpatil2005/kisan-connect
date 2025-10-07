@@ -1,0 +1,47 @@
+{% extends 'app/base.html'%}
+{% load static %}
+{% block title %} Login {% endblock title %}
+
+{% block main-content %}
+<div class='container'>
+   <div class='row my-3'>
+        <div class='col-sm-6 offset-sm-3'>
+           <h3>Customer Login</h3>
+           <hr>
+
+           <form action="{% url 'app:login' %}?next=/profile/" method="post" novalidate class="shadow p-4 rounded bg-light">
+              {% csrf_token %}
+              {% for fm in form %}
+                  <div class="mb-3">
+                      {{ fm.label_tag }}
+                      {{ fm }}
+                      <small class="text-danger">{{ fm.errors|striptags }}</small>
+                  </div>
+              {% endfor %}
+
+              {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %}
+                  <p class="alert alert-danger">{{ error }}</p>
+                {% endfor %}
+              {% endif %}
+
+              <div class="d-grid mb-3">
+                  <input type="submit" value="Login" class="btn btn-success">
+              </div>
+
+              <!-- Forgot Password Button -->
+              <div class="d-grid mb-3">
+                  <a href="{% url 'app:password_reset' %}" class="btn btn-outline-danger">Forgot Password?</a>
+              </div>
+
+              <div class="text-center">
+                  <small class="text-muted">
+                      Don't have an account? 
+                      <a href="{% url 'app:customerregistration' %}">Register</a>
+                  </small>
+              </div>
+           </form>
+        </div>
+   </div>
+</div>
+{% endblock main-content %}

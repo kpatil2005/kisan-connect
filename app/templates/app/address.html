@@ -1,0 +1,60 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Address{% endblock %}
+
+{% block main-content %}
+<div class="container my-5">
+    <!-- Welcome Message -->
+    <div class="row mb-4">
+        <h3 class="text-primary">Welcome, <span class="text-capitalize">{{ request.user }}</span></h3>
+        <p class="text-muted">Here are your saved addresses.</p>
+    </div>
+
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 mb-4">
+            <div class="list-group">
+                <a href="{% url 'app:profile' %}" class="list-group-item list-group-item-action active">
+                    Profile
+                </a>
+                <a href="{% url 'app:address' %}" class="list-group-item list-group-item-action">Address</a>
+            </div>
+        </div>
+
+        <!-- Address Cards -->
+        <div class="col-md-9">
+            {% if add %}
+                <div class="row">
+                    {% for ad in add %}
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow-sm h-100">
+                                <div class="card-header bg-primary text-white">
+                                    Address {{ forloop.counter }}
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Name:</strong> {{ ad.name }}</p>
+                                    <p><strong>Locality:</strong> {{ ad.locality }}</p>
+                                    <p><strong>Mobile:</strong> {{ ad.mobile }}</p>
+                                    <p><strong>City:</strong> {{ ad.city }}</p>
+                                    <p><strong>State:</strong> {{ ad.state }}</p>
+                                    <p><strong>Pincode:</strong> {{ ad.zipcode }}</p>
+                                   <div class="text-center mt-3">
+                                    <a href="{% url 'app:updateAddress' pk=ad.id %}" class="btn btn-sm btn-outline-primary">
+                                       Update
+                                    </a> 
+                                   </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    You have no addresses saved yet.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock main-content %}

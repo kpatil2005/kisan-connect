@@ -1,0 +1,256 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheme Finder</title>
+    <link rel="stylesheet" href="static/form.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <img class="logo" src="asset" alt="Kisan Connect Logo">
+        <ul>
+            <li><a href="#home">🏡 Home</a></li>
+            <li><a href="form.html">📜 Schemes</a></li>
+            <li class="dropdown">
+                <a href="#">🌿 Advice</a>
+                <ul class="dropdown-menu">
+                    <li><a href="#weather">☀️ Weather</a></li>
+                    <li><a href="#crops">🌾 Crop Selection</a></li>
+                    <li><a href="#fertilizers">🧪 Fertilizers</a></li>
+                </ul>
+            </li>
+            <li><a href="#marketplace">🛒 Marketplace</a></li>
+            <li><a href="#forum">💬 Forum</a></li>
+            <li><a href="#news">📰 News</a></li>
+            <li><a href="#contact">📞 Support</a></li>
+            <li><a href="SignUp_LogIn_Form.html">sign in</a></li>
+            <li><a href="predict.html">🌱 Yield Prediction</a></li>
+        </ul>
+    </nav>
+    <h1>Find Government Schemes</h1>
+
+    <div class="scrolling-schemes-v2">
+    <div class="schemes-list-v2">
+        <span class="scheme-item-v2">✨ Latest Scheme: Pradhan Mantri Kisan Samman Nidhi ✨</span>
+        <span class="scheme-item-v2">🌾 New Scheme Alert: PM Fasal Bima Yojana is now active 🌾</span>
+        <span class="scheme-item-v2">📢 LATEST: National Agriculture Market (e-NAM) update is live 📢</span>
+        <span class="scheme-item-v2">💡 SCHEMES: Get subsidized loans for farm machinery! 💡</span>
+    </div>
+</div>
+<form id="searchForm" action="/api/find_schemes_form" method="POST">
+    <div class="search-container">
+        <label>Age: <input type="number" name="age" id="age" min="0"></label>
+        <label>Income (₹): <input type="number" name="income" id="income" min="0"></label>
+        <label>Location:
+            <select name="location" id="location">
+                <option value="">Any</option>
+                <option value="Urban">Urban</option>
+                <option value="Rural">Rural</option>
+            </select>
+        </label>
+        <label>Employment Type:
+            <select name="employment" id="employment">
+                <option value="">Any</option>
+                <option value="Unemployed">Unemployed</option>
+                <option value="Farmer">Farmer</option>
+                <option value="Worker">Worker</option>
+                <option value="Entrepreneur">Entrepreneur</option>
+                <option value="Self-Employed">Self-Employed</option>
+                <option value="Not Applicable">Not Applicable</option>
+            </select>
+        </label>
+        <button type="submit">Search</button>
+    </div>
+</form>
+<div class="schemes-grid">
+
+  <!-- 1 -->
+  <div class="scheme-card">
+    <h3>🌾 Pradhan Mantri Kisan Samman Nidhi</h3>
+    <span class="tag">#Agriculture</span>
+    <span class="tag">#Rural</span>
+    
+    <p>👤 Age Range: 18 - 60</p>
+    <p>💰 Income Limit: ₹2,00,000</p>
+    <p>📍 Location: Rural</p>
+    <p>⚒️ Employment: Farmer</p>
+    
+    <p><strong>✅ Benefits:</strong> ₹6,000/year income support to farmers in 3 installments</p>
+    <p><strong>📅 Launched:</strong> 2019</p>
+    
+    <a href="https://pmkisan.gov.in/" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+  <!-- 2 -->
+  <div class="scheme-card">
+    <h3>💰 Pradhan Mantri Jan Dhan Yojana</h3>
+    <span class="tag">#Banking</span>
+    <span class="tag">#Urban</span>
+    
+    <p>👤 Age Range: 18 - 60</p>
+    <p>💰 Income Limit: ₹1,00,000</p>
+    <p>📍 Location: Urban</p>
+    <p>⚒️ Employment: Unemployed</p>
+    
+    <p><strong>✅ Benefits:</strong> Zero-balance bank account, insurance & overdraft facility</p>
+    <p><strong>📅 Launched:</strong> 2014</p>
+    
+    <a href="https://pmjdy.gov.in/" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+  <!-- 3 -->
+  <div class="scheme-card">
+    <h3>🏠 Pradhan Mantri Awas Yojana</h3>
+    <span class="tag">#Housing</span>
+    <span class="tag">#Urban</span>
+    
+    <p>👤 Age Range: 21 - 55</p>
+    <p>💰 Income Limit: ₹3,00,000</p>
+    <p>📍 Location: Urban</p>
+    <p>⚒️ Employment: Unemployed</p>
+    
+    <p><strong>✅ Benefits:</strong> Subsidized housing loans for poor & middle-class families</p>
+    <p><strong>📅 Launched:</strong> 2015</p>
+    
+    <a href="https://pmaymis.gov.in/" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+  <!-- 4 -->
+  <div class="scheme-card">
+    <h3>👴 Atal Pension Yojana</h3>
+    <span class="tag">#Pension</span>
+    <span class="tag">#Workers</span>
+    
+    <p>👤 Age Range: 18 - 40</p>
+    <p>💰 Income Limit: ₹1,50,000</p>
+    <p>📍 Location: Urban</p>
+    <p>⚒️ Employment: Worker</p>
+    
+    <p><strong>✅ Benefits:</strong> Monthly pension ₹1,000–₹5,000 after 60 years</p>
+    <p><strong>📅 Launched:</strong> 2015</p>
+    
+    <a href="https://npscra.nsdl.co.in/nsdl/disability-apay.php" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+  <!-- 5 -->
+  <div class="scheme-card">
+    <h3>📢 National Social Assistance Scheme</h3>
+    <span class="tag">#Pension</span>
+    <span class="tag">#Rural</span>
+    
+    <p>👤 Age Range: 60 - 100</p>
+    <p>💰 Income Limit: ₹50,000</p>
+    <p>📍 Location: Rural</p>
+    <p>⚒️ Employment: Unemployed</p>
+    
+    <p><strong>✅ Benefits:</strong> Pension for elderly, widows & disabled persons</p>
+    <p><strong>📅 Launched:</strong> 1995</p>
+    
+    <a href="https://nsap.nic.in/" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+  <!-- 6 -->
+  <div class="scheme-card">
+    <h3>🛠️ Pradhan Mantri Rozgar Yojana</h3>
+    <span class="tag">#Employment</span>
+    <span class="tag">#Urban</span>
+    
+    <p>👤 Age Range: 18 - 45</p>
+    <p>💰 Income Limit: ₹2,50,000</p>
+    <p>📍 Location: Urban</p>
+    <p>⚒️ Employment: Unemployed</p>
+    
+    <p><strong>✅ Benefits:</strong> Financial assistance for unemployed youth to start business</p>
+    <p><strong>📅 Launched:</strong> 1993</p>
+    
+    <a href="https://www.india.gov.in/pradhan-mantri-rozgar-yojana" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+
+  <div class="scheme-card">
+    <h3>🛠️ Pradhan Mantri Rozgar Yojana</h3>
+    <span class="tag">#Employment</span>
+    <span class="tag">#Urban</span>
+    <p>👤 Age Range: 18 - 45</p>
+    <p>💰 Income Limit: ₹2,50,000</p>
+    <p>📍 Location: Urban</p>
+    <p>⚒️ Employment: Unemployed</p>
+    <p><strong>✅ Benefits:</strong> Financial assistance for unemployed youth to start business</p>
+    <p><strong>📅 Launched:</strong> 1993</p>
+    <a href="https://www.india.gov.in/pradhan-mantri-rozgar-yojana" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+  <div class="scheme-card">
+    <h3>🌾 Pradhan Mantri Kisan Samman Nidhi</h3>
+    <span class="tag">#Farmers</span>
+    <span class="tag">#DirectBenefit</span>
+    <p>👤 Eligible: Small & Marginal Farmers</p>
+    <p>💰 Assistance: ₹6000/year</p>
+    <p>📍 Nationwide</p>
+    <p><strong>✅ Benefits:</strong> Direct income support in 3 installments</p>
+    <p><strong>📅 Launched:</strong> 2019</p>
+    <a href="https://pmkisan.gov.in/" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+  <div class="scheme-card">
+    <h3>🌱 Paramparagat Krishi Vikas Yojana</h3>
+    <span class="tag">#OrganicFarming</span>
+    <span class="tag">#Sustainable</span>
+    <p>👤 Eligible: Small & Marginal Farmers</p>
+    <p>💰 Subsidy: Up to ₹50,000 per hectare</p>
+    <p>📍 Nationwide</p>
+    <p><strong>✅ Benefits:</strong> Promotes organic farming & certification</p>
+    <p><strong>📅 Launched:</strong> 2015</p>
+    <a href="https://agricoop.nic.in/" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+  <div class="scheme-card">
+    <h3>💳 Kisan Credit Card (KCC)</h3>
+    <span class="tag">#Credit</span>
+    <span class="tag">#Finance</span>
+    <p>👤 Eligible: Farmers with cultivable land</p>
+    <p>💰 Credit Limit: Up to ₹3 lakhs</p>
+    <p>📍 Nationwide</p>
+    <p><strong>✅ Benefits:</strong> Easy, low-interest loans for crop needs</p>
+    <p><strong>📅 Launched:</strong> 1998</p>
+    <a href="https://www.india.gov.in/kisan-credit-card-scheme" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+  <div class="scheme-card">
+    <h3>👩‍🌾 Soil Health Card Scheme</h3>
+    <span class="tag">#Soil</span>
+    <span class="tag">#Fertilizer</span>
+    <p>👤 Eligible: All Farmers</p>
+    <p>📍 Nationwide</p>
+    <p><strong>✅ Benefits:</strong> Soil testing & fertilizer recommendation</p>
+    <p><strong>📅 Launched:</strong> 2015</p>
+    <a href="https://soilhealth.dac.gov.in/" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+  <div class="scheme-card">
+    <h3>⚒️ Sub-Mission on Agricultural Mechanization</h3>
+    <span class="tag">#Machinery</span>
+    <span class="tag">#Subsidy</span>
+    <p>👤 Eligible: Farmers & FPOs</p>
+    <p>💰 Subsidy: 40-60% on farm machinery</p>
+    <p>📍 Nationwide</p>
+    <p><strong>✅ Benefits:</strong> Encourages modern machinery adoption</p>
+    <p><strong>📅 Launched:</strong> 2014</p>
+    <a href="https://agricoop.nic.in/en/Machinery" target="_blank" class="btn-apply">Apply Now</a>
+  </div>
+
+
+
+
+</div>
+
+<div id="results"></div>
+
+</body>
+</html>
