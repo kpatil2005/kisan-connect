@@ -82,7 +82,7 @@ def marketplace(request):
         print(f"Error loading products: {e}")
         context['products'] = []
     
-    return render(request, "app/marketplace.html", context)
+    return render(request, "app/home.html", context)
 
 
 @login_required(login_url=reverse_lazy("app:login"))
