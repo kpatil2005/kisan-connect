@@ -54,3 +54,6 @@ wheels/
 *.mov
 *.mkv
 *.webm
+
+# Keep small videos if needed (uncomment specific files)
+# !small-video.mp4
