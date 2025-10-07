@@ -1,0 +1,184 @@
+[
+{
+  "model": "app.product",
+  "pk": 1,
+  "fields": {
+    "title": "Wheat Seeds",
+    "selling_price": 1200.0,
+    "discounted_price": 999.0,
+    "description": "High-yield wheat seeds suitable for all soil types. Drought-resistant and provides better germination rates. Ideal for Rabi season cultivation.",
+    "composition": "98% pure wheat seed, 1% inert matter, 1% other crop seed. Germination rate: 90%.",
+    "prodapp": "Sow directly in well-prepared soil. Requires 25–30 kg per acre. Apply nitrogen fertilizer at the time of sowing for best results.",
+    "category": "CR",
+    "product_image": "product/images_8.jpeg"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 2,
+  "fields": {
+    "title": "Maize Seeds",
+    "selling_price": 1500.0,
+    "discounted_price": 1299.0,
+    "description": "High-quality hybrid maize seeds with excellent disease resistance and superior grain quality. Suitable for Kharif and Rabi seasons. Provides high yield with shorter maturity period.",
+    "composition": "96% pure maize seed, 2% inert matter, 2% other crop seed. Germination rate: 92%.",
+    "prodapp": "Sow at 20–25 kg per acre in well-prepared soil. Maintain 60–75 cm row spacing. Apply nitrogen-rich fertilizer for maximum yield",
+    "category": "ML",
+    "product_image": "product/19642427461753680481.webp"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 3,
+  "fields": {
+    "title": "Tomato Seed",
+    "selling_price": 1200.0,
+    "discounted_price": 999.0,
+    "description": "High-yielding hybrid tomato seeds with uniform fruit size, deep red color, and excellent shelf life",
+    "composition": "95% pure tomato seed, 3% inert matter, 2% other seed. Germination rate: 90%.",
+    "prodapp": "Sow 100–120 g per acre in raised beds. Ideal for both open field and polyhouse cultivation.",
+    "category": "ML",
+    "product_image": "product/tomato.webp"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 4,
+  "fields": {
+    "title": "Onion Seed",
+    "selling_price": 850.0,
+    "discounted_price": 800.0,
+    "description": "Early maturing onion seeds producing uniform bulbs with pungent flavor and long storage life.",
+    "composition": "97% pure onion seed, 2% inert matter, 1% other crop seed. Germination rate: 88%.",
+    "prodapp": "Requires 8–10 kg per acre. Sow in well-drained soil with 15 cm spacing",
+    "category": "ML",
+    "product_image": "product/Panchaganga-Export-Super.webp"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 5,
+  "fields": {
+    "title": "Watermelon Seed",
+    "selling_price": 1500.0,
+    "discounted_price": 1200.0,
+    "description": "High-yielding hybrid watermelon seeds producing large, sweet fruits with deep red flesh",
+    "composition": "95% pure watermelon seed, 3% inert matter, 2% other seed. Germination rate: 92%.",
+    "prodapp": "Requires 1–1.5 kg per acre. Plant in sandy loam soil with 2 m spacing.",
+    "category": "LS",
+    "product_image": "product/syngenta-simbha-watermelon-seeds-1000-seeds.webp"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 6,
+  "fields": {
+    "title": "Mahyco TUBERZAN Paddy Seeds",
+    "selling_price": 2000.0,
+    "discounted_price": 1700.0,
+    "description": "High-yielding hybrid paddy seeds resistant to major diseases, producing medium-grain, aromatic rice.",
+    "composition": "96% pure seed, 2% inert matter, 2% other seed. Germination rate: 90%.",
+    "prodapp": "Requires 20–25 kg per acre. Suitable for loamy soils; sowing depth: 2–3 cm",
+    "category": "MS",
+    "product_image": "product/images.jpg"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 7,
+  "fields": {
+    "title": "Purnima Super Hybrid Paddy Seeds",
+    "selling_price": 1800.0,
+    "discounted_price": 1500.0,
+    "description": "Superior hybrid paddy with excellent grain quality and high resistance to bacterial blight and blast.",
+    "composition": "95% pure seed, 3% inert matter, 2% other seed. Germination rate: 91%.",
+    "prodapp": "18–22 kg per acre. Suitable for transplanting in fertile clay loam soil.",
+    "category": "MS",
+    "product_image": "product/images_1.jpg"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 8,
+  "fields": {
+    "title": "Yashoda Hybrid Paddy Seeds (YS-5005)",
+    "selling_price": 1600.0,
+    "discounted_price": 1400.0,
+    "description": "Early maturing hybrid paddy with high yield potential and uniform grain size.",
+    "composition": "94% pure seed, 4% inert matter, 2% other seed. Germination rate: 89%.",
+    "prodapp": "20 kg per acre. Plant in alluvial soils with 25 cm spacing.",
+    "category": "MS",
+    "product_image": "product/1708406391.jpg"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 9,
+  "fields": {
+    "title": "PR-126 Hybrid Paddy Seeds",
+    "selling_price": 1700.0,
+    "discounted_price": 1500.0,
+    "description": "Short-duration variety ideal for quick harvesting cycles and high yield.",
+    "composition": "95% pure seed, 3% inert matter, 2% other seed. Germination rate: 92%.",
+    "prodapp": "22 kg per acre. Works best in clay loam soil with regular irrigation.",
+    "category": "MS",
+    "product_image": "product/images_2.jpg"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 10,
+  "fields": {
+    "title": "Mahyco MRP 5477 Paddy Seeds",
+    "selling_price": 2100.0,
+    "discounted_price": 1800.0,
+    "description": "Premium quality grains with high market demand, resistant to leaf blast.",
+    "composition": "97% pure seed, 2% inert matter, 1% other seed. Germination rate: 93%.",
+    "prodapp": "25 kg per acre. Plant in well-drained loamy soil with 25 cm row spacing.",
+    "category": "MS",
+    "product_image": "product/images_3.jpg"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 11,
+  "fields": {
+    "title": "Volkman Pet Products Paddy Rice 50lb",
+    "selling_price": 2500.0,
+    "discounted_price": 2200.0,
+    "description": "High-quality large-bag paddy seed ideal for extensive cultivation.",
+    "composition": "98% pure seed, 1% inert matter, 1% other seed. Germination rate: 94%.",
+    "prodapp": "50 lb per acre. Suitable for alluvial soil; maintain 25 cm row spacing.",
+    "category": "MS",
+    "product_image": "product/images_4.jpg"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 12,
+  "fields": {
+    "title": "bb",
+    "selling_price": 666.0,
+    "discounted_price": 555.0,
+    "description": "v;c;vvvvvvvvvvvvvvvvvvvvvvvvv",
+    "composition": "cmggvccggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg",
+    "prodapp": "vvvvvvvvvvvvvvvvv",
+    "category": "FT",
+    "product_image": "product/Generated_Image_September_22_2025_-_7_32PM.png"
+  }
+},
+{
+  "model": "app.product",
+  "pk": 13,
+  "fields": {
+    "title": "fffffff",
+    "selling_price": 33.0,
+    "discounted_price": 33.0,
+    "description": "ffffg",
+    "composition": "rrrrrrrrr",
+    "prodapp": "rrrrrrrrrrr",
+    "category": "ML",
+    "product_image": "product/free1.png"
+  }
+}
+]
