@@ -33,7 +33,8 @@ def home(request):
 
 @login_required(login_url=reverse_lazy("app:login"))
 def home_page(request):
-    return render(request, "app/home.html")
+    products = Product.objects.all()[:8]  # Show first 8 products in featured section
+    return render(request, "app/home.html", {"products": products})
 
 
 @login_required(login_url=reverse_lazy("app:login"))
