@@ -111,7 +111,7 @@ def advice_page(request):
 def signin(request):
     # If user is already authenticated, redirect them
     if request.user.is_authenticated:
-        return redirect("app:marketplace")
+        return redirect("app:schemes")
         
     if request.method == "POST":
         username = request.POST.get("username") or request.POST.get("email")
@@ -129,7 +129,7 @@ def signin(request):
                     if 'next' in request.session:
                         del request.session['next']
                     return redirect(next_url)
-                return redirect("app:marketplace")
+                return redirect("app:schemes")
             else:
                 messages.error(request, "Invalid username or password.")
         except Exception as e:
@@ -321,15 +321,18 @@ class ProductDetailView(LoginRequiredMixin, View):
 # =======================
 class CustomerRegistrationView(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("app:schemes")
         form = CustomerRegistrationForm()
         return render(request, "app/customerregistration.html", {"form": form})
 
     def post(self, request):
         form = CustomerRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, "🎉 Congratulations! User registered successfully.")
-            return redirect("app:customerregistration")
+            user = form.save()
+            login(request, user)
+            messages.success(request, "🎉 Welcome! Your account has been created successfully.")
+            return redirect("app:schemes")
         else:
             messages.warning(request, "⚠️ Invalid input data, please check again.")
             return render(request, "app/customerregistration.html", {"form": form})
