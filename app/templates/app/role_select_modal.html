@@ -31,6 +31,10 @@
 </div>
 
 <script>
+const loginUrl = "{% url 'app:login' %}";
+const registerUrl = "{% url 'app:customerregistration' %}";
+const contactUrl = "{% url 'app:contact' %}";
+
 function showRoleInfo(role) {
   const infoBox = document.getElementById('roleInfo');
   infoBox.classList.remove('d-none');
@@ -53,12 +57,12 @@ function showRoleInfo(role) {
           <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>📰 Agricultural news updates</li>
         </ul>
         <div class="text-center mt-4">
-          <a href="{% url 'app:login' %}" class="btn btn-success btn-lg px-5 rounded-pill shadow-sm">
+          <a href="${loginUrl}" class="btn btn-success btn-lg px-5 rounded-pill shadow-sm">
             <i class="bi bi-box-arrow-in-right me-2"></i>Login as Buyer
           </a>
           <p class="mt-3 mb-0 text-muted small">
             Don't have an account? 
-            <a href="{% url 'app:customerregistration' %}" class="text-success fw-bold">Register here</a>
+            <a href="${registerUrl}" class="text-success fw-bold">Register here</a>
           </p>
         </div>
       </div>
@@ -88,7 +92,7 @@ function showRoleInfo(role) {
             <strong>Seller accounts are currently under development.</strong><br>
             For now, please contact admin to list your products.
           </div>
-          <a href="{% url 'app:contact' %}" class="btn btn-warning btn-lg px-5 rounded-pill shadow-sm">
+          <a href="${contactUrl}" class="btn btn-warning btn-lg px-5 rounded-pill shadow-sm">
             <i class="bi bi-envelope-fill me-2"></i>Contact Admin
           </a>
           <p class="mt-3 mb-0 text-muted small">
