@@ -96,6 +96,14 @@ CACHES = {
     }
 }
 
+# Session Configuration
+SESSION_COOKIE_AGE = 1800  # 30 minutes in seconds
+SESSION_SAVE_EVERY_REQUEST = True  # Extend session on every page visit
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Session expires when browser closes
+SESSION_COOKIE_HTTPONLY = True  # Security: prevent JavaScript access
+SESSION_COOKIE_SECURE = not DEBUG  # Use secure cookies in production
+SESSION_COOKIE_SAMESITE = 'Lax'  # CSRF protection
+
 # API KEYS (Load from environment)
 OPENWEATHER_API_KEY = os.environ.get("OPENWEATHER_API_KEY", "")
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY", "")
