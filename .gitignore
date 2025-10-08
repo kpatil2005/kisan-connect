@@ -26,3 +26,8 @@ settings_local.py
 # IDE
 .vscode/
 .idea/
+
+# Large media files
+*.mp4
+*.avi
+*.mov
