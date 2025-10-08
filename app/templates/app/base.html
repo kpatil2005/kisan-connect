@@ -189,7 +189,9 @@
         </li>
         {% else %}
         <!-- If not logged in -->
-        <li class="nav-item mx-2"><a href="{% url 'app:login' %}" class="nav-link fw-bold text-white" style="font-size: 0.85rem;">Login</a></li>
+        <li class="nav-item mx-2">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="nav-link fw-bold text-white" style="font-size: 0.85rem;">Login</a>
+        </li>
         <li class="nav-item mx-2"><a href="{% url 'app:customerregistration' %}" class="nav-link fw-bold text-white" style="font-size: 0.85rem;">Registration</a></li>
         {% endif %}
       </ul>
@@ -204,6 +206,9 @@
   {% block information %}{% endblock information %}
   {% block main-content %}{% endblock main-content %}
   {% block payment-gateway %}{% endblock payment-gateway %}
+
+  <!-- Role Selection Modal -->
+  {% include 'app/role_select_modal.html' %}
 
   <footer class="container-fluid bg-success text-center p-3 mt-5">
     <p class="mb-0 text-white">© 2025 Kisan Connect - Agricultural Marketplace</p>

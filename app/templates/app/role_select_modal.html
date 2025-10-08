@@ -1,0 +1,127 @@
+<!-- Role Selection Modal -->
+<div class="modal fade" id="roleSelectModal" tabindex="-1" aria-labelledby="roleSelectModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content p-4 rounded-4 shadow-lg" style="border: none; background: #fffdf5;">
+      <div class="modal-header border-0">
+        <h4 class="fw-bold text-center w-100 mb-0">🌾 Select Your Account Type</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p class="text-muted mb-4">Please choose how you want to use Kisan Connect</p>
+        
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <button class="btn btn-success w-100 py-3 rounded-3 shadow-sm" onclick="showRoleInfo('buyer')" style="font-weight: 600;">
+              <i class="bi bi-cart-fill fs-4 d-block mb-2"></i>
+              👤 Buyer (Customer)
+            </button>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-warning w-100 py-3 rounded-3 shadow-sm" onclick="showRoleInfo('seller')" style="font-weight: 600;">
+              <i class="bi bi-shop fs-4 d-block mb-2"></i>
+              🌾 Seller (Farmer)
+            </button>
+          </div>
+        </div>
+
+        <div id="roleInfo" class="text-start border-top pt-4 d-none"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showRoleInfo(role) {
+  const infoBox = document.getElementById('roleInfo');
+  infoBox.classList.remove('d-none');
+
+  if (role === 'buyer') {
+    infoBox.innerHTML = `
+      <div class="role-info-card p-4 rounded-3 bg-light">
+        <h5 class="fw-bold text-success mb-3">
+          <i class="bi bi-cart-check-fill me-2"></i>Buyer Account
+        </h5>
+        <p class="mb-3"><strong>Perfect for farmers and individuals who want to purchase agricultural products</strong></p>
+        <ul class="list-unstyled text-muted">
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>🛒 Browse and purchase products</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>💰 Add to cart & checkout (COD)</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>📦 Track your orders</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>👤 Manage profile & addresses</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>🤖 AI chatbot assistance</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>🌤️ Weather & farming advice</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>💬 Community forum access</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>📰 Agricultural news updates</li>
+        </ul>
+        <div class="text-center mt-4">
+          <a href="{% url 'app:login' %}" class="btn btn-success btn-lg px-5 rounded-pill shadow-sm">
+            <i class="bi bi-box-arrow-in-right me-2"></i>Login as Buyer
+          </a>
+          <p class="mt-3 mb-0 text-muted small">
+            Don't have an account? 
+            <a href="{% url 'app:customerregistration' %}" class="text-success fw-bold">Register here</a>
+          </p>
+        </div>
+      </div>
+    `;
+  }
+
+  if (role === 'seller') {
+    infoBox.innerHTML = `
+      <div class="role-info-card p-4 rounded-3 bg-light">
+        <h5 class="fw-bold text-warning mb-3">
+          <i class="bi bi-shop-window me-2"></i>Seller Account (Coming Soon)
+        </h5>
+        <p class="mb-3"><strong>For farmers who want to sell their products on the platform</strong></p>
+        <ul class="list-unstyled text-muted">
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>🌾 All Buyer features included</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>🧾 Add, edit & manage products</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>📊 View sales analytics</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>📦 Manage inventory & stock</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>📈 Seller dashboard access</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>💳 Receive payments directly</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>👥 Join verified seller groups</li>
+          <li class="mb-2"><i class="bi bi-check-circle-fill text-warning me-2"></i>🎯 Promote your products</li>
+        </ul>
+        <div class="text-center mt-4">
+          <div class="alert alert-warning mb-3" role="alert">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            <strong>Seller accounts are currently under development.</strong><br>
+            For now, please contact admin to list your products.
+          </div>
+          <a href="{% url 'app:contact' %}" class="btn btn-warning btn-lg px-5 rounded-pill shadow-sm">
+            <i class="bi bi-envelope-fill me-2"></i>Contact Admin
+          </a>
+          <p class="mt-3 mb-0 text-muted small">
+            Want to buy products? 
+            <a href="#" onclick="showRoleInfo('buyer')" class="text-warning fw-bold">Switch to Buyer</a>
+          </p>
+        </div>
+      </div>
+    `;
+  }
+}
+</script>
+
+<style>
+.role-info-card {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-success, .btn-warning {
+  transition: all 0.3s ease;
+}
+
+.btn-success:hover, .btn-warning:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+ul.list-unstyled li {
+  padding: 4px 0;
+}
+</style>

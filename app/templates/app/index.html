@@ -617,10 +617,10 @@
             </li>
           {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'app:login' %}"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
+              <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'app:customerregistration' %}"><i class="bi bi-person-plus me-1"></i>Register</a>
+              <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal"><i class="bi bi-person-plus me-1"></i>Register</a>
             </li>
           {% endif %}
         </ul>
@@ -656,10 +656,10 @@
           Login to access marketplace, weather advice, community forum, disease detection, and all premium farming tools.
         </p>
         <div class="d-flex justify-content-center gap-3 flex-wrap">
-          <a href="{% url 'app:login' %}" class="btn btn-light btn-lg px-4 py-3 fw-bold" style="border-radius: 50px;">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="btn btn-light btn-lg px-4 py-3 fw-bold" style="border-radius: 50px;">
             <i class="bi bi-box-arrow-in-right me-2"></i>Login Now
           </a>
-          <a href="{% url 'app:customerregistration' %}" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold" style="border-radius: 50px;">
+          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold" style="border-radius: 50px;">
             <i class="bi bi-person-plus me-2"></i>Register Free
           </a>
         </div>
@@ -1096,6 +1096,9 @@
     }
   });
 </script>
+
+<!-- Role Selection Modal -->
+{% include 'app/role_select_modal.html' %}
 
 <!-- Standalone AI Chatbot -->
 <script src="{% static 'app/js/chatbot.js' %}"></script>
