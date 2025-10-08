@@ -72,7 +72,7 @@
       <div class="carousel-caption d-none d-md-block text-center">
         <h2 class="text-black fw-bold">Premium Quality Seeds</h2>
         <p class="text-black">High-yield varieties for maximum productivity</p>
-        <a href="{% url 'app:category' 'CR' %}" class="btn btn-success btn-lg">Shop Seeds</a>
+        <a href="{% url 'app:category' 'FT' %}" class="btn btn-success btn-lg">Shop Fertilizers</a>
       </div>
     </div>
 
@@ -81,7 +81,7 @@
       <div class="carousel-caption d-none d-md-block text-center">
         <h2 class="text-black fw-bold">Organic & Chemical Fertilizers</h2>
         <p class="text-black">Boost your crop yield with our premium fertilizers</p>
-        <a href="{% url 'app:category' 'ML' %}" class="btn btn-success btn-lg">Explore Fertilizers</a>
+        <a href="{% url 'app:category' 'FT' %}" class="btn btn-success btn-lg">Explore Fertilizers</a>
       </div>
     </div>
 
@@ -90,7 +90,7 @@
       <div class="carousel-caption d-none d-md-block text-center">
         <h2 class="text-black fw-bold">Modern Farm Machinery</h2>
         <p class="text-black">Latest equipment for efficient farming</p>
-        <a href="{% url 'app:category' 'LS' %}" class="btn btn-success btn-lg">View Machinery</a>
+        <a href="{% url 'app:category' 'MC' %}" class="btn btn-success btn-lg">View Machinery</a>
       </div>
     </div>
 
@@ -99,7 +99,7 @@
       <div class="carousel-caption d-none d-md-block text-center">
         <h2 class="text-black fw-bold">Essential Farm Equipment</h2>
         <p class="text-black">Quality tools for every farming need</p>
-        <a href="{% url 'app:category' 'MS' %}" class="btn btn-success btn-lg">Shop Equipment</a>
+        <a href="{% url 'app:category' 'EQ' %}" class="btn btn-success btn-lg">Shop Equipment</a>
       </div>
     </div>
   </div>
@@ -197,8 +197,8 @@
     <i class="bi bi-flower1 text-success fs-3 me-2"></i>
     <h3 class="fw-bold text-dark mb-0">Premium Seeds Collection</h3>
   </div>
-  <a href="{% url 'app:category' 'CR' %}" class="btn btn-outline-success">
-    View All Seeds <i class="bi bi-arrow-right ms-1"></i>
+  <a href="{% url 'app:category' 'FT' %}" class="btn btn-outline-success">
+    View All Fertilizers <i class="bi bi-arrow-right ms-1"></i>
   </a>
 </div>
 
@@ -213,7 +213,7 @@
           <h5 class="card-title">Wheat Seeds</h5>
           <p class="text-muted small">High-yield varieties</p>
           <p class="fw-bold text-success">Starting ₹499/kg</p>
-          <a href="{% url 'app:category' 'CR' %}" class="btn btn-success btn-sm w-100">Explore</a>
+          <a href="{% url 'app:category' 'FT' %}" class="btn btn-success btn-sm w-100">Explore</a>
         </div>
       </div>
     </div>
@@ -226,7 +226,7 @@
           <h5 class="card-title">Maize Seeds</h5>
           <p class="text-muted small">Hybrid varieties</p>
           <p class="fw-bold text-success">Starting ₹299/kg</p>
-          <a href="{% url 'app:category' 'ML' %}" class="btn btn-success btn-sm w-100">Explore</a>
+          <a href="{% url 'app:category' 'FT' %}" class="btn btn-success btn-sm w-100">Explore</a>
         </div>
       </div>
     </div>
@@ -239,7 +239,7 @@
           <h5 class="card-title">Paddy Seeds</h5>
           <p class="text-muted small">Basmati & Non-Basmati</p>
           <p class="fw-bold text-success">Starting ₹399/kg</p>
-          <a href="{% url 'app:category' 'LS' %}" class="btn btn-success btn-sm w-100">Explore</a>
+          <a href="{% url 'app:category' 'FT' %}" class="btn btn-success btn-sm w-100">Explore</a>
         </div>
       </div>
     </div>
@@ -252,7 +252,7 @@
           <h5 class="card-title">Pulses Seeds</h5>
           <p class="text-muted small">Dal varieties</p>
           <p class="fw-bold text-success">Starting ₹599/kg</p>
-          <a href="{% url 'app:category' 'MS' %}" class="btn btn-success btn-sm w-100">Explore</a>
+          <a href="{% url 'app:category' 'FT' %}" class="btn btn-success btn-sm w-100">Explore</a>
         </div>
       </div>
     </div>
@@ -267,7 +267,7 @@
     <i class="bi bi-droplet-half text-primary fs-3 me-2"></i>
     <h3 class="fw-bold text-dark mb-0">Fertilizers & Nutrients</h3>
   </div>
-  <a href="{% url 'category' 'PN' %}" class="btn btn-outline-primary">
+  <a href="{% url 'app:category' 'FT' %}" class="btn btn-outline-primary">
     View All Fertilizers <i class="bi bi-arrow-right ms-1"></i>
   </a>
 </div>
@@ -333,7 +333,7 @@
       <i class="bi bi-tools text-warning fs-3 me-2"></i>
       <h3 class="fw-bold text-dark mb-0">Farm Machinery</h3>
     </div>
-    <a href="{% url 'category' 'CR' %}" class="btn btn-outline-warning">
+    <a href="{% url 'app:category' 'MC' %}" class="btn btn-outline-warning">
       View All Machinery <i class="bi bi-arrow-right ms-1"></i>
     </a>
   </div>
@@ -397,7 +397,7 @@
       <i class="bi bi-tools fs-3 text-danger me-2"></i>
       <h3 class="fw-bold mb-0">Farm Equipment & Tools</h3>
     </div>
-    <a href="{% url 'category' 'MS' %}" class="btn btn-outline-danger">
+    <a href="{% url 'app:category' 'EQ' %}" class="btn btn-outline-danger">
       View All Equipment <i class="bi bi-arrow-right ms-1"></i>
     </a>
   </div>
@@ -450,7 +450,7 @@
           <h5 class="card-title">Irrigation Systems</h5>
           <p class="text-muted small">Drip & Sprinkler</p>
           <p class="fw-bold text-danger">₹2,999 onwards</p>
-          <a href="{% url 'category' 'CZ' %}" class="btn btn-danger btn-sm w-100">Shop Now</a>
+          <a href="{% url 'app:category' 'EQ' %}" class="btn btn-danger btn-sm w-100">Shop Now</a>
         </div>
       </div>
     </div>
