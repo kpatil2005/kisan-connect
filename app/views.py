@@ -92,49 +92,6 @@ def support(request):
 
 @login_required(login_url=reverse_lazy("app:login"))
 def search(request):
-    from django.db.models import Q
-    query = request.GET.get('q', '').strip()
-    min_price = request.GET.get('min_price', '')
-    max_price = request.GET.get('max_price', '')
-    category = request.GET.get('category', '')
-    sort = request.GET.get('sort', '')
-    
-    products = Product.objects.all()
-    
-    if query:
-        products = products.filter(
-            Q(title__icontains=query) |
-            Q(description__icontains=query) |
-            Q(composition__icontains=query)
-        )
-    
-    if min_price:
-        products = products.filter(discounted_price__gte=float(min_price))
-    if max_price:
-        products = products.filter(discounted_price__lte=float(max_price))
-    
-    if category:
-        products = products.filter(category=category)
-    
-    if sort == 'price_low':
-        products = products.order_by('discounted_price')
-    elif sort == 'price_high':
-        products = products.order_by('-discounted_price')
-    elif sort == 'name':
-        products = products.order_by('title')
-    
-    return render(request, "app/search.html", {
-        'products': products,
-        'query': query,
-        'min_price': min_price,
-        'max_price': max_price,
-        'category': category,
-        'sort': sort,
-    })
-
-
-@login_required(login_url=reverse_lazy("app:login"))
-def search(request):
     query = request.GET.get('q', '').strip()
     min_price = request.GET.get('min_price', '')
     max_price = request.GET.get('max_price', '')
@@ -383,9 +340,18 @@ class CategoryView(LoginRequiredMixin, View):
     login_url = reverse_lazy("app:login")
     
     def get(self, request, val):
-        products = Product.objects.filter(category__iexact=val)
-        titles = products.values_list("title", flat=True).distinct()
-        return render(request, "app/category.html", {"product": products, "title": titles, "val": val})
+        # Filter by exact category code (case-insensitive)
+        products = Product.objects.filter(category__iexact=val.upper())
+        
+        # Get category display name
+        from .models import CATEGORY_CHOICES
+        category_name = dict(CATEGORY_CHOICES).get(val.upper(), val)
+        
+        return render(request, "app/category.html", {
+            "product": products,
+            "val": val.upper(),
+            "category_name": category_name
+        })
 
 
 class CategoryTitle(LoginRequiredMixin, View):
