@@ -189,6 +189,257 @@
     <p class="text-muted">Find everything you need for successful farming</p>
   </div>
 
+  <!-- Seeds Section -->
+  <div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-flower1 text-success fs-3 me-2"></i>
+        <h3 class="fw-bold text-dark mb-0">Premium Seeds Collection</h3>
+      </div>
+      <a href="{% url 'app:category' 'SD' %}" class="btn btn-outline-success">
+        View All Seeds <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <div class="text-center p-4 bg-light">
+            <img src="{% static 'app/images/wheat-seed.jpg' %}" alt="Wheat Seeds" style="width:150px; height:auto;">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">Wheat Seeds</h5>
+            <p class="text-muted small">High-yield varieties</p>
+            <p class="fw-bold text-success">Starting ₹499/kg</p>
+            <a href="{% url 'app:category' 'SD' %}" class="btn btn-success btn-sm w-100">Explore</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <div class="text-center p-4 bg-light">
+            <img src="{% static 'app/images/maize-seed.jpg' %}" alt="Maize Seeds" style="max-width:150px; height:auto;">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">Maize Seeds</h5>
+            <p class="text-muted small">Hybrid varieties</p>
+            <p class="fw-bold text-success">Starting ₹299/kg</p>
+            <a href="{% url 'app:category' 'SD' %}" class="btn btn-success btn-sm w-100">Explore</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <div class="text-center p-4 bg-light">
+            <img src="{% static 'app/images/paddy-seed.jpg' %}" alt="Paddy Seeds" style="width:150px; height:auto;">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">Paddy Seeds</h5>
+            <p class="text-muted small">Basmati & Non-Basmati</p>
+            <p class="fw-bold text-success">Starting ₹399/kg</p>
+            <a href="{% url 'app:category' 'SD' %}" class="btn btn-success btn-sm w-100">Explore</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <div class="text-center p-4 bg-light">
+            <img src="{% static 'app/images/pulses-seed.jpg' %}" alt="Pulses Seeds" style="width:120px; height:auto;">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">Pulses Seeds</h5>
+            <p class="text-muted small">Dal varieties</p>
+            <p class="fw-bold text-success">Starting ₹599/kg</p>
+            <a href="{% url 'app:category' 'SD' %}" class="btn btn-success btn-sm w-100">Explore</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fertilizers Section -->
+  <div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-droplet-half text-primary fs-3 me-2"></i>
+        <h3 class="fw-bold text-dark mb-0">Fertilizers & Nutrients</h3>
+      </div>
+      <a href="{% url 'app:category' 'FT' %}" class="btn btn-outline-primary">
+        View All Fertilizers <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <div class="position-relative">
+            <span class="badge-hot">Popular</span>
+            <img src="{% static 'app/images/urea.jpg' %}" class="card-img-top p-3" alt="Urea" style="height:160px; object-fit:contain;">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">Urea (46% N)</h5>
+            <p class="text-muted small">Nitrogen fertilizer</p>
+            <p class="fw-bold text-primary">₹350/50kg bag</p>
+            <a href="{% url 'app:category' 'FT' %}" class="btn btn-primary btn-sm w-100">Shop Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <img src="{% static 'app/images/dap.jpg' %}" class="card-img-top p-3" alt="DAP" style="height:190px; object-fit:contain;">
+          <div class="card-body text-center">
+            <h5 class="card-title">DAP (18-46-0)</h5>
+            <p class="text-muted small">Phosphate fertilizer</p>
+            <p class="fw-bold text-primary">₹1,350/50kg bag</p>
+            <a href="{% url 'app:category' 'FT' %}" class="btn btn-primary btn-sm w-100">Shop Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <img src="{% static 'app/images/npk.WebP' %}" class="card-img-top p-3" alt="NPK" style="height:190px; object-fit:contain;">
+          <div class="card-body text-center">
+            <h5 class="card-title">NPK (19-19-19)</h5>
+            <p class="text-muted small">Complete fertilizer</p>
+            <p class="fw-bold text-primary">₹890/25kg bag</p>
+            <a href="{% url 'app:category' 'FT' %}" class="btn btn-primary btn-sm w-100">Shop Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <div class="position-relative">
+            <span class="badge bg-success position-absolute top-0 end-0 m-2">Organic</span>
+            <img src="{% static 'app/images/compost.jpg' %}" class="card-img-top p-3" alt="Compost" style="height:190px; object-fit:contain;">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title">Vermicompost</h5>
+            <p class="text-muted small">Organic fertilizer</p>
+            <p class="fw-bold text-primary">₹450/50kg bag</p>
+            <a href="{% url 'app:category' 'FT' %}" class="btn btn-primary btn-sm w-100">Shop Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Farm Machinery Section -->
+  <div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-tools text-warning fs-3 me-2"></i>
+        <h3 class="fw-bold text-dark mb-0">Farm Machinery</h3>
+      </div>
+      <a href="{% url 'app:category' 'MC' %}" class="btn btn-outline-warning">
+        View All Machinery <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card product-card border-0 h-100 shadow-sm">
+          <div class="p-3 bg-white text-center">
+            <img src="{% static 'app/images/tractor.WebP' %}" alt="Tractor" style="height:180px; object-fit:contain;">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title fw-semibold">Tractors</h5>
+            <p class="text-muted small">25HP to 75HP models</p>
+            <p class="fw-bold text-warning">₹3,50,000 onwards</p>
+            <a href="{% url 'app:category' 'MC' %}" class="btn btn-warning btn-sm w-100">View Models</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card product-card border-0 h-100 shadow-sm">
+          <div class="p-3 bg-white text-center">
+            <img src="{% static 'app/images/harvesters.WebP' %}" alt="Harvester" style="height:180px; object-fit:contain;">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title fw-semibold">Harvesters</h5>
+            <p class="text-muted small">Combine & Mini harvesters</p>
+            <p class="fw-bold text-warning">₹15,00,000 onwards</p>
+            <a href="{% url 'app:category' 'MC' %}" class="btn btn-warning btn-sm w-100">View Models</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card product-card border-0 h-100 shadow-sm">
+          <div class="p-3 bg-white text-center">
+            <img src="{% static 'app/images/rotavator.WebP' %}" alt="Rotavator" style="height:180px; object-fit:contain;">
+          </div>
+          <div class="card-body text-center">
+            <h5 class="card-title fw-semibold">Rotavators</h5>
+            <p class="text-muted small">Soil preparation equipment</p>
+            <p class="fw-bold text-warning">₹45,000 onwards</p>
+            <a href="{% url 'app:category' 'MC' %}" class="btn btn-warning btn-sm w-100">View Models</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Equipment Section -->
+  <div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+      <div class="d-flex align-items-center">
+        <i class="bi bi-tools fs-3 text-danger me-2"></i>
+        <h3 class="fw-bold mb-0">Farm Equipment & Tools</h3>
+      </div>
+      <a href="{% url 'app:category' 'EQ' %}" class="btn btn-outline-danger">
+        View All Equipment <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <img src="{% static 'app/images/sprayer.jpg' %}" class="card-img-top p-3" alt="Sprayer" style="height:180px; object-fit:contain;">
+          <div class="card-body text-center">
+            <h5 class="card-title">Sprayers</h5>
+            <p class="text-muted small">Manual & Battery operated</p>
+            <p class="fw-bold text-danger">₹1,499 onwards</p>
+            <a href="{% url 'app:category' 'EQ' %}" class="btn btn-danger btn-sm w-100">Shop Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <img src="{% static 'app/images/waterpump.jpg' %}" class="card-img-top p-3" alt="Water Pump" style="height:180px; object-fit:contain;">
+          <div class="card-body text-center">
+            <h5 class="card-title">Water Pumps</h5>
+            <p class="text-muted small">Submersible & Surface</p>
+            <p class="fw-bold text-danger">₹4,999 onwards</p>
+            <a href="{% url 'app:category' 'EQ' %}" class="btn btn-danger btn-sm w-100">Shop Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <img src="{% static 'app/images/tools.png' %}" class="card-img-top p-3" alt="Hand Tools" style="height:180px; object-fit:contain;">
+          <div class="card-body text-center">
+            <h5 class="card-title">Hand Tools</h5>
+            <p class="text-muted small">Spades, Hoes, Rakes</p>
+            <p class="fw-bold text-danger">₹299 onwards</p>
+            <a href="{% url 'app:category' 'EQ' %}" class="btn btn-danger btn-sm w-100">Shop Now</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card product-card shadow-sm h-100 border-0">
+          <img src="{% static 'app/images/Drip.webp' %}" class="card-img-top p-3" alt="Irrigation" style="height:180px; object-fit:contain;">
+          <div class="card-body text-center">
+            <h5 class="card-title">Irrigation Systems</h5>
+            <p class="text-muted small">Drip & Sprinkler</p>
+            <p class="fw-bold text-danger">₹2,999 onwards</p>
+            <a href="{% url 'app:category' 'EQ' %}" class="btn btn-danger btn-sm w-100">Shop Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shop by Category Section -->
+  <div class="text-center mb-5">
+    <h2 class="display-5 fw-bold text-success">Shop by Category</h2>
+    <p class="text-muted">Find everything you need for successful farming</p>
+  </div>
+
  <!-- Seeds Section -->
 <div class="mb-5">
   <!-- Section Header: Premium Seeds Collection -->

@@ -56,17 +56,10 @@ DISTRICTS_BY_STATE = {
 
 
 CATEGORY_CHOICES = (
-    ('CR', 'Curd'),
-    ('ML', 'Milk'),
-    ('LS', 'Lassi'),
-    ('MS', 'Milkshake'),
-    ('PN', 'Paneer'),
-    ('GH', 'Ghee'),
-    ('CZ', 'Cheese'),
-    ('IC', 'Ice-Creams'),
+    ('SD', 'Seeds'),
     ('FT', 'Fertilizers'),
-    ('EQ', 'Equipment'),
     ('MC', 'Machinery'),
+    ('EQ', 'Equipment'),
 )
 
 class Product(models.Model):
