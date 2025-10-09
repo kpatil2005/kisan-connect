@@ -4,91 +4,234 @@
 {% block title %}{{ product.title }}{% endblock %}
 
 {% block main-content %}
-<div class="container" style="margin-top: 100px; margin-bottom: 100px;">
-    <div class="row g-5 align-items-center">
-
-        <!-- Product Image -->
-        <div class="col-lg-6 text-center">
-            <div class="p-4 border rounded-4 shadow-sm bg-white">
-                <img src="{{ product.product_image.url }}" 
-                     class="img-fluid rounded-4"
-                     style="max-height: 420px; object-fit: contain;"
-                     alt="{{ product.title }}">
+<div class="container-fluid py-5" style="background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%); min-height: 100vh;">
+    <div class="container" style="margin-top: 80px;">
+        
+        <div class="row g-4">
+            <!-- Product Image Section -->
+            <div class="col-lg-6">
+                <div class="position-sticky" style="top: 100px;">
+                    <div class="bg-white rounded-4 shadow-lg p-4 position-relative" style="border: 3px solid #e8f5e9;">
+                        <!-- Sale Badge -->
+                        {% if product.discounted_price < product.selling_price %}
+                        <span class="badge position-absolute top-0 start-0 m-3 rounded-pill shadow px-4 py-2" style="background: linear-gradient(135deg, #e53935 0%, #d32f2f 100%); font-size: 0.9rem; z-index: 10;">
+                            <i class="bi bi-tag-fill me-2"></i>SALE
+                        </span>
+                        {% endif %}
+                        
+                        <!-- Product Image with Glow -->
+                        <div class="position-relative text-center">
+                            <div class="product-detail-glow"></div>
+                            <img src="{{ product.product_image.url }}" 
+                                 class="img-fluid rounded-3 product-detail-img"
+                                 style="max-height: 500px; object-fit: contain; position: relative; z-index: 2;"
+                                 alt="{{ product.title }}">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- Product Info -->
-        <div class="col-lg-6">
-            <!-- Title -->
-            <h1 class="fw-bold mb-4 display-4">
-                {{ product.title }}
-            </h1>
-
-            <!-- Pricing -->
-            <div class="mb-4">
-                <h2 class="text-success fw-bold mb-2 fs-1">₹{{ product.discounted_price }}</h2>
-                <p class="mb-0">
-                    <span class="text-muted fs-5 text-decoration-line-through me-3">
-                        ₹{{ product.selling_price }}
+            <!-- Product Details Section -->
+            <div class="col-lg-6">
+                <div class="bg-white rounded-4 shadow-lg p-4 p-md-5">
+                    
+                    <!-- Category Badge -->
+                    <span class="badge rounded-pill px-3 py-2 mb-3" style="background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%); font-size: 0.85rem;">
+                        <i class="bi bi-grid-3x3-gap me-1"></i>{{ product.get_category_display }}
                     </span>
-                    <span class="badge bg-danger fs-6 py-2 px-3 rounded-pill">
-                        Special Offer
-                    </span>
-                </p>
-            </div>
+                    
+                    <!-- Product Title -->
+                    <h1 class="fw-bold mb-4" style="font-size: 2rem; color: #212529; line-height: 1.3;">
+                        {{ product.title }}
+                    </h1>
 
-            <!-- Category & Description -->
-            <div class="mb-4">
-                <span class="badge bg-secondary fs-6 py-2 px-3 rounded-pill mb-3">{{ product.get_category_display }}</span>
-                <h4 class="fw-semibold mb-3">Product Description</h4>
-                <p class="fs-5 text-secondary lh-lg" style="max-width: 520px;">
-                    {{ product.description }}
-                </p>
-                {% if product.composition %}
-                <h5 class="fw-semibold mb-2 mt-4">Composition</h5>
-                <p class="text-muted">{{ product.composition }}</p>
-                {% endif %}
-                {% if product.prodapp %}
-                <h5 class="fw-semibold mb-2 mt-4">Application</h5>
-                <p class="text-muted">{{ product.prodapp }}</p>
-                {% endif %}
-            </div>
+                    <!-- Rating & Reviews -->
+                    <div class="d-flex align-items-center gap-3 mb-4 pb-3 border-bottom">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            <i class="bi bi-star-fill text-warning me-1"></i>
+                            <i class="bi bi-star-half text-warning me-2"></i>
+                            <span class="fw-semibold">4.5</span>
+                        </div>
+                        <span class="text-muted">|</span>
+                        <span class="text-muted">2,345 reviews</span>
+                        <span class="text-muted">|</span>
+                        <span class="text-success fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>In Stock</span>
+                    </div>
 
-            <!-- Action Buttons -->
-            <div class="d-flex flex-wrap gap-3">
-                <form action="{% url 'app:addtocart' %}" method="GET" class="m-0">
-                    <input type="hidden" name="prod_id" value="{{ product.id }}">
-                    <button type="submit" 
-                            class="btn btn-danger btn-lg px-5 d-flex align-items-center gap-2 shadow-sm"
-                            style="transition: transform 0.2s ease;">
-                        <i class="bi bi-cart-fill fs-5"></i> Add to Cart
-                    </button>
-                </form>
+                    <!-- Pricing Section -->
+                    <div class="mb-4 p-4 rounded-3" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);">
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <h2 class="fw-bold mb-0" style="color: #2e7d32; font-size: 2.5rem;">₹{{ product.discounted_price }}</h2>
+                            {% if product.discounted_price < product.selling_price %}
+                            <span class="text-muted text-decoration-line-through fs-4">₹{{ product.selling_price }}</span>
+                            {% endif %}
+                        </div>
+                        {% if product.discounted_price < product.selling_price %}
+                        <p class="mb-0 text-success fw-semibold">
+                            <i class="bi bi-lightning-fill me-1"></i>
+                            You save ₹{{ product.selling_price|add:"-"|add:product.discounted_price }} 
+                            ({% widthratio product.selling_price|add:"-"|add:product.discounted_price product.selling_price 100 %}% OFF)
+                        </p>
+                        {% endif %}
+                    </div>
 
-                <form action="{% url 'app:addtocart' %}" method="GET" class="m-0">
-                    <input type="hidden" name="prod_id" value="{{ product.id }}">
-                    <button type="submit" 
-                            class="btn btn-success btn-lg px-5 d-flex align-items-center gap-2 shadow-sm"
-                            style="transition: transform 0.2s ease;"
-                            onclick="this.form.submit(); setTimeout(() => window.location.href='{% url 'app:checkout' %}', 500);">
-                        <i class="bi bi-lightning-fill fs-5"></i> Buy Now
-                    </button>
-                </form>
+                    <!-- Description -->
+                    <div class="mb-4">
+                        <h5 class="fw-bold mb-3" style="color: #2e7d32;">
+                            <i class="bi bi-info-circle me-2"></i>Product Description
+                        </h5>
+                        <p class="text-secondary lh-lg" style="font-size: 1rem;">
+                            {{ product.description }}
+                        </p>
+                    </div>
+
+                    <!-- Composition -->
+                    {% if product.composition %}
+                    <div class="mb-4 p-3 rounded-3" style="background: #f8f9fa;">
+                        <h6 class="fw-bold mb-2" style="color: #2e7d32;">
+                            <i class="bi bi-clipboard-data me-2"></i>Composition
+                        </h6>
+                        <p class="text-muted mb-0">{{ product.composition }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Application -->
+                    {% if product.prodapp %}
+                    <div class="mb-4 p-3 rounded-3" style="background: #f8f9fa;">
+                        <h6 class="fw-bold mb-2" style="color: #2e7d32;">
+                            <i class="bi bi-gear me-2"></i>Application
+                        </h6>
+                        <p class="text-muted mb-0">{{ product.prodapp }}</p>
+                    </div>
+                    {% endif %}
+
+                    <!-- Key Features -->
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3" style="color: #2e7d32;">
+                            <i class="bi bi-check2-square me-2"></i>Key Features
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-shield-check text-success fs-4 me-2"></i>
+                                    <span class="small">Quality Assured</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-truck text-success fs-4 me-2"></i>
+                                    <span class="small">Fast Delivery</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-arrow-clockwise text-success fs-4 me-2"></i>
+                                    <span class="small">Easy Returns</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-headset text-success fs-4 me-2"></i>
+                                    <span class="small">24/7 Support</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex flex-column flex-md-row gap-3 mt-4">
+                        <form action="{% url 'app:addtocart' %}" method="GET" class="flex-fill">
+                            <input type="hidden" name="prod_id" value="{{ product.id }}">
+                            <button type="submit" 
+                                    class="btn btn-lg w-100 text-white fw-bold shadow-lg product-btn"
+                                    style="background: linear-gradient(135deg, #ff6f00 0%, #ff9800 100%); border: none; border-radius: 12px; padding: 1rem;">
+                                <i class="bi bi-cart-plus fs-5 me-2"></i> Add to Cart
+                            </button>
+                        </form>
+
+                        <form action="{% url 'app:addtocart' %}" method="GET" class="flex-fill">
+                            <input type="hidden" name="prod_id" value="{{ product.id }}">
+                            <button type="submit" 
+                                    class="btn btn-lg w-100 text-white fw-bold shadow-lg product-btn"
+                                    style="background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%); border: none; border-radius: 12px; padding: 1rem;"
+                                    onclick="this.form.submit(); setTimeout(() => window.location.href='{% url 'app:checkout' %}', 500);">
+                                <i class="bi bi-lightning-fill fs-5 me-2"></i> Buy Now
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="mt-4 pt-4 border-top">
+                        <div class="d-flex justify-content-around text-center">
+                            <div>
+                                <i class="bi bi-shield-fill-check text-success fs-3"></i>
+                                <p class="small mb-0 mt-1">Secure Payment</p>
+                            </div>
+                            <div>
+                                <i class="bi bi-box-seam text-success fs-3"></i>
+                                <p class="small mb-0 mt-1">Genuine Product</p>
+                            </div>
+                            <div>
+                                <i class="bi bi-award text-success fs-3"></i>
+                                <p class="small mb-0 mt-1">Best Quality</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
 
     </div>
 </div>
 
-<script>
-  // Optional: Add hover scaling effect for buttons
-  document.querySelectorAll('.btn').forEach(btn => {
-    btn.addEventListener('mouseenter', () => {
-      btn.style.transform = 'scale(1.05)';
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transform = 'scale(1)';
-    });
-  });
-</script>
+<style>
+.product-detail-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(46,125,50,0.15) 0%, transparent 70%);
+    z-index: 1;
+}
+
+.product-detail-img {
+    transition: transform 0.5s ease;
+}
+
+.product-detail-img:hover {
+    transform: scale(1.05);
+}
+
+.product-btn {
+    transition: all 0.3s ease;
+}
+
+.product-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
+}
+
+@media (max-width: 991px) {
+    .position-sticky {
+        position: relative !important;
+        top: 0 !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .container { margin-top: 60px !important; padding: 0 0.5rem !important; }
+    .bg-white.rounded-4 { padding: 1.5rem !important; }
+    h1 { font-size: 1.5rem !important; }
+    h2 { font-size: 1.8rem !important; }
+    .product-detail-img { max-height: 300px !important; }
+    .btn-lg { padding: 0.75rem !important; font-size: 0.9rem !important; }
+}
+</style>
+
 {% endblock %}

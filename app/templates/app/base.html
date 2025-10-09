@@ -29,12 +29,13 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-success sticky-top shadow-sm">
-  <div class="container-fluid">
-    <!-- Logo + HOME -->
-    <a class="navbar-brand d-flex align-items-center fw-bold text-white" href="{% url 'home' %}" style="font-size: 0.9rem;">
-      <img src="{% static 'app/images/logo.png' %}" width="90" alt="Dairy Product Logo" class="me-2" />
-      <span>HOME</span>
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); padding: 0.5rem 0;">
+  <div class="container-fluid px-3">
+    <!-- Logo + Brand -->
+    <a class="navbar-brand d-flex align-items-center fw-bold text-white" href="{% url 'home' %}" style="font-size: 1.1rem; letter-spacing: 0.5px;">
+      <img src="{% static 'app/images/logo.png' %}" height="45" alt="Kisan Connect Logo" class="me-2 shadow-sm" style="border-radius: 8px;" />
+      <span class="d-none d-md-inline">Kisan Connect</span>
+      <span class="d-md-none"></span>
     </a>
 
     <!-- Mobile Toggle Button -->
@@ -53,75 +54,61 @@
     <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <!-- Left nav -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="font-size: 0.85rem;">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {% if request.user.is_authenticated %}
 
          <li class="nav-item">
-          <a class="nav-link fw-bold text-white" href="{% url 'app:schemes' %}" style="font-size: 0.85rem;">marketplace</a>
+          <a class="nav-link fw-semibold text-white px-3 nav-hover" href="{% url 'app:schemes' %}" style="font-size: 0.9rem; transition: all 0.3s;">
+            <i class="bi bi-shop me-1"></i>Marketplace
+          </a>
         </li>
 
-        <!-- Seeds Dropdown -->
+        <!-- Categories Dropdown -->
         <li class="nav-item dropdown">
           <a
-            class="nav-link dropdown-toggle fw-bold text-white"
+            class="nav-link dropdown-toggle fw-semibold text-white px-3 nav-hover"
             href="#"
             id="seedsDropdown"
             role="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
-            style="font-size: 0.85rem;"
+            style="font-size: 0.9rem; transition: all 0.3s;"
           >
-            <i class="bi bi-seedling me-1" style="font-size: 1rem;"></i> Seeds
+            <i class="bi bi-grid-3x3-gap me-1"></i> Categories
           </a>
-          <ul class="dropdown-menu" aria-labelledby="seedsDropdown" style="font-size: 0.85rem;">
-            <!-- NO text-white or fw-bold on dropdown items -->
+          <ul class="dropdown-menu shadow-lg border-0" aria-labelledby="seedsDropdown" style="font-size: 0.9rem; border-radius: 10px;">
             <li>
-              <a class="dropdown-item" href="{% url 'category' 'FT' %}">
-                <i class="bi bi-droplet me-2"></i>Fertilizers
+              <a class="dropdown-item py-2 dropdown-hover" href="{% url 'category' 'SD' %}">
+                <i class="bi bi-flower1 me-2 text-success"></i>Seeds
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="{% url 'category' 'EQ' %}">
-                <i class="bi bi-tools me-2"></i>Equipment
+              <a class="dropdown-item py-2 dropdown-hover" href="{% url 'category' 'FT' %}">
+                <i class="bi bi-droplet-half me-2 text-primary"></i>Fertilizers
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="{% url 'category' 'MC' %}">
-                <i class="bi bi-truck me-2"></i>Machinery
+              <a class="dropdown-item py-2 dropdown-hover" href="{% url 'category' 'MC' %}">
+                <i class="bi bi-gear-fill me-2 text-warning"></i>Machinery
               </a>
             </li>
             <li>
-              <a class="dropdown-item" href="{% url 'category' 'PN' %}">
-                <i class="bi bi-basket3 me-2"></i>Paneer
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="{% url 'category' 'GH' %}">
-                <i class="bi bi-droplet-fill me-2"></i>Ghee
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="{% url 'category' 'IC' %}">
-                <i class="bi bi-snow me-2"></i>Ice-Creams
+              <a class="dropdown-item py-2 dropdown-hover" href="{% url 'category' 'EQ' %}">
+                <i class="bi bi-tools me-2 text-danger"></i>Equipment
               </a>
             </li>
           </ul>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link fw-bold text-white" href="#" style="font-size: 0.85rem;">Machineries</a>
+          <a class="nav-link fw-semibold text-white px-3 nav-hover" href="{% url 'app:about' %}" style="font-size: 0.9rem; transition: all 0.3s;">
+            <i class="bi bi-info-circle me-1"></i>About
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link fw-bold text-white" href="#" style="font-size: 0.85rem;">Fertilizers</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-bold text-white" href="#" style="font-size: 0.85rem;">Equipments</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-bold text-white" href="{% url 'app:about' %}" style="font-size: 0.85rem;">About Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-bold text-white" href="{% url 'app:contact' %}" style="font-size: 0.85rem;">Contact Us</a>
+          <a class="nav-link fw-semibold text-white px-3 nav-hover" href="{% url 'app:contact' %}" style="font-size: 0.9rem; transition: all 0.3s;">
+            <i class="bi bi-telephone me-1"></i>Contact
+          </a>
         </li>
       </ul>
 
@@ -131,20 +118,22 @@
         role="search"
         method="GET"
         action="{% url 'app:search' %}"
-        style="max-width: 300px; width: 100%;"
+        style="max-width: 350px; width: 100%;"
       >
-        <input
-          class="form-control form-control-sm rounded-start fw-bold"
-          type="search"
-          name="q"
-          placeholder="Search products..."
-          aria-label="Search"
-          required
-          style="font-size: 0.85rem;"
-        />
-        <button class="btn btn-outline-light btn-sm rounded-end fw-bold" type="submit" style="font-size: 0.85rem;">
-          <i class="bi bi-search"></i>
-        </button>
+        <div class="input-group shadow-sm">
+          <input
+            class="form-control border-0"
+            type="search"
+            name="q"
+            placeholder="Search products..."
+            aria-label="Search"
+            required
+            style="font-size: 0.9rem; border-radius: 25px 0 0 25px;"
+          />
+          <button class="btn btn-warning border-0 fw-semibold" type="submit" style="font-size: 0.9rem; border-radius: 0 25px 25px 0;">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
       </form>
 
       <!-- Right nav -->
@@ -181,31 +170,28 @@
 
         <!-- Cart with badge -->
         <li class="nav-item mx-2 position-relative">
-          <a href="{% url 'app:showcart' %}" class="nav-link text-white position-relative fs-5 fw-bold">
-            <i class="bi bi-cart-fill" style="font-size: 1.1rem;"></i>
+          <a href="{% url 'app:showcart' %}" class="btn btn-warning btn-sm rounded-pill px-3 py-2 position-relative shadow-sm" style="font-weight: 600;">
+            <i class="bi bi-cart-fill me-1"></i> Cart
             <span
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger fw-bold"
-              style="font-size: 0.7rem;"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              style="font-size: 0.65rem;"
             >
               {% if totalitem > 0 %}{{ totalitem }}{% else %}0{% endif %}
-              <span class="visually-hidden">items in cart</span>
             </span>
-          </a>
-        </li>
-
-        <!-- Wishlist -->
-        <li class="nav-item mx-2">
-          <a href="#" class="nav-link text-white d-flex align-items-center fw-bold" style="font-size: 0.85rem;">
-            <i class="bi bi-heart-fill me-1" style="font-size: 1.1rem;"></i> Wishlist
-            <span class="badge bg-danger ms-1 rounded-pill fw-bold" style="font-size: 0.7rem;">4</span>
           </a>
         </li>
         {% else %}
         <!-- If not logged in -->
         <li class="nav-item mx-2">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="nav-link fw-bold text-white" style="font-size: 0.85rem;">Login</a>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="btn btn-outline-light btn-sm rounded-pill px-3 py-2" style="font-weight: 600;">
+            <i class="bi bi-box-arrow-in-right me-1"></i>Login
+          </a>
         </li>
-        <li class="nav-item mx-2"><a href="{% url 'app:customerregistration' %}" class="nav-link fw-bold text-white" style="font-size: 0.85rem;">Registration</a></li>
+        <li class="nav-item mx-2">
+          <a href="{% url 'app:customerregistration' %}" class="btn btn-warning btn-sm rounded-pill px-3 py-2" style="font-weight: 600;">
+            <i class="bi bi-person-plus me-1"></i>Register
+          </a>
+        </li>
         {% endif %}
       </ul>
       
@@ -235,3 +221,30 @@
   <script src="{% static 'app/js/myscript.js' %}"></script>
 </body>
 </html>
+
+<style>
+  /* Navbar Enhancements */
+  .nav-hover:hover {
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    transform: translateY(-2px);
+  }
+  
+  .dropdown-hover:hover {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    border-radius: 8px;
+    padding-left: 1.5rem !important;
+    transition: all 0.3s;
+  }
+  
+  .navbar-brand:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+  }
+  
+  @media (max-width: 991px) {
+    .navbar-brand span { font-size: 0.9rem !important; }
+    .navbar-brand img { width: 40px !important; height: 40px !important; }
+    .nav-link { padding: 0.5rem 1rem !important; }
+  }
+</style>

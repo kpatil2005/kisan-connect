@@ -1,6 +1,6 @@
 {% extends 'app/base.html' %}
 {% load static %}
-{% block title %}Profile{% endblock %}
+{% block title %}My Profile - Kisan Connect{% endblock %}
 
 {% block main-content %}
 <style>
@@ -12,89 +12,120 @@
     --border-gray: #E0E0E0;
     --text-dark: #2C2C2C;
     --text-light: #666666;
+    --gradient-green: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+  }
+  
+  body {
+    background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
   }
 
   .main-container {
-    background: #F5F5F5;
-    padding: 1rem 0;
-    height: calc(100vh - 120px); /* Adjust based on your navbar/footer height */
-    overflow: hidden;
+    padding: 2rem 0;
+    min-height: calc(100vh - 120px);
   }
   
-  .welcome-text {
-    font-size: 1.3rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--text-dark);
+  .welcome-banner {
+    background: var(--gradient-green);
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(46, 125, 50, 0.2);
     text-align: center;
+  }
+  
+  .welcome-banner h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .welcome-banner p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0;
   }
   
   .sidebar-nav {
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    padding: 1rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    padding: 1.5rem;
     height: fit-content;
-    border: 1px solid var(--border-gray);
+    border: none;
+    position: sticky;
+    top: 100px;
   }
   
   .nav-btn {
-    display: block;
+    display: flex;
+    align-items: center;
     width: 100%;
     border: none;
-    border-radius: 6px;
-    padding: 8px 12px;
-    margin-bottom: 6px;
-    transition: all 0.2s ease;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    transition: all 0.3s ease;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
     text-align: left;
-    font-size: 0.9rem;
+    font-size: 1rem;
+  }
+  
+  .nav-btn i {
+    margin-right: 12px;
+    font-size: 1.2rem;
+    width: 24px;
   }
   
   .nav-btn.active {
-    background: var(--farm-green);
+    background: var(--gradient-green);
     color: white;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    transform: translateX(5px);
   }
   
   .nav-btn:not(.active) {
     background: var(--light-gray);
-    color: var(--text-light);
+    color: var(--text-dark);
   }
   
   .nav-btn:not(.active):hover {
     background: var(--light-green);
     color: var(--dark-green);
     text-decoration: none;
+    transform: translateX(3px);
   }
   
   .profile-card {
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    border: 1px solid var(--border-gray);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    border: none;
+    overflow: hidden;
   }
   
   .profile-header {
-    background: var(--farm-green);
-    padding: 1rem;
+    background: var(--gradient-green);
+    padding: 1.5rem 2rem;
     color: white;
-    flex-shrink: 0;
   }
   
   .profile-header h4 {
     margin: 0;
-    font-weight: 600;
-    font-size: 1.1rem;
+    font-weight: 700;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-header h4 i {
+    margin-right: 12px;
+    font-size: 1.8rem;
   }
   
   .card-body-compact {
-    padding: 1rem;
-    flex: 1;
-    overflow-y: auto;
+    padding: 2rem;
   }
   
   .form-layout {
@@ -116,35 +147,41 @@
   }
   
   .profile-image {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
-    border: 3px solid white;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    border: 5px solid white;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
     object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .profile-image:hover {
+    transform: scale(1.05);
   }
   
   .image-upload-overlay {
     position: absolute;
-    bottom: 2px;
-    right: 2px;
-    background: var(--farm-green);
+    bottom: 5px;
+    right: 5px;
+    background: var(--gradient-green);
     color: white;
     border-radius: 50%;
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    font-size: 1rem;
+    border: 3px solid white;
   }
   
   .image-upload-overlay:hover {
-    background: var(--dark-green);
-    transform: scale(1.1);
+    transform: scale(1.15) rotate(15deg);
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
   }
   
   .fields-grid {
@@ -169,34 +206,43 @@
   .form-control-compact {
     width: 100%;
     border: 2px solid var(--border-gray);
-    border-radius: 6px;
-    padding: 8px 10px;
-    transition: border-color 0.2s ease;
+    border-radius: 10px;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
     background: white;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
   
   .form-control-compact:focus {
     border-color: var(--farm-green);
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
     outline: none;
+    transform: translateY(-2px);
   }
   
   .save-btn {
-    background: var(--farm-green);
+    background: var(--gradient-green);
     border: none;
-    border-radius: 6px;
-    padding: 10px 24px;
-    font-weight: 600;
+    border-radius: 10px;
+    padding: 14px 32px;
+    font-weight: 700;
     color: white;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     cursor: pointer;
-    font-size: 0.9rem;
-    margin-top: 1rem;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
   }
   
   .save-btn:hover {
-    background: var(--dark-green);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(76, 175, 80, 0.4);
+  }
+  
+  .save-btn:active {
     transform: translateY(-1px);
   }
   
@@ -228,12 +274,45 @@
   @media (max-width: 768px) {
     .form-layout {
       grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 1.5rem;
     }
     
     .fields-grid {
       grid-template-columns: 1fr;
-      gap: 0.6rem;
+      gap: 1rem;
+    }
+    
+    .profile-image {
+      width: 120px;
+      height: 120px;
+    }
+    
+    .sidebar-nav {
+      position: static;
+      margin-bottom: 1.5rem;
+    }
+    
+    .nav-btn {
+      padding: 10px 14px;
+      font-size: 0.95rem;
+    }
+    
+    .card-body-compact {
+      padding: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .welcome-banner h2 {
+      font-size: 1.4rem;
+    }
+    
+    .welcome-banner p {
+      font-size: 0.9rem;
+    }
+    
+    .main-container {
+      padding: 1rem 0;
     }
     
     .profile-image {
@@ -241,44 +320,51 @@
       height: 100px;
     }
     
-    .main-container {
-      height: auto;
-      min-height: calc(100vh - 120px);
+    .image-upload-overlay {
+      width: 35px;
+      height: 35px;
+      font-size: 0.9rem;
     }
     
-    .profile-card {
-      height: auto;
-    }
-  }
-  
-  @media (max-width: 576px) {
-    .welcome-text {
-      font-size: 1.1rem;
+    .card-body-compact {
+      padding: 1rem;
     }
     
-    .main-container {
-      padding: 0.5rem 0;
+    .profile-header h4 {
+      font-size: 1.2rem;
+    }
+    
+    .save-btn {
+      width: 100%;
+      justify-content: center;
     }
   }
 </style>
 
 <div class="main-container">
   <div class="container-fluid px-3">
-    <h3 class="welcome-text">
-      Welcome, <span class="text-capitalize">{{ request.user.username }}</span>
-    </h3>
+    <div class="welcome-banner">
+      <h2>👋 Welcome Back, <span class="text-capitalize">{{ request.user.username }}!</span></h2>
+      <p>🌾 Manage your profile and keep your information up to date</p>
+    </div>
 
     <div class="row h-100">
       <!-- Compact Sidebar -->
       <div class="col-lg-2 col-md-3 mb-2">
         <div class="sidebar-nav">
-          <h6 class="sidebar-title">Account</h6>
+          <h6 class="sidebar-title">💼 My Account</h6>
           <div>
             <a href="{% url 'app:profile' %}" class="nav-btn {% if request.path == '/profile/' %}active{% endif %}">
-              Profile
+              <i class="bi bi-person-circle"></i> Profile
             </a>
             <a href="{% url 'app:addresses' %}" class="nav-btn {% if request.path == '/addresses/' %}active{% endif %}">
-              Addresses
+              <i class="bi bi-geo-alt"></i> Addresses
+            </a>
+            <a href="{% url 'app:orders' %}" class="nav-btn {% if request.path == '/orders/' %}active{% endif %}">
+              <i class="bi bi-bag-check"></i> Orders
+            </a>
+            <a href="{% url 'app:passwordchange' %}" class="nav-btn {% if request.path == '/passwordchange/' %}active{% endif %}">
+              <i class="bi bi-key"></i> Password
             </a>
           </div>
         </div>
@@ -288,7 +374,7 @@
       <div class="col-lg-10 col-md-9">
         <div class="profile-card">
           <div class="profile-header">
-            <h4>Update Profile</h4>
+            <h4><i class="bi bi-person-badge"></i> Update Profile</h4>
           </div>
           
           <div class="card-body-compact">
@@ -340,7 +426,9 @@
                   </div>
                   
                   <div class="text-end">
-                    <button type="submit" class="save-btn">Save Changes</button>
+                    <button type="submit" class="save-btn">
+                      <i class="bi bi-check-circle"></i> Save Changes
+                    </button>
                   </div>
                 </div>
               </div>

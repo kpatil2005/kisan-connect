@@ -1,47 +1,318 @@
 {% extends 'app/base.html'%}
 {% load static %}
-{% block title %} Login {% endblock title %}
+{% block title %}Login - Kisan Connect{% endblock title %}
 
 {% block main-content %}
-<div class='container'>
-   <div class='row my-3'>
-        <div class='col-sm-6 offset-sm-3'>
-           <h3>Customer Login</h3>
-           <hr>
+<style>
+  .login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    padding: 40px 20px;
+  }
+  
+  .login-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .login-left {
+    background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+    color: white;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .login-left img {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 30px;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+  }
+  
+  .login-left h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+  }
+  
+  .login-left p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    line-height: 1.6;
+  }
+  
+  .login-right {
+    padding: 60px 50px;
+  }
+  
+  .login-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .login-header h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2e7d32;
+    margin-bottom: 10px;
+  }
+  
+  .login-header p {
+    color: #666;
+    font-size: 1rem;
+  }
+  
+  .form-floating {
+    margin-bottom: 20px;
+  }
+  
+  .form-floating input {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 15px 20px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .form-floating input:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.15);
+  }
+  
+  .form-floating label {
+    padding: 15px 20px;
+    color: #666;
+  }
+  
+  .btn-login {
+    background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+  }
+  
+  .btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+  }
+  
+  .divider {
+    text-align: center;
+    margin: 30px 0;
+    position: relative;
+  }
+  
+  .divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e0e0e0;
+  }
+  
+  .divider span {
+    background: white;
+    padding: 0 15px;
+    position: relative;
+    color: #999;
+    font-size: 0.9rem;
+  }
+  
+  .forgot-link {
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .forgot-link:hover {
+    color: #1b5e20;
+    text-decoration: underline;
+  }
+  
+  .register-box {
+    background: #f5f5f5;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 30px;
+  }
+  
+  .register-box a {
+    color: #2e7d32;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  .register-box a:hover {
+    text-decoration: underline;
+  }
+  
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 30px;
+  }
+  
+  .feature-list li {
+    padding: 10px 0;
+    font-size: 1rem;
+  }
+  
+  .feature-list li i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .login-left {
+      padding: 40px 30px;
+    }
+    
+    .login-right {
+      padding: 40px 30px;
+    }
+    
+    .login-left h2 {
+      font-size: 1.5rem;
+    }
+    
+    .login-header h3 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .login-container {
+      padding: 20px 10px;
+    }
+    
+    .login-left {
+      padding: 30px 20px;
+    }
+    
+    .login-right {
+      padding: 30px 20px;
+    }
+    
+    .login-left img {
+      width: 80px;
+      height: 80px;
+    }
+    
+    .login-left h2 {
+      font-size: 1.3rem;
+    }
+    
+    .login-left p {
+      font-size: 0.9rem;
+    }
+    
+    .login-header h3 {
+      font-size: 1.3rem;
+    }
+  }
+</style>
 
-           <form action="{% url 'app:login' %}?next=/profile/" method="post" novalidate class="shadow p-4 rounded bg-light">
+<div class="login-container">
+  <div class="container">
+    <div class="login-card">
+      <div class="row g-0">
+        <!-- Left Side - Branding -->
+        <div class="col-lg-5 d-none d-lg-block">
+          <div class="login-left">
+            <img src="{% static 'app/images/logo.png' %}" alt="Kisan Connect Logo">
+            <h2>🌾 Kisan Connect</h2>
+            <p>Empowering farmers with digital tools and market access</p>
+            
+            <ul class="feature-list">
+              <li><i class="bi bi-check-circle-fill"></i> Access Government Schemes</li>
+              <li><i class="bi bi-check-circle-fill"></i> Expert Farming Advice</li>
+              <li><i class="bi bi-check-circle-fill"></i> Marketplace Access</li>
+              <li><i class="bi bi-check-circle-fill"></i> Community Forum</li>
+              <li><i class="bi bi-check-circle-fill"></i> AI Disease Detection</li>
+            </ul>
+          </div>
+        </div>
+        
+        <!-- Right Side - Login Form -->
+        <div class="col-lg-7">
+          <div class="login-right">
+            <div class="login-header">
+              <h3>👋 Welcome Back!</h3>
+              <p>Login to access your farmer dashboard</p>
+            </div>
+            
+            <form action="{% url 'app:login' %}?next=/profile/" method="post" novalidate>
               {% csrf_token %}
-              {% for fm in form %}
-                  <div class="mb-3">
-                      {{ fm.label_tag }}
-                      {{ fm }}
-                      <small class="text-danger">{{ fm.errors|striptags }}</small>
-                  </div>
-              {% endfor %}
-
+              
               {% if form.non_field_errors %}
                 {% for error in form.non_field_errors %}
-                  <p class="alert alert-danger">{{ error }}</p>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                  </div>
                 {% endfor %}
               {% endif %}
-
+              
+              {% for fm in form %}
+                <div class="form-floating mb-3">
+                  {{ fm }}
+                  <label for="{{ fm.id_for_label }}">{{ fm.label }}</label>
+                  {% if fm.errors %}
+                    <div class="text-danger small mt-1">
+                      <i class="bi bi-exclamation-circle"></i> {{ fm.errors|striptags }}
+                    </div>
+                  {% endif %}
+                </div>
+              {% endfor %}
+              
+              <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="rememberMe">
+                  <label class="form-check-label" for="rememberMe">
+                    Remember me
+                  </label>
+                </div>
+                <a href="{% url 'app:password_reset' %}" class="forgot-link">
+                  <i class="bi bi-key"></i> Forgot Password?
+                </a>
+              </div>
+              
               <div class="d-grid mb-3">
-                  <input type="submit" value="Login" class="btn btn-success">
+                <button type="submit" class="btn btn-login">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Login to Dashboard
+                </button>
               </div>
-
-              <!-- Forgot Password Button -->
-              <div class="d-grid mb-3">
-                  <a href="{% url 'app:password_reset' %}" class="btn btn-outline-danger">Forgot Password?</a>
-              </div>
-
-              <div class="text-center">
-                  <small class="text-muted">
-                      Don't have an account? 
-                      <a href="{% url 'app:customerregistration' %}">Register</a>
-                  </small>
-              </div>
-           </form>
+            </form>
+            
+            <div class="register-box">
+              <p class="mb-0">
+                <i class="bi bi-person-plus"></i> Don't have an account? 
+                <a href="{% url 'app:customerregistration' %}">Register Now</a>
+              </p>
+            </div>
+          </div>
         </div>
-   </div>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock main-content %}
