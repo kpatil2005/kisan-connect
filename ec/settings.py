@@ -15,6 +15,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY", os.environ.get("DJANGO_SECRET_KEY", "d
 
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
+# Allow serving static files in production
+if not DEBUG:
+    WHITENOISE_AUTOREFRESH = True
+    WHITENOISE_USE_FINDERS = True
+
 ALLOWED_HOSTS = ['kisan-connect.onrender.com', 'localhost', '127.0.0.1']
 
 # Application definition
@@ -123,7 +128,8 @@ else:
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# Disable manifest for now to avoid static file issues
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
