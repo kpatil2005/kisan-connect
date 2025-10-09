@@ -71,7 +71,7 @@ class Product(models.Model):
     prodapp = models.TextField(default='')         # product application
     # brand = models.CharField(max_length=100)     # (commented out now)
     category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)  
-    product_image = models.ImageField(upload_to='product')  
+    product_image = models.ImageField(upload_to='product', blank=True, null=True)  
 
     def __str__(self):
         return self.title
