@@ -116,17 +116,24 @@ CLOUDINARY_STORAGE = {
 cloudinary.config(
     cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME', ''),
     api_key=os.environ.get('CLOUDINARY_API_KEY', ''),
-    api_secret=os.environ.get('CLOUDINARY_API_SECRET', '')
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET', ''),
+    secure=True
 )
 
-# Use Cloudinary only in production
+# Always use Cloudinary in production (when CLOUDINARY_CLOUD_NAME is set)
 if os.environ.get('CLOUDINARY_CLOUD_NAME'):
     DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    print(f"✅ Cloudinary enabled: {os.environ.get('CLOUDINARY_CLOUD_NAME')}")
 else:
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    print("⚠️ Using local file storage")
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# Media files configuration
+if os.environ.get('CLOUDINARY_CLOUD_NAME'):
+    MEDIA_URL = '/media/'  # Cloudinary will handle this
+else:
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 # Disable manifest for now to avoid static file issues
 STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
