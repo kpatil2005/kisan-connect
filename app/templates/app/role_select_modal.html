@@ -1,7 +1,7 @@
 <!-- Role Selection Modal -->
 <div class="modal fade" id="roleSelectModal" tabindex="-1" aria-labelledby="roleSelectModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content p-4 rounded-4 shadow-lg" style="border: none; background: #fffdf5;">
+    <div class="modal-content p-4 rounded-4 shadow-lg" style="border: none; background: #fffdf5; max-width: 100%; margin: 0.5rem;">
       <div class="modal-header border-0">
         <h4 class="fw-bold text-center w-100 mb-0">🌾 Select Your Account Type</h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -127,5 +127,48 @@ function showRoleInfo(role) {
 
 ul.list-unstyled li {
   padding: 4px 0;
+}
+
+/* Mobile responsive modal */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 0.5rem !important;
+    max-width: calc(100% - 1rem) !important;
+  }
+  
+  .modal-content {
+    padding: 1rem !important;
+    margin: 0 !important;
+  }
+  
+  .modal-header h4 {
+    font-size: 1.1rem !important;
+  }
+  
+  .modal-body p {
+    font-size: 0.85rem !important;
+  }
+  
+  .modal-body .btn {
+    font-size: 0.85rem !important;
+    padding: 0.6rem 1rem !important;
+  }
+  
+  .role-info-card {
+    padding: 1rem !important;
+  }
+  
+  .role-info-card h5 {
+    font-size: 1rem !important;
+  }
+  
+  .role-info-card ul li {
+    font-size: 0.8rem !important;
+  }
+  
+  .btn-lg {
+    font-size: 0.9rem !important;
+    padding: 0.6rem 1.5rem !important;
+  }
 }
 </style>

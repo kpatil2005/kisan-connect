@@ -1,0 +1,466 @@
+/* Mobile Responsive CSS for 375x667 (iPhone SE) and similar devices */
+
+/* Prevent horizontal scroll */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+body {
+  position: relative;
+}
+
+/* Base Mobile Styles */
+@media (max-width: 576px) {
+  /* Typography */
+  body {
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-x: hidden !important;
+  }
+
+  /* Container adjustments */
+  .container,
+  .container-fluid {
+    padding-left: 12px;
+    padding-right: 12px;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+  }
+
+  [class*="col-"] {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  /* Navbar */
+  .navbar {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .navbar-brand {
+    font-size: 0.85rem !important;
+  }
+
+  .navbar-brand img {
+    width: 50px !important;
+    height: auto;
+  }
+
+  .navbar-toggler {
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .dropdown-menu {
+    font-size: 0.85rem;
+  }
+
+  /* Search bar */
+  .navbar form {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0.5rem 0;
+  }
+
+  .navbar form input {
+    font-size: 0.8rem;
+  }
+
+  /* Carousel/Banner */
+  .carousel,
+  .carousel-inner,
+  .carousel-item {
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .carousel-item img {
+    height: 180px !important;
+    object-fit: cover;
+    width: 100%;
+  }
+
+  .carousel-caption {
+    display: none !important;
+  }
+
+  .carousel-indicators {
+    bottom: 5px;
+  }
+
+  .carousel-indicators button {
+    width: 6px;
+    height: 6px;
+  }
+
+  /* Headings */
+  h1, .display-4 {
+    font-size: 1.4rem !important;
+    line-height: 1.3;
+  }
+
+  h2, .display-5 {
+    font-size: 1.2rem !important;
+  }
+
+  h3 {
+    font-size: 1.1rem !important;
+  }
+
+  h4 {
+    font-size: 1rem !important;
+  }
+
+  h5 {
+    font-size: 0.9rem !important;
+  }
+
+  h6 {
+    font-size: 0.85rem !important;
+  }
+
+  .display-3 {
+    font-size: 1.5rem !important;
+  }
+
+  /* Buttons */
+  .btn {
+    font-size: 0.8rem !important;
+    padding: 0.4rem 0.75rem !important;
+  }
+
+  .btn-lg {
+    font-size: 0.9rem !important;
+    padding: 0.5rem 1rem !important;
+  }
+
+  .btn-sm {
+    font-size: 0.75rem !important;
+    padding: 0.25rem 0.5rem !important;
+  }
+
+  /* Cards */
+  .card {
+    margin-bottom: 0.75rem;
+  }
+
+  .card-body {
+    padding: 0.75rem !important;
+  }
+
+  .card-title {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-text {
+    font-size: 0.8rem !important;
+  }
+
+  .card img {
+    height: 150px !important;
+    object-fit: contain;
+  }
+
+  /* Product Cards */
+  .product-card {
+    border-radius: 10px;
+  }
+
+  .product-card img {
+    height: 160px !important;
+  }
+
+  .product-card .card-body {
+    padding: 0.5rem !important;
+  }
+
+  /* Category Cards */
+  .category-card .card-body {
+    padding: 1rem !important;
+  }
+
+  .category-card i {
+    font-size: 2.5rem !important;
+  }
+
+  .category-card h4 {
+    font-size: 0.95rem !important;
+  }
+
+  /* Feature Boxes */
+  .feature-box {
+    padding: 1rem !important;
+    margin-bottom: 0.75rem;
+  }
+
+  .feature-box i {
+    font-size: 2rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .feature-box h5 {
+    font-size: 0.9rem !important;
+  }
+
+  .feature-box p {
+    font-size: 0.75rem !important;
+  }
+
+  /* Grid System */
+  .row.g-4 {
+    --bs-gutter-x: 0.5rem;
+    --bs-gutter-y: 0.5rem;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .col-md-3,
+  .col-md-4,
+  .col-md-6,
+  .col-6,
+  .col-12 {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  /* Spacing */
+  .my-5 {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  .mb-5 {
+    margin-bottom: 1.5rem !important;
+  }
+
+  .mt-5 {
+    margin-top: 1.5rem !important;
+  }
+
+  .p-5 {
+    padding: 1.25rem !important;
+  }
+
+  .py-5 {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  /* Badges */
+  .badge {
+    font-size: 0.7rem !important;
+    padding: 0.25rem 0.5rem;
+  }
+
+  /* Text sizes */
+  .lead {
+    font-size: 0.95rem !important;
+  }
+
+  .text-muted,
+  .small {
+    font-size: 0.75rem !important;
+  }
+
+  /* Icons */
+  .bi {
+    font-size: 1rem;
+  }
+
+  .fs-1 {
+    font-size: 1.5rem !important;
+  }
+
+  .fs-3 {
+    font-size: 1.2rem !important;
+  }
+
+  .fs-5 {
+    font-size: 0.9rem !important;
+  }
+
+  /* Newsletter Section */
+  .newsletter-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  input[type="email"] {
+    font-size: 0.85rem !important;
+  }
+
+  /* Footer */
+  footer {
+    font-size: 0.8rem !important;
+    padding: 1rem !important;
+  }
+
+  /* Tables */
+  table {
+    font-size: 0.8rem;
+  }
+
+  /* Forms */
+  .form-control {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
+
+  .form-label {
+    font-size: 0.85rem;
+  }
+
+  /* Modal */
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .modal-title {
+    font-size: 1rem !important;
+  }
+
+  /* Alerts */
+  .alert {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
+
+  /* Pagination */
+  .pagination {
+    font-size: 0.8rem;
+  }
+
+  /* Breadcrumb */
+  .breadcrumb {
+    font-size: 0.8rem;
+  }
+
+  /* Dropdown */
+  .dropdown-item {
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+  }
+
+  /* List group */
+  .list-group-item {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+  }
+
+  /* Border radius adjustments */
+  .rounded-3 {
+    border-radius: 0.75rem !important;
+  }
+
+  /* Shadow adjustments */
+  .shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+  }
+
+  /* Overflow handling */
+  .text-truncate {
+    max-width: 100%;
+  }
+
+  /* Image responsive */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Fix any element causing overflow */
+  * {
+    max-width: 100%;
+  }
+
+  .container-fluid,
+  .navbar,
+  footer {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Sticky navbar adjustment */
+  .sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+  }
+
+  /* Cart badge */
+  .position-absolute.badge {
+    font-size: 0.65rem !important;
+  }
+
+  /* Profile dropdown */
+  #profileDropdown {
+    font-size: 0.8rem !important;
+  }
+
+  /* Category page specific */
+  .category-name {
+    font-size: 1.1rem !important;
+  }
+
+  /* Product detail page */
+  .product-detail img {
+    max-height: 250px !important;
+  }
+
+  /* Wishlist */
+  .wishlist-badge {
+    font-size: 0.65rem !important;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 375px) */
+@media (max-width: 374px) {
+  body {
+    font-size: 13px;
+  }
+
+  .navbar-brand img {
+    width: 45px !important;
+  }
+
+  .carousel-item img {
+    height: 150px !important;
+  }
+
+  .product-card img {
+    height: 140px !important;
+  }
+
+  h1, .display-4 {
+    font-size: 1.2rem !important;
+  }
+
+  h2, .display-5 {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* Landscape mode for small devices */
+@media (max-width: 768px) and (orientation: landscape) {
+  .carousel-item img {
+    height: 200px !important;
+  }
+
+  .navbar-collapse {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}

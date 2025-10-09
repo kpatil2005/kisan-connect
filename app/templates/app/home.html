@@ -4,6 +4,12 @@
 
 {% block extra_css %}
 <style>
+  /* Prevent overflow on all devices */
+  body, html {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+  
   /* Custom styles for agricultural theme */
   .hero-overlay {
     background: linear-gradient(135deg, rgba(34,139,34,0.9), rgba(0,100,0,0.8));
@@ -53,6 +59,39 @@
     padding: 5px 10px;
     border-radius: 20px;
     font-size: 0.8rem;
+  }
+  
+  /* Mobile specific fixes */
+  @media (max-width: 576px) {
+    .carousel, .carousel-inner, .carousel-item {
+      max-width: 100vw !important;
+      overflow: hidden !important;
+    }
+    
+    .container, .container-fluid {
+      padding-left: 10px !important;
+      padding-right: 10px !important;
+      max-width: 100% !important;
+    }
+    
+    .row {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    
+    [class*="col-"] {
+      padding-left: 5px !important;
+      padding-right: 5px !important;
+    }
+    
+    .d-flex.justify-content-between {
+      flex-wrap: wrap;
+    }
+    
+    .d-flex.justify-content-around {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
   }
 </style>
 {% endblock %}
@@ -130,6 +169,7 @@
 
   
  <!-- Feature Boxes -->
+<div class="container">
 <div class="row mt-5 g-4">
   <div class="col-md-3">
     <div class="feature-box text-center shadow-sm p-4 rounded bg-white h-100 d-flex flex-column align-items-center justify-content-center transition-shadow">
@@ -162,6 +202,7 @@
       <p class="text-muted mb-0">Competitive market rates</p>
     </div>
   </div>
+</div>
 </div>
 
 <style>
@@ -565,6 +606,7 @@
 
 
  <!-- CTA Section -->
+<div class="container">
 <div class="row bg-gradient rounded-3 p-5 text-center shadow-sm" style="background: linear-gradient(135deg, #e6f4ea 0%, #d1ecd5 100%);">
   <div class="col-md-8 mx-auto">
     <h3 class="fw-bold mb-3">
@@ -582,9 +624,10 @@
     </div>
   </div>
 </div>
+</div>
 
 <!-- Newsletter Section -->
-<div class="container-fluid bg-success text-white py-5 mt-5 position-relative overflow-hidden" style="background: url('{% static 'app/images/field-pattern.png' %}') no-repeat center center/cover;">
+<div class="container-fluid bg-success text-white py-5 mt-5 position-relative overflow-hidden" style="background: url('{% static 'app/images/field-pattern.png' %}') no-repeat center center/cover; max-width: 100vw;">
   <div class="bg-success bg-opacity-90 position-absolute top-0 start-0 w-100 h-100" style="z-index: 0;"></div>
   
   <div class="container position-relative" style="z-index: 10;">
