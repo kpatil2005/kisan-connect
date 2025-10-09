@@ -11,7 +11,7 @@ load_dotenv()  # Load .env file if present
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "django-insecure-xe@b@aer1*c9)#aw=hol7q+7r5w%%m8d21r&370*kqhxx*!#bm")
+SECRET_KEY = os.environ.get("SECRET_KEY", os.environ.get("DJANGO_SECRET_KEY", "django-insecure-xe@b@aer1*c9)#aw=hol7q+7r5w%%m8d21r&370*kqhxx*!#bm"))
 
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
