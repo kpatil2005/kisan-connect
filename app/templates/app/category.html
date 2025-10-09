@@ -23,7 +23,13 @@
                             <div class="ribbon position-absolute top-0 start-0 bg-danger text-white px-2 py-1 fw-bold">SALE</div>
                             {% endif %}
 
+                            {% if prod.product_image %}
                             <img src="{{ prod.product_image.url }}" class="w-100" style="height:250px; object-fit:cover;" alt="{{ prod.title }}">
+                            {% else %}
+                            <div class="w-100 bg-light d-flex align-items-center justify-content-center" style="height:250px;">
+                                <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                            </div>
+                            {% endif %}
 
                             <!-- Info Overlay -->
                             <div class="product-info position-absolute bottom-0 start-0 w-100 p-2 text-center bg-white bg-opacity-80">
