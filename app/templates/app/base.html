@@ -24,177 +24,61 @@
   <link rel="stylesheet" href="{% static 'app/css/all.min.css' %}"/>
   <link rel="stylesheet" href="{% static 'app/css/style.css' %}"/>
   <link rel="stylesheet" href="{% static 'app/css/mobile-responsive.css' %}"/>
+  <link rel="icon" href="{% static 'app/images/logo.png' %}" type="image/png">
   <title>Dairy Product | {% block title %}{% endblock title %} Document</title>
 
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark sticky-top shadow" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); padding: 0.5rem 0;">
-  <div class="container-fluid px-3">
-    <!-- Logo + Brand -->
-    <a class="navbar-brand d-flex align-items-center fw-bold text-white" href="{% url 'home' %}" style="font-size: 1.1rem; letter-spacing: 0.5px;">
-      <img src="{% static 'app/images/logo.png' %}" height="45" alt="Kisan Connect Logo" class="me-2 shadow-sm" style="border-radius: 8px;" />
-      <span class="d-none d-md-inline">Kisan Connect</span>
-      <span class="d-md-none"></span>
-    </a>
-
-    <!-- Mobile Toggle Button -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Navbar links -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <!-- Left nav -->
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        {% if request.user.is_authenticated %}
-
-         <li class="nav-item">
-          <a class="nav-link fw-semibold text-white px-3 nav-hover" href="{% url 'app:schemes' %}" style="font-size: 0.9rem; transition: all 0.3s;">
-            <i class="bi bi-shop me-1"></i>Marketplace
-          </a>
-        </li>
-
-        <!-- Categories Dropdown -->
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle fw-semibold text-white px-3 nav-hover"
-            href="#"
-            id="seedsDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style="font-size: 0.9rem; transition: all 0.3s;"
-          >
-            <i class="bi bi-grid-3x3-gap me-1"></i> Categories
-          </a>
-          <ul class="dropdown-menu shadow-lg border-0" aria-labelledby="seedsDropdown" style="font-size: 0.9rem; border-radius: 10px;">
-            <li>
-              <a class="dropdown-item py-2 dropdown-hover" href="{% url 'category' 'SD' %}">
-                <i class="bi bi-flower1 me-2 text-success"></i>Seeds
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item py-2 dropdown-hover" href="{% url 'category' 'FT' %}">
-                <i class="bi bi-droplet-half me-2 text-primary"></i>Fertilizers
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item py-2 dropdown-hover" href="{% url 'category' 'MC' %}">
-                <i class="bi bi-gear-fill me-2 text-warning"></i>Machinery
-              </a>
-            </li>
-            <li>
-              <a class="dropdown-item py-2 dropdown-hover" href="{% url 'category' 'EQ' %}">
-                <i class="bi bi-tools me-2 text-danger"></i>Equipment
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link fw-semibold text-white px-3 nav-hover" href="{% url 'app:about' %}" style="font-size: 0.9rem; transition: all 0.3s;">
-            <i class="bi bi-info-circle me-1"></i>About
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link fw-semibold text-white px-3 nav-hover" href="{% url 'app:contact' %}" style="font-size: 0.9rem; transition: all 0.3s;">
-            <i class="bi bi-telephone me-1"></i>Contact
-          </a>
-        </li>
-      </ul>
-
-      <!-- Search form -->
-      <form
-        class="d-flex mx-lg-3 my-3 my-lg-0"
-        role="search"
-        method="GET"
-        action="{% url 'app:search' %}"
-        style="max-width: 350px; width: 100%;"
-      >
-        <div class="input-group shadow-sm">
-          <input
-            class="form-control border-0"
-            type="search"
-            name="q"
-            placeholder="Search products..."
-            aria-label="Search"
-            required
-            style="font-size: 0.9rem; border-radius: 25px 0 0 25px;"
-          />
-          <button class="btn btn-warning border-0 fw-semibold" type="submit" style="font-size: 0.9rem; border-radius: 0 25px 25px 0;">
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
-      </form>
-
-      <!-- Right nav -->
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center" style="font-size: 0.85rem;">
-        <!-- Profile dropdown -->
-        <li class="nav-item dropdown mx-2">
-          <a
-            class="nav-link dropdown-toggle d-flex align-items-center fw-bold text-white"
-            href="#"
-            id="profileDropdown"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style="font-size: 0.85rem;"
-          >
-            <i class="bi bi-person-circle fs-5 me-1"></i> {{ request.user.username }}
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown" style="font-size: 0.85rem;">
-            <!-- dropdown items default -->
-            <li><a class="dropdown-item" href="{% url 'app:profile' %}"><i class="bi bi-person me-2"></i>Profile</a></li>
-            <li><a class="dropdown-item" href="{% url 'app:orders' %}"><i class="bi bi-bag-check me-2"></i>Orders</a></li>
-            <li><a class="dropdown-item" href="{% url 'app:passwordchange' %}"><i class="bi bi-key me-2"></i>Change Password</a></li>
-            <li><hr class="dropdown-divider" /></li>
-            <li>
-              <form method="post" action="{% url 'app:logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="dropdown-item text-danger fw-bold">
-                  <i class="bi bi-box-arrow-right me-2"></i>Logout
-                </button>
-              </form>
-            </li>
-          </ul>
-        </li>
-
-        <!-- Cart with badge -->
-        <li class="nav-item mx-2 position-relative">
-          <a href="{% url 'app:showcart' %}" class="btn btn-warning btn-sm rounded-pill px-3 py-2 position-relative shadow-sm" style="font-weight: 600;">
-            <i class="bi bi-cart-fill me-1"></i> Cart
-            <span
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-              style="font-size: 0.65rem;"
-            >
-              {% if totalitem > 0 %}{{ totalitem }}{% else %}0{% endif %}
-            </span>
-          </a>
-        </li>
-        {% else %}
-        <!-- If not logged in -->
-        <li class="nav-item mx-2">
-          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="btn btn-outline-light btn-sm rounded-pill px-3 py-2" style="font-weight: 600;">
-            <i class="bi bi-box-arrow-in-right me-1"></i>Login
-          </a>
-        </li>
-        <li class="nav-item mx-2">
-          <a href="{% url 'app:customerregistration' %}" class="btn btn-warning btn-sm rounded-pill px-3 py-2" style="font-weight: 600;">
-            <i class="bi bi-person-plus me-1"></i>Register
-          </a>
-        </li>
-        {% endif %}
-      </ul>
+<nav class="modern-navbar">
+  <div class="container-fluid">
+    <div class="nav-wrapper">
+      <a class="brand" href="{% url 'home' %}">
+        <img src="{% static 'app/images/logo.png' %}" alt="Logo" />
+        <span>Kisan Connect</span>
+      </a>
       
+      <button class="mobile-toggle" type="button" onclick="document.getElementById('mobileNav').classList.toggle('show')">
+        <i class="bi bi-list"></i>
+      </button>
+
+      <div class="nav-content" id="mobileNav">
+        <ul class="nav-menu">
+          {% if request.user.is_authenticated %}
+          <li><a href="{% url 'app:schemes' %}"><i class="bi bi-shop"></i> Marketplace</a></li>
+          <li class="dropdown">
+            <a href="#" data-bs-toggle="dropdown"><i class="bi bi-grid-3x3-gap"></i> Categories</a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'category' 'SD' %}"><i class="bi bi-flower1"></i> Seeds</a></li>
+              <li><a href="{% url 'category' 'FT' %}"><i class="bi bi-droplet-half"></i> Fertilizers</a></li>
+              <li><a href="{% url 'category' 'MC' %}"><i class="bi bi-gear-fill"></i> Machinery</a></li>
+              <li><a href="{% url 'category' 'EQ' %}"><i class="bi bi-tools"></i> Equipment</a></li>
+            </ul>
+          </li>
+          <li><a href="{% url 'app:about' %}"><i class="bi bi-info-circle"></i> About</a></li>
+          <li><a href="{% url 'app:contact' %}"><i class="bi bi-telephone"></i> Contact</a></li>
+          {% endif %}
+        </ul>
+        
+        <form class="search-form" method="GET" action="{% url 'app:search' %}">
+          <input type="search" name="q" placeholder="Search..." required />
+          <button type="submit"><i class="bi bi-search"></i></button>
+        </form>
+        
+        <div class="nav-actions">
+          {% if request.user.is_authenticated %}
+          <a href="{% url 'app:profile' %}" class="user-btn"><i class="bi bi-person"></i> <span class="btn-text">Profile</span></a>
+          <a href="{% url 'app:orders' %}" class="user-btn"><i class="bi bi-bag-check"></i> <span class="btn-text">Orders</span></a>
+          <a href="{% url 'app:passwordchange' %}" class="user-btn"><i class="bi bi-key"></i> <span class="btn-text">Password</span></a>
+          <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;" class="logout-btn"><i class="bi bi-box-arrow-right"></i> <span class="btn-text">Logout</span></a>
+          <a href="{% url 'app:showcart' %}" class="cart-btn"><i class="bi bi-cart-fill"></i> <span class="btn-text">Cart</span><span class="badge">{% if totalitem > 0 %}{{ totalitem }}{% else %}0{% endif %}</span></a>
+          {% else %}
+          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="login-btn"><i class="bi bi-box-arrow-in-right"></i> <span class="btn-text">Login</span></a>
+          <a href="{% url 'app:customerregistration' %}" class="register-btn"><i class="bi bi-person-plus"></i> <span class="btn-text">Register</span></a>
+          {% endif %}
+        </div>
+      </div>
+      <form method="post" action="{% url 'app:logout' %}" id="logoutForm" style="display:none;">{% csrf_token %}</form>
     </div>
   </div>
 </nav>
@@ -223,28 +107,89 @@
 </html>
 
 <style>
-  /* Navbar Enhancements */
-  .nav-hover:hover {
-    background: rgba(255,255,255,0.15);
-    border-radius: 8px;
-    transform: translateY(-2px);
-  }
-  
-  .dropdown-hover:hover {
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-    border-radius: 8px;
-    padding-left: 1.5rem !important;
-    transition: all 0.3s;
-  }
-  
-  .navbar-brand:hover {
-    transform: scale(1.05);
-    transition: transform 0.3s;
-  }
-  
-  @media (max-width: 991px) {
-    .navbar-brand span { font-size: 0.9rem !important; }
-    .navbar-brand img { width: 40px !important; height: 40px !important; }
-    .nav-link { padding: 0.5rem 1rem !important; }
-  }
+.modern-navbar{background:linear-gradient(135deg,#1b5e20,#2e7d32);position:sticky;top:0;z-index:99999;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.nav-wrapper{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 1rem;position:relative;z-index:99999}
+.brand{display:flex;align-items:center;gap:0.4rem;color:#fff;text-decoration:none;font-weight:700;font-size:0.95rem}
+.brand img{height:32px;border-radius:8px}
+.mobile-toggle{display:none;background:none;border:2px solid #fff;color:#fff;font-size:1.5rem;padding:0.25rem 0.5rem;border-radius:8px;cursor:pointer;line-height:1;z-index:100000}
+.nav-content{display:flex;align-items:center;gap:1.5rem;flex:1;margin-left:1.5rem}
+.nav-menu{display:flex;list-style:none;margin:0;padding:0;gap:0.3rem}
+.nav-menu li{position:relative}
+.nav-menu a{color:#fff;text-decoration:none;padding:0.5rem 0.8rem;border-radius:6px;transition:all 0.3s;display:flex;align-items:center;gap:0.3rem;font-size:0.85rem;white-space:nowrap}
+.nav-menu a:hover{background:rgba(255,255,255,0.15)}
+.dropdown-menu{position:absolute;top:100%;left:0;background:#fff;border-radius:8px;box-shadow:0 4px 20px rgba(0,0,0,0.15);padding:0.4rem 0;min-width:180px;z-index:100001}
+.dropdown-menu li{list-style:none}
+.dropdown-menu a{color:#333;padding:0.6rem 1rem;border-radius:0;font-size:0.85rem}
+.dropdown-menu a:hover{background:#f0f0f0}
+.search-form{display:flex;margin-left:auto}
+.search-form input{border:none;padding:0.5rem 0.8rem;border-radius:25px 0 0 25px;width:200px;outline:none;font-size:0.85rem}
+.search-form button{border:none;background:#ffc107;padding:0.5rem 0.8rem;border-radius:0 25px 25px 0;cursor:pointer;color:#333;font-size:0.85rem}
+.nav-actions{display:flex;align-items:center;gap:0.6rem}
+.user-btn,.cart-btn,.login-btn,.register-btn{color:#fff;text-decoration:none;padding:0.5rem 0.8rem;border-radius:25px;display:flex;align-items:center;gap:0.3rem;font-weight:600;transition:all 0.3s;white-space:nowrap;font-size:0.85rem}
+.cart-btn{background:#ffc107;color:#333;position:relative}
+.cart-btn .badge{position:absolute;top:-5px;right:-5px;background:#dc3545;color:#fff;border-radius:50%;padding:0.15rem 0.4rem;font-size:0.65rem}
+.login-btn{border:2px solid #fff}
+.register-btn{background:#ffc107;color:#333}
+
+@media (max-width: 1200px) {
+  .nav-wrapper{padding:0.5rem 0.8rem}
+  .nav-content{gap:0.8rem;margin-left:0.8rem}
+  .nav-menu{gap:0.2rem}
+  .nav-menu a{padding:0.4rem 0.6rem;font-size:0.8rem}
+  .search-form input{width:150px;font-size:0.8rem;padding:0.4rem 0.6rem}
+  .search-form button{padding:0.4rem 0.6rem;font-size:0.8rem}
+  .nav-actions{gap:0.4rem}
+  .user-btn,.cart-btn,.login-btn,.register-btn{padding:0.4rem 0.6rem;font-size:0.8rem}
+  .btn-text{display:none}
+}
+
+@media (max-width: 992px) {
+  .mobile-toggle{display:block !important;z-index:100000}
+  .nav-content{position:fixed;top:0;left:-100%;width:280px;height:100vh;background:linear-gradient(180deg,#f8fffe 0%,#ffffff 100%);flex-direction:column;align-items:stretch;margin:0;padding:2rem 1.5rem;box-shadow:4px 0 25px rgba(27,94,32,0.15);overflow-y:auto;z-index:99999;transition:left 0.3s cubic-bezier(0.4,0,0.2,1);border-right:3px solid #e8f5e9}
+  .nav-content.show{left:0 !important;display:flex !important}
+  .nav-content::before{content:'';position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(27,94,32,0.4);z-index:-1;opacity:0;pointer-events:none;transition:opacity 0.3s}
+  .nav-content.show::before{opacity:1;pointer-events:auto}
+  .nav-menu{flex-direction:column;width:100%;gap:0.3rem;margin-top:1.5rem}
+  .nav-menu li{width:100%}
+  .nav-menu a{padding:1rem 1.2rem;width:100%;justify-content:flex-start;font-size:0.95rem;color:#2d5016;border-radius:12px;background:linear-gradient(135deg,#ffffff 0%,#f1f8e9 100%);border:1px solid #e8f5e9;font-weight:500;box-shadow:0 2px 8px rgba(46,125,50,0.08)}
+  .nav-menu a:hover{background:linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%);color:#1b5e20;transform:translateX(4px);box-shadow:0 4px 12px rgba(46,125,50,0.15)}
+  .nav-menu a i{color:#4caf50;margin-right:0.8rem;font-size:1.1rem}
+  .dropdown-menu{position:static !important;box-shadow:none;background:linear-gradient(135deg,#f1f8e9 0%,#e8f5e9 100%);margin:0.5rem 0 0 1.5rem;border-radius:10px;display:block !important;padding:0.5rem 0;border:1px solid #c8e6c9}
+  .dropdown-menu a{color:#2e7d32 !important;padding:0.8rem 1rem;font-size:0.9rem;background:transparent;border:none;box-shadow:none}
+  .dropdown-menu a:hover{background:linear-gradient(135deg,#c8e6c9 0%,#a5d6a7 100%) !important;color:#1b5e20 !important}
+  .search-form{width:100%;margin:1.5rem 0;order:-1}
+  .search-form input{width:100%;border-radius:25px;padding:0.9rem 1.2rem;font-size:0.9rem;border:2px solid #c8e6c9;background:#ffffff;color:#2d5016;box-shadow:inset 0 2px 4px rgba(46,125,50,0.05)}
+  .search-form input:focus{border-color:#4caf50;box-shadow:0 0 0 3px rgba(76,175,80,0.1)}
+  .search-form button{display:none}
+  .nav-actions{flex-direction:column;width:100%;gap:0.8rem;margin-top:1.5rem;padding-top:1.5rem;border-top:2px solid #e8f5e9}
+  .user-btn,.cart-btn,.login-btn,.register-btn{width:100%;justify-content:center;padding:0.9rem 1.2rem;font-size:0.9rem;border-radius:12px;font-weight:600;box-shadow:0 3px 10px rgba(0,0,0,0.1);transition:all 0.3s}
+  .user-btn{background:linear-gradient(135deg,#2e7d32 0%,#388e3c 100%);color:#fff;border:none}
+  .user-btn:hover{background:linear-gradient(135deg,#1b5e20 0%,#2e7d32 100%);transform:translateY(-2px);box-shadow:0 5px 15px rgba(46,125,50,0.3)}
+  .logout-btn{background:linear-gradient(135deg,#dc3545 0%,#e74c3c 100%)!important;color:#fff!important;border:none!important;width:100%;justify-content:center;padding:0.9rem 1.2rem;font-size:0.9rem;border-radius:12px;font-weight:600;box-shadow:0 3px 10px rgba(0,0,0,0.1);transition:all 0.3s;display:flex;align-items:center;gap:0.3rem}
+  .logout-btn:hover{background:linear-gradient(135deg,#c82333 0%,#dc3545 100%)!important;transform:translateY(-2px);box-shadow:0 5px 15px rgba(220,53,69,0.3)!important}
+  .logout-btn{background:linear-gradient(135deg,#dc3545 0%,#e74c3c 100%);color:#fff;border:none;width:100%;justify-content:center;padding:0.9rem 1.2rem;font-size:0.9rem;border-radius:12px;font-weight:600;box-shadow:0 3px 10px rgba(0,0,0,0.1);transition:all 0.3s;display:flex;align-items:center;gap:0.3rem}
+  .logout-btn:hover{background:linear-gradient(135deg,#c82333 0%,#dc3545 100%);transform:translateY(-2px);box-shadow:0 5px 15px rgba(220,53,69,0.3)}
+  .login-btn{background:linear-gradient(135deg,#2e7d32 0%,#388e3c 100%);color:#fff;border:none}
+  .login-btn:hover{background:linear-gradient(135deg,#1b5e20 0%,#2e7d32 100%);transform:translateY(-2px)}
+  .cart-btn{background:linear-gradient(135deg,#ff9800 0%,#ffa726 100%);color:#fff;position:relative}
+  .cart-btn:hover{background:linear-gradient(135deg,#f57c00 0%,#ff9800 100%);transform:translateY(-2px)}
+  .register-btn{background:linear-gradient(135deg,#4caf50 0%,#66bb6a 100%);color:#fff}
+  .register-btn:hover{background:linear-gradient(135deg,#388e3c 0%,#4caf50 100%);transform:translateY(-2px)}
+  .btn-text{display:inline !important}
+}
+
+@media (max-width: 576px) {
+  .nav-wrapper{padding:0.4rem 0.6rem;gap:0.5rem}
+  .brand{font-size:0.85rem;flex:1}
+  .brand span{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .brand img{height:28px}
+  .mobile-toggle{font-size:1.3rem;padding:0.2rem 0.4rem;display:block !important}
+  .nav-content{width:85%;max-width:300px;padding:1.2rem 0.8rem}
+  .nav-menu a{font-size:0.85rem;padding:0.75rem 0.9rem}
+  .dropdown-menu a{font-size:0.8rem;padding:0.6rem 0.9rem}
+  .search-form input{padding:0.7rem 0.9rem;font-size:0.85rem}
+  .nav-actions{gap:0.5rem}
+  .user-btn,.cart-btn,.login-btn,.register-btn{font-size:0.85rem;padding:0.7rem 0.9rem}
+  .cart-btn .badge{font-size:0.65rem;padding:0.15rem 0.4rem}
+}
 </style>

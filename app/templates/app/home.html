@@ -238,82 +238,62 @@
 {% block main-content %}
 <div class="container my-5">
 
-  <!-- Category Overview Section -->
-  <div class="text-center mb-4">
-    <h2 class="display-5 fw-bold text-success">🛒 Shop by Category</h2>
-    <p class="text-muted">Find everything you need for successful farming</p>
-  </div>
-
-  <!-- 4 Main Category Cards -->
-  <div class="row g-4 mb-5 row-cols-2 row-cols-md-4">
-    <div class="col">
-      <a href="{% url 'app:category' 'SD' %}" class="text-decoration-none">
-        <div class="card h-100 border-0 shadow-sm category-card">
-          <div class="card-body text-center p-4">
-            <i class="bi bi-flower1 text-success" style="font-size: 3rem;"></i>
-            <h5 class="fw-bold mt-2 mb-1">Seeds</h5>
-            <p class="text-muted small mb-2">Premium quality seeds</p>
-            <span class="btn btn-outline-success btn-sm">Explore →</span>
-          </div>
-        </div>
-      </a>
-    </div>
-    <div class="col">
-      <a href="{% url 'app:category' 'FT' %}" class="text-decoration-none">
-        <div class="card h-100 border-0 shadow-sm category-card">
-          <div class="card-body text-center p-4">
-            <i class="bi bi-droplet-half text-primary" style="font-size: 3rem;"></i>
-            <h5 class="fw-bold mt-2 mb-1">Fertilizers</h5>
-            <p class="text-muted small mb-2">Organic & chemical</p>
-            <span class="btn btn-outline-primary btn-sm">Explore →</span>
-          </div>
-        </div>
-      </a>
-    </div>
-    <div class="col">
-      <a href="{% url 'app:category' 'MC' %}" class="text-decoration-none">
-        <div class="card h-100 border-0 shadow-sm category-card">
-          <div class="card-body text-center p-4">
-            <i class="bi bi-gear-fill text-warning" style="font-size: 3rem;"></i>
-            <h5 class="fw-bold mt-2 mb-1">Machinery</h5>
-            <p class="text-muted small mb-2">Modern farm machinery</p>
-            <span class="btn btn-outline-warning btn-sm">Explore →</span>
-          </div>
-        </div>
-      </a>
-    </div>
-    <div class="col">
-      <a href="{% url 'app:category' 'EQ' %}" class="text-decoration-none">
-        <div class="card h-100 border-0 shadow-sm category-card">
-          <div class="card-body text-center p-4">
-            <i class="bi bi-tools text-danger" style="font-size: 3rem;"></i>
-            <h5 class="fw-bold mt-2 mb-1">Equipment</h5>
-            <p class="text-muted small mb-2">Essential farm tools</p>
-            <span class="btn btn-outline-danger btn-sm">Explore →</span>
-          </div>
-        </div>
-      </a>
-    </div>
-  </div>
-
-  <style>
-    .category-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    }
-    .category-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 40px rgba(34,139,34,0.25)!important;
-    }
-  </style>
+<div class="text-center mb-5">
+<h2 class="fw-bold mb-3" style="font-size:clamp(2rem,4.5vw,3rem);color:#2e7d32">🛒 Shop by Category</h2>
+<p class="text-muted" style="font-size:clamp(1rem,2.2vw,1.3rem)">Find everything you need for successful farming</p>
+</div>
+<div class="row g-5 mb-5">
+<div class="col-6 col-md-3">
+<a href="{% url 'app:category' 'SD' %}" class="text-decoration-none">
+<div class="cat-card" style="background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:3.5rem 2rem;text-align:center;transition:all 0.3s;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-height:380px;display:flex;flex-direction:column;justify-content:center">
+<i class="bi bi-flower1" style="font-size:5.5rem;color:#4caf50;margin-bottom:1.5rem;display:block"></i>
+<h5 class="fw-bold mb-3" style="color:#2e7d32;font-size:clamp(1.4rem,2.8vw,1.8rem)">Seeds</h5>
+<p class="text-muted mb-4" style="font-size:clamp(1rem,2vw,1.2rem)">Premium quality</p>
+<span class="btn btn-success w-100" style="font-size:clamp(1rem,2vw,1.1rem);font-weight:600;padding:0.9rem">Browse →</span>
+</div>
+</a>
+</div>
+<div class="col-6 col-md-3">
+<a href="{% url 'app:category' 'FT' %}" class="text-decoration-none">
+<div class="cat-card" style="background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:3.5rem 2rem;text-align:center;transition:all 0.3s;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-height:380px;display:flex;flex-direction:column;justify-content:center">
+<i class="bi bi-droplet-half" style="font-size:5.5rem;color:#2196f3;margin-bottom:1.5rem;display:block"></i>
+<h5 class="fw-bold mb-3" style="color:#1976d2;font-size:clamp(1.4rem,2.8vw,1.8rem)">Fertilizers</h5>
+<p class="text-muted mb-4" style="font-size:clamp(1rem,2vw,1.2rem)">Organic & chemical</p>
+<span class="btn btn-primary w-100" style="font-size:clamp(1rem,2vw,1.1rem);font-weight:600;padding:0.9rem">Browse →</span>
+</div>
+</a>
+</div>
+<div class="col-6 col-md-3">
+<a href="{% url 'app:category' 'MC' %}" class="text-decoration-none">
+<div class="cat-card" style="background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:3.5rem 2rem;text-align:center;transition:all 0.3s;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-height:380px;display:flex;flex-direction:column;justify-content:center">
+<i class="bi bi-gear-fill" style="font-size:5.5rem;color:#ff9800;margin-bottom:1.5rem;display:block"></i>
+<h5 class="fw-bold mb-3" style="color:#f57c00;font-size:clamp(1.4rem,2.8vw,1.8rem)">Machinery</h5>
+<p class="text-muted mb-4" style="font-size:clamp(1rem,2vw,1.2rem)">Modern equipment</p>
+<span class="btn btn-warning w-100" style="font-size:clamp(1rem,2vw,1.1rem);font-weight:600;padding:0.9rem">Browse →</span>
+</div>
+</a>
+</div>
+<div class="col-6 col-md-3">
+<a href="{% url 'app:category' 'EQ' %}" class="text-decoration-none">
+<div class="cat-card" style="background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:3.5rem 2rem;text-align:center;transition:all 0.3s;box-shadow:0 2px 8px rgba(0,0,0,0.08);min-height:380px;display:flex;flex-direction:column;justify-content:center">
+<i class="bi bi-tools" style="font-size:5.5rem;color:#f44336;margin-bottom:1.5rem;display:block"></i>
+<h5 class="fw-bold mb-3" style="color:#d32f2f;font-size:clamp(1.4rem,2.8vw,1.8rem)">Equipment</h5>
+<p class="text-muted mb-4" style="font-size:clamp(1rem,2vw,1.2rem)">Essential tools</p>
+<span class="btn btn-danger w-100" style="font-size:clamp(1rem,2vw,1.1rem);font-weight:600;padding:0.9rem">Browse →</span>
+</div>
+</a>
+</div>
+</div>
+<style>
+.cat-card:hover{transform:translateY(-8px);box-shadow:0 8px 20px rgba(0,0,0,0.15)!important;border-color:#2e7d32!important}
+</style>
 
   <!-- Detailed Category Sections -->
   <hr class="my-5">
 
   <!-- Seeds Section -->
-  <div class="mb-5 position-relative">
-    <div class="premium-seeds-bg rounded-4 p-4" style="background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%); border: 2px solid #4caf50;">
+  <div class="mb-5">
+    <div class="rounded-3 p-4" style="background:#fff;border:2px solid #e0e0e0">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="d-flex align-items-center">
           <div class="icon-badge bg-success text-white rounded-circle p-3 me-3 shadow">
@@ -435,7 +415,7 @@
 
   <!-- Fertilizers Section -->
   <div class="mb-5">
-    <div class="rounded-4 p-4" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border: 2px solid #2196f3;">
+    <div class="rounded-3 p-4" style="background:#fff;border:2px solid #e0e0e0">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="d-flex align-items-center">
           <div class="icon-badge bg-primary text-white rounded-circle p-3 me-3 shadow">
@@ -533,7 +513,7 @@
 
   <!-- Farm Machinery Section -->
   <div class="mb-5">
-    <div class="rounded-4 p-4" style="background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%); border: 2px solid #ffc107;">
+    <div class="rounded-3 p-4" style="background:#fff;border:2px solid #e0e0e0">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="d-flex align-items-center">
           <div class="icon-badge bg-warning text-dark rounded-circle p-3 me-3 shadow">
@@ -612,7 +592,7 @@
 
   <!-- Equipment Section -->
   <div class="mb-5">
-    <div class="rounded-4 p-4" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border: 2px solid #f44336;">
+    <div class="rounded-3 p-4" style="background:#fff;border:2px solid #e0e0e0">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <div class="d-flex align-items-center">
           <div class="icon-badge bg-danger text-white rounded-circle p-3 me-3 shadow">
@@ -710,16 +690,11 @@
 
 
   <!-- Featured Products Section -->
-<div class="container-fluid mb-5 py-5" style="background: linear-gradient(135deg, #e8eaf6 0%, #c5cae9 100%); border-top: 3px solid #5e35b1; border-bottom: 3px solid #5e35b1;">
+<div class="container-fluid mb-5 py-5" style="background:#f8f9fa;border-top:2px solid #e0e0e0;border-bottom:2px solid #e0e0e0">
   <div class="container">
     <div class="text-center mb-5">
-      <div class="d-inline-block position-relative">
-        <h2 class="display-4 fw-bold mb-2" style="background: linear-gradient(135deg, #5e35b1 0%, #7e57c2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-          ⭐ Featured Products ⭐
-        </h2>
-        <div class="position-absolute bottom-0 start-50 translate-middle-x" style="width: 100px; height: 4px; background: linear-gradient(90deg, #5e35b1, #7e57c2); border-radius: 2px;"></div>
-      </div>
-      <p class="text-dark fw-semibold mt-3" style="font-size: 1.1rem;">Best sellers and new arrivals — handpicked just for you!</p>
+      <h2 class="fw-bold mb-2" style="font-size:clamp(1.8rem,4vw,2.5rem);color:#2e7d32">⭐ Featured Products</h2>
+      <p class="text-muted" style="font-size:clamp(0.95rem,2vw,1.1rem)">Best sellers and new arrivals</p>
     </div>
 
     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3">
@@ -751,8 +726,8 @@
             {% endif %}
           </div>
           
-          <!-- Product Info with Gradient Border -->
-          <div class="card-body d-flex flex-column justify-content-between p-2" style="background: white; border-top: 2px solid; border-image: linear-gradient(90deg, #5e35b1, #7e57c2) 1;">
+          <!-- Product Info -->
+          <div class="card-body d-flex flex-column justify-content-between p-2" style="background:white;border-top:2px solid #e0e0e0">
             <div>
               <h6 class="card-title fw-bold mb-1" style="color: #212529; font-size: 0.85rem;">{{ product.title }}</h6>
               <p class="text-muted mb-2" style="font-size: 0.7rem;">
@@ -764,20 +739,19 @@
             <div class="mb-3">
               <div class="d-flex justify-content-between align-items-center mb-1">
                 <div>
-                  <span class="fw-bold" style="color: #5e35b1; font-size: 0.95rem;">₹{{ product.discounted_price }}</span>
+                  <span class="fw-bold" style="color:#2e7d32;font-size:0.95rem">₹{{ product.discounted_price }}</span>
                   {% if product.selling_price != product.discounted_price %}
                   <span class="text-muted text-decoration-line-through d-block" style="font-size: 0.7rem;">₹{{ product.selling_price }}</span>
                   {% endif %}
                 </div>
-                <div class="d-flex align-items-center px-2 py-1 rounded" style="background: rgba(94, 53, 177, 0.15);">
+                <div class="d-flex align-items-center">
                   <i class="bi bi-star-fill text-warning me-1"></i>
                   <span class="small fw-bold">{{ product.rating|default:"4.5" }}</span>
                 </div>
               </div>
             </div>
 
-            <!-- Gradient Button -->
-            <a href="{% url 'app:product-detail' product.id %}" class="btn btn-sm w-100 text-white fw-semibold shadow" style="background: linear-gradient(135deg, #5e35b1 0%, #7e57c2 100%); border: none; border-radius: 8px; transition: all 0.3s; font-size: 0.75rem; padding: 0.4rem;">
+            <a href="{% url 'app:product-detail' product.id %}" class="btn btn-success btn-sm w-100 fw-semibold" style="font-size:0.75rem;padding:0.4rem">
               <i class="bi bi-cart-plus me-1"></i> Add
             </a>
           </div>
@@ -790,28 +764,12 @@
 
 <style>
   .featured-product-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 20px 50px rgba(94, 53, 177, 0.4) !important;
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15) !important;
   }
   
   .featured-product-card:hover img {
-    transform: scale(1.1) rotate(2deg);
-  }
-  
-  .featured-product-card .btn:hover {
-    background: linear-gradient(135deg, #7e57c2 0%, #9575cd 100%) !important;
     transform: scale(1.05);
-  }
-  
-  .featured-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 150px;
-    height: 150px;
-    background: radial-gradient(circle, rgba(94,53,177,0.2) 0%, transparent 70%);
-    z-index: 1;
   }
   
   .animate-badge {
@@ -835,18 +793,18 @@
 
  <!-- CTA Section -->
 <div class="container">
-<div class="row bg-gradient rounded-3 p-5 text-center shadow-sm" style="background: linear-gradient(135deg, #e6f4ea 0%, #d1ecd5 100%);">
+<div class="rounded-3 p-4 text-center" style="background:#fff;border:2px solid #e0e0e0">
   <div class="col-md-8 mx-auto">
-    <h3 class="fw-bold mb-3">
-      <i class="bi bi-question-circle-fill text-success me-2"></i>
+    <h3 class="fw-bold mb-3" style="color:#2e7d32">
+      <i class="bi bi-question-circle-fill me-2"></i>
       Need Help Choosing the Right Products?
     </h3>
-    <p class="text-muted mb-4 fs-5">Our agricultural experts are here to guide you. Get personalized recommendations for your farming needs.</p>
+    <p class="text-muted mb-4">Our agricultural experts are here to guide you. Get personalized recommendations for your farming needs.</p>
     <div class="d-flex gap-3 justify-content-center flex-wrap">
-      <a href="{% url 'app:contact' %}" class="btn btn-success btn-lg d-flex align-items-center gap-2 px-4" style="transition: transform 0.3s;">
-        <i class="bi bi-headset fs-4"></i> Contact Expert
+      <a href="{% url 'app:contact' %}" class="btn btn-success btn-lg px-4">
+        <i class="bi bi-headset me-2"></i> Contact Expert
       </a>
-      <a href="{% url 'app:contact' %}" class="btn btn-outline-success btn-lg px-4" style="transition: transform 0.3s;">
+      <a href="{% url 'app:contact' %}" class="btn btn-outline-success btn-lg px-4">
         Browse All Products
       </a>
     </div>
@@ -855,7 +813,7 @@
 </div>
 
 <!-- Newsletter Section -->
-<div class="container-fluid bg-success text-white py-5 mt-5 position-relative overflow-hidden" style="background: url('{% static 'app/images/field-pattern.png' %}') no-repeat center center/cover; max-width: 100vw;">
+<div class="container-fluid bg-success text-white py-5 mt-5 position-relative overflow-hidden" style="max-width: 100vw;">
   <div class="bg-success bg-opacity-90 position-absolute top-0 start-0 w-100 h-100" style="z-index: 0;"></div>
   
   <div class="container position-relative" style="z-index: 10;">
@@ -940,11 +898,11 @@
 </style>
 
 <script>
-  // Simple email validation and feedback (vanilla JS)
-  document.querySelector('form').addEventListener('submit', function(e) {
+  // Simple email validation and feedback (vanilla JS) - ONLY for newsletter form
+  document.querySelector('.container-fluid.bg-success form').addEventListener('submit', function(e) {
     e.preventDefault();
     const emailInput = this.querySelector('input[type="email"]');
-    const feedback = this.querySelector('.email-feedback');
+    const feedback = document.querySelector('.email-feedback');
     const email = emailInput.value.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
