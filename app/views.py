@@ -11,6 +11,7 @@ from django.conf import settings
 from django.urls import reverse_lazy
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.core.cache import cache
+from django.core.mail import send_mail
 import json
 import requests
 import google.generativeai as genai
@@ -485,19 +486,17 @@ def place_order(request):
         custid = request.POST.get("custid")
         totalamount = request.POST.get("totalamount")
 
-        if not custid:  # If no address is selected
+        if not custid:
             messages.error(request, "⚠️ Please select a shipping address.")
             return redirect("app:checkout")
 
         customer = get_object_or_404(Customer, id=custid)
-
-        # Create a Payment entry for COD
         payment = Payment.objects.create(user=user, amount=totalamount, paid=False, razorpay_payment_status="COD")
 
-        # Move cart items into OrderPlaced
         cart_items = Cart.objects.filter(user=user)
+        order_items = []
         for item in cart_items:
-            OrderPlaced.objects.create(
+            order = OrderPlaced.objects.create(
                 user=user,
                 customer=customer,
                 product=item.product,
@@ -505,14 +504,41 @@ def place_order(request):
                 payment=payment,
                 status="Pending",
             )
+            order_items.append(f"{item.product.title} x {item.quantity} = ₹{item.product.discounted_price * item.quantity}")
 
-        # Clear cart after order is placed
         cart_items.delete()
+
+        # Send email
+        try:
+            items_text = "\n".join(order_items)
+            send_mail(
+                subject="Order Confirmation - Kisan Connect",
+                message=f"""Hello {customer.name},
+
+Your order has been placed successfully!
+
+Order Details:
+{items_text}
+
+Shipping Address:
+{customer.locality}, {customer.city}
+{customer.state} - {customer.zipcode}
+Mobile: {customer.mobile}
+
+Total Amount: ₹{totalamount}
+Payment: Cash on Delivery
+
+Thank you for shopping with Kisan Connect!""",
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=[user.email],
+                fail_silently=True,
+            )
+        except Exception as e:
+            print(f"Email error: {e}")
 
         messages.success(request, "🎉 Your order has been placed successfully with Cash on Delivery!")
         return redirect("app:order_success")
 
-    # If not POST, go back to checkout
     return redirect("app:checkout")
 
 
