@@ -16,6 +16,7 @@ import json
 import requests
 import google.generativeai as genai
 from deep_translator import GoogleTranslator
+import threading
 from .models import Product, Customer, Cart, OrderPlaced, Payment, CommunityGroup
 from .forms import CustomerProfileForm, CustomerRegistrationForm, CommunityGroupForm
 from .utils import STATE_CHOICES, DISTRICTS_BY_STATE
@@ -508,12 +509,13 @@ def place_order(request):
 
         cart_items.delete()
 
-        # Send email
-        try:
-            items_text = "\n".join(order_items)
-            send_mail(
-                subject="Order Confirmation - Kisan Connect",
-                message=f"""Hello {customer.name},
+        # Send email in background thread
+        def send_email():
+            try:
+                items_text = "\n".join(order_items)
+                send_mail(
+                    subject="Order Confirmation - Kisan Connect",
+                    message=f"""Hello {customer.name},
 
 Your order has been placed successfully!
 
@@ -529,12 +531,14 @@ Total Amount: ₹{totalamount}
 Payment: Cash on Delivery
 
 Thank you for shopping with Kisan Connect!""",
-                from_email=settings.EMAIL_HOST_USER,
-                recipient_list=[user.email],
-                fail_silently=True,
-            )
-        except Exception as e:
-            print(f"Email error: {e}")
+                    from_email=settings.EMAIL_HOST_USER,
+                    recipient_list=[user.email],
+                    fail_silently=True,
+                )
+            except:
+                pass
+        
+        threading.Thread(target=send_email).start()
 
         messages.success(request, "🎉 Your order has been placed successfully with Cash on Delivery!")
         return redirect("app:order_success")
