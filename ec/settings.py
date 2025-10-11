@@ -46,7 +46,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "app.middleware.LoginRequiredMiddleware",  # Custom login middleware
+    "app.middleware.LoginRequiredMiddleware",
+    "app.middleware.ErrorHandlerMiddleware",
 ]
 
 ROOT_URLCONF = "ec.urls"
@@ -79,19 +80,31 @@ WSGI_APPLICATION = "ec.wsgi.application"
 import os
 import dj_database_url
 
-if os.getenv('DATABASE_URL'):
-    DATABASES = {
-        'default': dj_database_url.config(default=os.getenv('DATABASE_URL'), conn_max_age=600)
-    }
-else:
+try:
+    if os.getenv('DATABASE_URL'):
+        DATABASES = {
+            'default': dj_database_url.config(default=os.getenv('DATABASE_URL'), conn_max_age=600)
+        }
+    else:
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": "postgres",
+                "USER": "postgres",
+                "PASSWORD": "Kalpesh12345@#$%",
+                "HOST": "db.zkcwnazosqzxbjsvtkxy.supabase.co",
+                "PORT": "5432",
+                "OPTIONS": {
+                    "connect_timeout": 10,
+                },
+            }
+        }
+except Exception as e:
+    print(f"Database configuration error: {e}")
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "postgres",
-            "USER": "postgres",
-            "PASSWORD": "Kalpesh12345@#$%",
-            "HOST": "db.zkcwnazosqzxbjsvtkxy.supabase.co",
-            "PORT": "5432",
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
         }
     }
 
@@ -169,6 +182,47 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 NEWSDATA_API_KEY = os.getenv("NEWSDATA_API_KEY", "")
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:Kalpesh12345@#$%@db.zkcwnazosqzxbjsvtkxy.supabase.co:5432/postgres")
+
+# ========================
+# LOGGING CONFIGURATION
+# ========================
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'debug.log',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console', 'file'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'app': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
 
 # ========================
 # LOGIN SETTINGS

@@ -2,22 +2,18 @@ from django.contrib import admin
 from django.urls import path, include
 from app import views
 from django.conf import settings
-from django.conf.urls.static import static  
+from django.conf.urls.static import static
+from django.views.generic import TemplateView
+
+handler404 = lambda request, exception: TemplateView.as_view(template_name='app/404.html')(request)
+handler500 = lambda request: TemplateView.as_view(template_name='app/500.html')(request)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-
-    # ✅ keep home page here
     path("", views.home, name="home"),
-
-    # ✅ keep category route
     path("category/<slug:val>/", views.CategoryView.as_view(), name="category"),
-
-    # ✅ include rest of app urls
     path("", include("app.urls")),
 ]
 
-# ✅ serve media files (both development and production)
-# Note: For production, use Cloudinary instead for persistent storage
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
