@@ -28,6 +28,7 @@ path("signin/", views.signin, name="signin"),
 path("prediction/", views.prediction, name="prediction"),
 # farming advice
  path("advice/", views.farming_advice, name="farming_advice"),
+ path("advice/", views.farming_advice, name="advice"),
 
 
 
