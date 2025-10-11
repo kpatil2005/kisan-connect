@@ -509,13 +509,24 @@ def place_order(request):
 
         cart_items.delete()
 
-        # Send email in background thread
+        # Send email via Brevo API
         def send_email():
             try:
+                import sib_api_v3_sdk
+                from sib_api_v3_sdk.rest import ApiException
+                import os
+                
+                configuration = sib_api_v3_sdk.Configuration()
+                configuration.api_key['api-key'] = os.getenv('BREVO_API_KEY', '')
+                
+                api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
+                
                 items_text = "\n".join(order_items)
-                send_mail(
+                send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+                    to=[{"email": user.email, "name": customer.name}],
+                    sender={"name": "Kisan Connect", "email": "kisansetu1@gmail.com"},
                     subject="Order Confirmation - Kisan Connect",
-                    message=f"""Hello {customer.name},
+                    text_content=f"""Hello {customer.name},
 
 Your order has been placed successfully!
 
@@ -530,11 +541,9 @@ Mobile: {customer.mobile}
 Total Amount: ₹{totalamount}
 Payment: Cash on Delivery
 
-Thank you for shopping with Kisan Connect!""",
-                    from_email=settings.EMAIL_HOST_USER,
-                    recipient_list=[user.email],
-                    fail_silently=True,
+Thank you for shopping with Kisan Connect!"""
                 )
+                api_instance.send_transac_email(send_smtp_email)
             except:
                 pass
         
