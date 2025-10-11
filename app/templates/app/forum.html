@@ -93,6 +93,16 @@
     <!-- Communities Section -->
     <div class="communities-section">
         <div class="container">
+            <!-- Skeleton Loader -->
+            <div id="skeletonLoader" class="communities-grid" style="display: none;">
+                <div class="skeleton-card" style="animation-delay: 0s;"></div>
+                <div class="skeleton-card" style="animation-delay: 0.1s;"></div>
+                <div class="skeleton-card" style="animation-delay: 0.2s;"></div>
+                <div class="skeleton-card" style="animation-delay: 0.3s;"></div>
+                <div class="skeleton-card" style="animation-delay: 0.4s;"></div>
+                <div class="skeleton-card" style="animation-delay: 0.5s;"></div>
+            </div>
+            
             <div id="communitiesContainer" class="communities-grid">
                 {% for group in groups %}
                 <div class="community-card" 
@@ -101,7 +111,7 @@
                      data-platform="{{ group.platform }}"
                      data-name="{{ group.group_name|lower }}">
                     <div class="card-header">
-                        <div class="community-icon">
+                        <div class="community-icon platform-{{ group.platform }}">
                             {% if group.platform == 'whatsapp' %}
                                 <i class="fab fa-whatsapp"></i>
                             {% elif group.platform == 'telegram' %}
@@ -112,7 +122,7 @@
                                 <i class="fas fa-users"></i>
                             {% endif %}
                         </div>
-                        <div class="platform-badge">{{ group.get_platform_display }}</div>
+                        <div class="platform-badge platform-badge-{{ group.platform }}">{{ group.get_platform_display }}</div>
                     </div>
                     <div class="card-content">
                         <h3 class="community-name">{{ group.group_name }}</h3>
@@ -123,6 +133,10 @@
                                 <small>({{ group.region }})</small>
                             {% endif %}
                         </div>
+                        <div class="member-count">
+                            <i class="fas fa-users"></i>
+                            <span>{{ group.member_count|default:"50+" }} Members</span>
+                        </div>
                         {% if group.description %}
                             <p class="community-description">{{ group.description|truncatewords:15 }}</p>
                         {% endif %}
@@ -132,8 +146,9 @@
                             <i class="fas fa-external-link-alt"></i>
                             Join Community
                         </a>
-                        <button class="btn btn-secondary btn-info" data-bs-toggle="tooltip" title="More Info">
-                            <i class="fas fa-info-circle"></i>
+                        <button class="btn btn-secondary btn-share" onclick="shareCommunity('{{ group.group_name }}', '{{ group.group_link }}')"
+                                data-bs-toggle="tooltip" title="Share">
+                            <i class="fas fa-share-alt"></i>
                         </button>
                     </div>
                 </div>
@@ -646,6 +661,21 @@
     position: relative;
 }
 
+.community-icon.platform-whatsapp {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    box-shadow: 0 8px 16px rgba(37, 211, 102, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.community-icon.platform-telegram {
+    background: linear-gradient(135deg, #0088cc 0%, #005f8c 100%);
+    box-shadow: 0 8px 16px rgba(0, 136, 204, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.community-icon.platform-facebook {
+    background: linear-gradient(135deg, #1877F2 0%, #0d5dbf 100%);
+    box-shadow: 0 8px 16px rgba(24, 119, 242, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
 .community-icon::before {
     content: '';
     position: absolute;
@@ -684,6 +714,21 @@
     letter-spacing: 0.5px;
 }
 
+.platform-badge-whatsapp {
+    color: #25D366;
+    border-color: #25D366;
+}
+
+.platform-badge-telegram {
+    color: #0088cc;
+    border-color: #0088cc;
+}
+
+.platform-badge-facebook {
+    color: #1877F2;
+    border-color: #1877F2;
+}
+
 .community-card:hover .platform-badge {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     color: white;
@@ -713,6 +758,30 @@
 }
 
 .location-info i {
+    color: var(--primary-color);
+}
+
+.member-count {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #f0f8f0 0%, #e8f5e8 100%);
+    border-radius: 20px;
+    width: fit-content;
+    border: 1px solid rgba(46, 125, 50, 0.15);
+}
+
+.member-count i {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.member-count span {
+    font-weight: 600;
     color: var(--primary-color);
 }
 
@@ -771,22 +840,22 @@
     left: 100%;
 }
 
-.btn-info {
-    background: linear-gradient(135deg, var(--background-color) 0%, #e3f2fd 100%);
-    color: var(--primary-color);
-    border: 2px solid rgba(46, 125, 50, 0.2);
+.btn-share {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    color: var(--accent-color);
+    border: 2px solid rgba(255, 111, 0, 0.3);
     padding: 12px 16px;
     border-radius: 25px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(255, 111, 0, 0.15);
 }
 
-.btn-info:hover {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+.btn-share:hover {
+    background: linear-gradient(135deg, var(--accent-color) 0%, #ff8a65 100%);
     color: white;
-    border-color: var(--primary-color);
+    border-color: var(--accent-color);
     transform: translateY(-2px) scale(1.1);
-    box-shadow: 0 8px 20px rgba(46, 125, 50, 0.3);
+    box-shadow: 0 8px 20px rgba(255, 111, 0, 0.4);
 }
 
 /* List View */
@@ -1177,6 +1246,85 @@
 .tooltip {
     font-size: 0.8rem;
 }
+
+/* Skeleton Loader */
+.skeleton-card {
+    background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
+    border-radius: 20px;
+    height: 380px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(46, 125, 50, 0.1);
+    animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255,255,255,0.6) 50%, 
+        transparent 100%);
+    animation: skeletonShimmer 2s infinite;
+}
+
+@keyframes skeletonPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes skeletonShimmer {
+    0% { left: -100%; }
+    100% { left: 200%; }
+}
+
+/* Share Toast */
+.share-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 16px 24px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(46, 125, 50, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 9999;
+    animation: toastSlideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-weight: 600;
+}
+
+.share-toast i {
+    font-size: 1.2rem;
+}
+
+@keyframes toastSlideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastSlideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
 </style>
 
 <!-- Additional JavaScript for new functionalities -->
@@ -1288,7 +1436,54 @@ document.addEventListener('DOMContentLoaded', function() {
     formInputs.forEach(input => {
         input.addEventListener('input', updateProgress);
     });
+    
+    // Skeleton loader simulation
+    const skeletonLoader = document.getElementById('skeletonLoader');
+    const realContainer = document.getElementById('communitiesContainer');
+    
+    if (realContainer.children.length > 0) {
+        skeletonLoader.style.display = 'grid';
+        realContainer.style.display = 'none';
+        
+        setTimeout(() => {
+            skeletonLoader.style.display = 'none';
+            realContainer.style.display = 'grid';
+        }, 800);
+    }
 });
+
+// Share functionality
+function shareCommunity(name, link) {
+    if (navigator.share) {
+        navigator.share({
+            title: name,
+            text: `Join ${name} farming community`,
+            url: link
+        }).catch(() => fallbackShare(name, link));
+    } else {
+        fallbackShare(name, link);
+    }
+}
+
+function fallbackShare(name, link) {
+    navigator.clipboard.writeText(link).then(() => {
+        showToast('Link copied to clipboard!');
+    }).catch(() => {
+        showToast('Unable to copy link');
+    });
+}
+
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'share-toast';
+    toast.innerHTML = `<i class="fas fa-check-circle"></i><span>${message}</span>`;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'toastSlideOut 0.4s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards';
+        setTimeout(() => toast.remove(), 400);
+    }, 2500);
+}
 </script>
 {% endblock %}
 

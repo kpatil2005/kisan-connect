@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Confirmation</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        background-color: #f4f7f6;
+        color: #333;
+    }
+    a { text-decoration: none; }
+    .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .header { background: linear-gradient(135deg,#2e7d32 0%,#388e3c 50%,#4caf50 100%); text-align: center; padding: 40px 20px; color: #fff; }
+    .header h1 { font-size: 32px; margin: 0; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+    .header p { margin: 10px 0 0; font-size: 16px; color: rgba(255,255,255,0.95); }
+    .badge { display: inline-block; background: #e8f5e9; padding: 12px 24px; border-radius: 50px; border: 2px solid #4caf50; font-weight: 700; font-size: 14px; color: #2e7d32; margin: 20px 0; }
+    .section { padding: 20px 30px; }
+    .section h3 { margin: 0 0 12px; font-size: 18px; font-weight: 700; color: #2e7d32; }
+    .order-card, .address-card, .payment-card { border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+    .order-card { background: #f8f9fa; border: 1px solid #e0e0e0; }
+    .address-card { background: #fff3e0; border-left: 4px solid #ff9800; }
+    .payment-card { background: #e3f2fd; border-left: 4px solid #2196f3; }
+    .cta-button { display: inline-block; background: linear-gradient(135deg,#2e7d32 0%,#4caf50 100%); color: #fff; padding: 16px 40px; border-radius: 50px; font-weight: 600; font-size: 16px; box-shadow: 0 6px 20px rgba(46,125,50,0.3); margin: 20px 0; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 8px 0; font-size: 14px; }
+    td.label { color: #666; }
+    td.value { color: #333; font-weight: 600; }
+    td.total-label { color: #2e7d32; font-weight: 700; font-size: 16px; }
+    td.total-value { color: #2e7d32; font-weight: 800; font-size: 18px; }
+    .footer { background: #f8f9fa; text-align: center; padding: 30px; font-size: 14px; color: #666; border-top: 1px solid #e0e0e0; }
+    @media screen and (max-width: 640px) {
+        .container { width: 100% !important; border-radius: 0; }
+        .header { padding: 30px 15px; }
+        .section { padding: 15px 20px; }
+        .cta-button { padding: 14px 30px; font-size: 15px; }
+    }
+</style>
+</head>
+<body>
+    <div style="padding:40px 20px; background:#f4f7f6;">
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <h1>🎉 Order Confirmed!</h1>
+                <p>Thank you for shopping with <strong>Kisan Connect</strong></p>
+            </div>
+            
+            <!-- Success Badge -->
+            <div style="text-align:center;">
+                <div class="badge">✓ ORDER PLACED SUCCESSFULLY</div>
+            </div>
+            
+            <!-- Greeting -->
+            <div class="section">
+                <p>Hello <strong>{{ customer_name }}</strong>,</p>
+                <p>Your order has been successfully placed and will be delivered to your address shortly.</p>
+            </div>
+
+            <!-- Order Details -->
+            <div class="section order-card">
+                <h3>📦 Order Details</h3>
+                <div style="background:#fff;border-radius:8px;padding:15px 20px;margin-bottom:15px;">
+                    {{ order_items|safe }}
+                </div>
+                <table>
+                    <tr>
+                        <td class="label">Subtotal:</td>
+                        <td class="value" align="right">₹{{ subtotal }}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Delivery Charges:</td>
+                        <td class="value" align="right">₹40</td>
+                    </tr>
+                    <tr>
+                        <td class="total-label">Total Amount:</td>
+                        <td class="total-value" align="right">₹{{ total_amount }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- Shipping Address -->
+            <div class="section address-card">
+                <h3>🚚 Shipping Address</h3>
+                <p>
+                    <strong>{{ customer_name }}</strong><br>
+                    {{ locality }}<br>
+                    {{ city }}, {{ state }} - {{ zipcode }}<br>
+                    📱 {{ mobile }}
+                </p>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="section payment-card">
+                <h3>💳 Payment Method</h3>
+                <p><strong>Cash on Delivery (COD)</strong></p>
+            </div>
+
+            <!-- CTA -->
+            <div class="section" style="text-align:center;">
+                <a href="{{ site_url }}" class="cta-button">Continue Shopping</a>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <p>Need help? Contact us at <a href="mailto:kisansetu1@gmail.com" style="color:#2e7d32;font-weight:600;">kisansetu1@gmail.com</a></p>
+                <p>🌾 <strong>Kisan Connect</strong> - Empowering Farmers</p>
+                <p>© 2024 Kisan Connect. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

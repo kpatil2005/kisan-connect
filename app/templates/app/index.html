@@ -1570,40 +1570,194 @@
     </div>
   </section>
 
-<section id="about" class="py-5" style="background:linear-gradient(180deg,#f8f9fa 0%,#e8f5e9 100%)">
+<section id="about" class="py-4 py-md-5" style="background:linear-gradient(180deg,#f8f9fa 0%,#e8f5e9 100%)">
 <div class="container">
-<div class="text-center mb-5">
-<h2 class="fw-bold mb-3" style="font-size:clamp(2rem,4vw,3rem);color:#1b5e20">ℹ️ About <span style="color:#2e7d32">Kisan Connect</span></h2>
-<p class="text-muted mx-auto" style="max-width:700px;font-size:clamp(1rem,2vw,1.2rem)">Empowering farmers with information, opportunities, and a connected farming community.</p>
-<div style="width:80px;height:4px;background:linear-gradient(90deg,#2e7d32,#66bb6a);margin:1.5rem auto;border-radius:2px"></div>
+<div class="text-center mb-3 mb-md-4">
+<h2 class="fw-bold mb-2" style="font-size:clamp(1.5rem,4vw,3rem);color:#1b5e20">ℹ️ About <span style="color:#2e7d32">Kisan Connect</span></h2>
+<p class="text-muted mx-auto" style="max-width:700px;font-size:clamp(0.9rem,2vw,1.2rem)">Empowering farmers with information, opportunities, and a connected farming community.</p>
+<div style="width:60px;height:3px;background:linear-gradient(90deg,#2e7d32,#66bb6a);margin:1rem auto;border-radius:2px"></div>
 </div>
-<div class="row align-items-center g-5 mb-5">
+<div class="row align-items-center g-3 g-md-4 mb-3 mb-md-4">
 <div class="col-lg-6">
-<h3 class="fw-bold mb-4" style="color:#1b5e20;font-size:clamp(1.5rem,3vw,2rem)"><span style="font-size:2.5rem;margin-right:0.5rem">🌾</span>Who We Are</h3>
-<p class="text-muted mb-3" style="line-height:1.9;font-size:clamp(0.95rem,2vw,1.1rem)">Kisan Connect is a one-stop digital platform designed to empower farmers by providing easy access to government schemes, expert farming advice, a marketplace for agricultural products, community discussions, and the latest farming news.</p>
-<p class="text-muted mb-4" style="line-height:1.9;font-size:clamp(0.95rem,2vw,1.1rem)">We bridge traditional farming practices with modern technology, ensuring farmers have all the resources they need to grow sustainably and profitably.</p>
-<a href="{% url 'app:contact' %}" class="btn btn-lg rounded-pill px-5 py-3 shadow" style="background:linear-gradient(135deg,#2e7d32,#388e3c);border:none;color:#fff;font-weight:600;transition:all 0.3s">📩 Contact Us</a>
+<h3 class="fw-bold mb-2 mb-md-3" style="color:#1b5e20;font-size:clamp(1.2rem,3vw,2rem)"><span style="font-size:clamp(1.8rem,5vw,2.5rem);margin-right:0.3rem">🌾</span>Who We Are</h3>
+<p class="text-muted mb-2" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem)">Kisan Connect is a one-stop digital platform designed to empower farmers by providing easy access to government schemes, expert farming advice, a marketplace for agricultural products, community discussions, and the latest farming news.</p>
+<p class="text-muted mb-3" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem)">We bridge traditional farming practices with modern technology, ensuring farmers have all the resources they need to grow sustainably and profitably.</p>
+<a href="{% url 'app:contact' %}" class="btn btn-lg rounded-pill px-4 py-2 shadow" style="background:linear-gradient(135deg,#2e7d32,#388e3c);border:none;color:#fff;font-weight:600;font-size:clamp(0.9rem,2vw,1rem)">📩 Contact Us</a>
 </div>
 <div class="col-lg-6 text-center">
-<img src="{% static 'app/images/logo.png' %}" alt="Kisan Connect" class="img-fluid" style="max-width:350px;filter:drop-shadow(0 20px 40px rgba(46,125,50,0.25));transition:transform 0.3s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+<img src="{% static 'app/images/logo.png' %}" alt="Kisan Connect" class="img-fluid" style="max-width:clamp(200px,50vw,350px);filter:drop-shadow(0 10px 20px rgba(46,125,50,0.2))">
 </div>
 </div>
-<div class="row g-5 text-center">
-<div class="col-md-6">
-<div style="font-size:4rem;margin-bottom:1.5rem">🌱</div>
-<h4 class="fw-bold mb-3" style="color:#1b5e20;font-size:clamp(1.3rem,2.5vw,1.8rem)">Our Mission</h4>
-<p class="text-muted" style="line-height:1.9;font-size:clamp(0.95rem,2vw,1.1rem);max-width:500px;margin:0 auto">To empower farmers with digital tools, transparent pricing, and direct market access. Reducing middlemen and creating opportunities for higher profits and sustainable growth.</p>
+<div class="row g-0 d-none d-md-flex">
+<div class="col-md-6 p-4 text-center">
+<div style="font-size:clamp(2.5rem,8vw,4rem);margin-bottom:0.8rem">🌱</div>
+<h4 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1.1rem,2.5vw,1.8rem)">Our Mission</h4>
+<p class="text-muted" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem);max-width:500px;margin:0 auto">To empower farmers with digital tools, transparent pricing, and direct market access. Reducing middlemen and creating opportunities for higher profits and sustainable growth.</p>
 </div>
-<div class="col-md-6">
-<div style="font-size:4rem;margin-bottom:1.5rem">🚜</div>
-<h4 class="fw-bold mb-3" style="color:#1b5e20;font-size:clamp(1.3rem,2.5vw,1.8rem)">Our Vision</h4>
-<p class="text-muted" style="line-height:1.9;font-size:clamp(0.95rem,2vw,1.1rem);max-width:500px;margin:0 auto">A connected farming ecosystem where every farmer has equal access to modern resources, buyers, and suppliers, ensuring prosperity for generations to come.</p>
+<div class="col-md-6 p-4 text-center" style="border-left:2px solid #e0e0e0">
+<div style="font-size:clamp(2.5rem,8vw,4rem);margin-bottom:0.8rem">🚜</div>
+<h4 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1.1rem,2.5vw,1.8rem)">Our Vision</h4>
+<p class="text-muted" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem);max-width:500px;margin:0 auto">A connected farming ecosystem where every farmer has equal access to modern resources, buyers, and suppliers, ensuring prosperity for generations to come.</p>
 </div>
 </div>
 </div>
 </section>
 
 
+
+<!-- Customer Reviews Section -->
+<section class="py-5" style="background:linear-gradient(180deg,#f8fdf9 0%,#fff 100%)">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+      <div>
+        <h2 class="fw-bold mb-1" style="color:#1b5e20;font-size:clamp(1.5rem,5vw,2.5rem)">🌾 Customer Reviews</h2>
+        <p class="text-muted mb-0" style="font-size:clamp(0.85rem,2vw,1rem)">See what our farmers are saying</p>
+      </div>
+      {% if user.is_authenticated %}
+      <button onclick="document.getElementById('reviewForm').style.display='block';this.style.display='none'" style="background:#ffc107;border:none;color:#000;padding:12px 24px;border-radius:8px;font-weight:700;font-size:0.95rem;cursor:pointer;box-shadow:0 4px 12px rgba(255,193,7,0.3);white-space:nowrap">⭐ Write Review</button>
+      {% endif %}
+    </div>
+
+    <!-- Stats Card -->
+    {% if reviews %}
+    <div class="card mb-5" style="border-radius:16px;border:none;box-shadow:0 4px 20px rgba(0,0,0,0.08);background:linear-gradient(135deg,#fff 0%,#f8fdf9 100%)">
+      <div class="card-body p-4">
+        <div class="row g-3">
+          <div class="col-md-3 col-12 text-center border-md-end mb-3 mb-md-0">
+            <div style="font-size:clamp(2.5rem,8vw,3.5rem);font-weight:800;color:#2e7d32;line-height:1">4.0</div>
+            <div class="my-2" style="color:#ffc107;font-size:clamp(1.2rem,4vw,1.5rem)">⭐⭐⭐⭐☆</div>
+            <p class="text-muted mb-0 fw-semibold" style="font-size:clamp(0.85rem,2vw,1rem)">{{ reviews|length }} Total Reviews</p>
+          </div>
+          <div class="col-md-6 col-12 border-md-end mb-3 mb-md-0">
+            <div class="px-2 px-md-3">
+              {% for i in "54321" %}
+              <div class="d-flex align-items-center mb-2">
+                <span class="me-2 fw-semibold" style="min-width:45px;font-size:clamp(0.85rem,2vw,1rem)">{{ i }} ⭐</span>
+                <div class="progress flex-grow-1" style="height:8px;border-radius:5px;background:#e9ecef">
+                  <div class="progress-bar" style="background:linear-gradient(90deg,#2e7d32,#4caf50);width:{% if i == '5' %}60{% elif i == '4' %}25{% elif i == '3' %}10{% elif i == '2' %}3{% else %}2{% endif %}%"></div>
+                </div>
+                <span class="ms-2 text-muted fw-semibold" style="min-width:25px;font-size:clamp(0.8rem,2vw,0.95rem)">{% if i == '5' %}21{% elif i == '4' %}9{% elif i == '3' %}3{% elif i == '2' %}1{% else %}1{% endif %}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="col-md-3 col-12">
+            <div class="d-flex flex-column gap-2 px-2">
+              <div class="d-flex align-items-center justify-content-between p-2" style="background:#e8f5e9;border-radius:8px;font-size:clamp(0.85rem,2vw,1rem)">
+                <span>🌱 Quality</span>
+                <span class="fw-bold" style="color:#2e7d32">4.0</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between p-2" style="background:#e8f5e9;border-radius:8px;font-size:clamp(0.85rem,2vw,1rem)">
+                <span>🚜 Delivery</span>
+                <span class="fw-bold" style="color:#2e7d32">4.2</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between p-2" style="background:#e8f5e9;border-radius:8px;font-size:clamp(0.85rem,2vw,1rem)">
+                <span>💬 Support</span>
+                <span class="fw-bold" style="color:#2e7d32">4.0</span>
+              </div>
+              <div class="d-flex align-items-center justify-content-between p-2" style="background:#f5f5f5;border-radius:8px;font-size:clamp(0.85rem,2vw,1rem)">
+                <span>📍 Location</span>
+                <span class="fw-bold" style="color:#666">3.5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Review Form -->
+    {% if user.is_authenticated %}
+    <div id="reviewForm" class="card mb-5" style="border-radius:16px;border:none;box-shadow:0 4px 20px rgba(46,125,50,0.15);display:none;border-top:4px solid #2e7d32">
+      <div class="card-body p-4">
+        <h5 class="fw-bold mb-4" style="color:#1b5e20">✍️ Share Your Experience</h5>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-4">
+            <label class="form-label fw-bold" style="color:#1b5e20">Your Rating</label>
+            <div class="star-rating-input d-flex gap-2 align-items-center">
+              <input type="radio" name="rating" value="5" id="s5" required hidden>
+              <label for="s5" class="star-btn">⭐</label>
+              <input type="radio" name="rating" value="4" id="s4" hidden>
+              <label for="s4" class="star-btn">⭐</label>
+              <input type="radio" name="rating" value="3" id="s3" hidden>
+              <label for="s3" class="star-btn">⭐</label>
+              <input type="radio" name="rating" value="2" id="s2" hidden>
+              <label for="s2" class="star-btn">⭐</label>
+              <input type="radio" name="rating" value="1" id="s1" hidden>
+              <label for="s1" class="star-btn">⭐</label>
+              <span class="ms-3 fw-bold rating-text" style="color:#666">Select rating</span>
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-bold" style="color:#1b5e20">Your Review</label>
+            <textarea name="review" class="form-control form-control-lg" rows="4" placeholder="Tell us about your experience..." required style="border:2px solid #e0e0e0;border-radius:10px"></textarea>
+          </div>
+          <button type="submit" class="btn btn-lg px-5" style="background:linear-gradient(135deg,#2e7d32,#4caf50);border:none;color:#fff;border-radius:10px;font-weight:700;box-shadow:0 4px 12px rgba(46,125,50,0.3)">Submit Review</button>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Reviews List -->
+    <div class="row g-3 g-md-4">
+      {% for review in reviews %}
+      <div class="col-12 col-md-6">
+        <div class="card h-100" style="border-radius:16px;border:none;box-shadow:0 2px 12px rgba(0,0,0,0.06);background:#fff">
+          <div class="card-body p-3 p-md-4">
+            <div class="d-flex justify-content-between align-items-start mb-3 gap-2">
+              <div class="d-flex align-items-center gap-2 gap-md-3 flex-grow-1">
+                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width:45px;height:45px;background:linear-gradient(135deg,#2e7d32,#4caf50);color:#fff;font-weight:700;font-size:1.2rem">
+                  {{ review.user.username|slice:":1"|upper }}
+                </div>
+                <div class="flex-grow-1 min-w-0">
+                  <div class="fw-bold text-truncate" style="color:#1b5e20;font-size:clamp(0.95rem,2.5vw,1.1rem)">{{ review.user.first_name|default:review.user.username }}</div>
+                  <small class="text-muted" style="font-size:clamp(0.75rem,2vw,0.85rem)">{{ review.created_at|date:"M d, Y" }}</small>
+                </div>
+              </div>
+              <div class="px-2 px-md-3 py-1 flex-shrink-0" style="background:#fff3cd;border-radius:20px">
+                <span style="color:#ffc107;font-size:clamp(0.9rem,2.5vw,1.1rem)">{% for i in "12345"|slice:":review.rating" %}⭐{% endfor %}</span>
+              </div>
+            </div>
+            <p class="mb-0" style="color:#555;line-height:1.7;font-size:clamp(0.85rem,2vw,0.95rem)">{{ review.review_text }}</p>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="text-center py-5">
+          <div style="font-size:4rem;opacity:0.3">📝</div>
+          <p class="text-muted fs-5 mt-3">No reviews yet. Be the first to share!</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<style>
+.star-rating-input{flex-direction:row-reverse;justify-content:flex-end;flex-wrap:wrap}
+.star-btn{font-size:2.5rem;cursor:pointer;filter:grayscale(100%);opacity:0.4;margin:0}
+.star-btn:hover,.star-btn:hover ~ .star-btn{filter:grayscale(0%);opacity:1}
+.star-rating-input input:checked ~ .star-btn{filter:grayscale(0%);opacity:1}
+@media (max-width:768px){
+  .star-btn{font-size:1.8rem}
+  .rating-text{font-size:0.9rem!important;width:100%;text-align:center;margin-top:0.5rem!important}
+  .border-md-end{border-right:none!important;border-bottom:1px solid #dee2e6;padding-bottom:1rem}
+}
+</style>
+<script>
+if(document.querySelector('.star-rating-input')){
+  document.querySelectorAll('.star-rating-input input').forEach(input=>{
+    input.addEventListener('change',function(){
+      const text=this.nextElementSibling.parentElement.querySelector('.rating-text');
+      const labels=['Poor','Fair','Good','Very Good','Excellent'];
+      const colors=['#f44336','#ff9800','#2e7d32','#2e7d32','#2e7d32'];
+      text.textContent=labels[this.value-1];
+      text.style.color=colors[this.value-1];
+    });
+  });
+}
+</script>
 
 <!-- Newsletter Section -->
 <div class="container-fluid bg-success text-white py-5 mt-5 position-relative overflow-hidden">
@@ -1632,13 +1786,14 @@
 
       <!-- Right Content -->
       <div class="col-md-6">
-        <form class="d-flex gap-3 flex-column flex-sm-row align-items-center" style="max-width: 550px; margin-left: auto;" novalidate>
-          <input type="email" class="form-control form-control-lg rounded-pill shadow-sm" placeholder="Enter your email" aria-label="Email" required>
+        <form id="newsletterForm" class="d-flex gap-3 flex-column flex-sm-row align-items-center" style="max-width: 550px; margin-left: auto;">
+          {% csrf_token %}
+          <input type="email" name="email" class="form-control form-control-lg rounded-pill shadow-sm" placeholder="Enter your email" aria-label="Email" required>
           <button type="submit" class="btn btn-warning btn-lg rounded-pill px-5 fw-bold shadow-sm newsletter-btn">
             Subscribe <i class="bi bi-arrow-right ms-2"></i>
           </button>
         </form>
-        <div class="mt-2 text-warning fw-semibold small email-feedback" role="alert" style="display:none;">Please enter a valid email address.</div>
+        <div class="mt-2 text-warning fw-semibold small email-feedback" role="alert" style="display:none;"></div>
         <small class="d-block mt-3 opacity-75">We respect your privacy and never share your information.</small>
 
         <!-- Extra Benefits -->
@@ -1691,24 +1846,42 @@
 </style>
 
 <script>
-  // Simple email validation and feedback (vanilla JS) - ONLY for newsletter form
-  document.querySelector('.container-fluid.bg-success form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const emailInput = this.querySelector('input[type="email"]');
-    const feedback = document.querySelector('.email-feedback');
-    const email = emailInput.value.trim();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      feedback.style.display = 'block';
-      emailInput.classList.add('is-invalid');
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const form = this;
+  const emailInput = form.querySelector('input[name="email"]');
+  const feedback = document.querySelector('.email-feedback');
+  const formData = new FormData(form);
+  
+  console.log('Submitting email:', emailInput.value);
+  
+  fetch('{% url "app:subscribe_newsletter" %}', {
+    method: 'POST',
+    body: formData,
+    headers: {'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value}
+  })
+  .then(res => {
+    console.log('Response status:', res.status);
+    return res.json();
+  })
+  .then(data => {
+    console.log('Response data:', data);
+    feedback.textContent = data.message;
+    feedback.style.display = 'block';
+    if(data.success) {
+      feedback.className = 'mt-2 text-success fw-semibold small email-feedback';
+      form.reset();
     } else {
-      feedback.style.display = 'none';
-      emailInput.classList.remove('is-invalid');
-      alert('Thank you for subscribing!');
-      this.reset();
+      feedback.className = 'mt-2 text-warning fw-semibold small email-feedback';
     }
+  })
+  .catch(err => {
+    console.error('Error:', err);
+    feedback.textContent = 'Subscription failed. Please try again.';
+    feedback.className = 'mt-2 text-danger fw-semibold small email-feedback';
+    feedback.style.display = 'block';
   });
+});
 </script>
 
 <!-- Role Selection Modal -->

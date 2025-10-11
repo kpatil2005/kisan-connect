@@ -33,8 +33,21 @@ except Exception as e:
 # Basic Views
 # =======================
 def home(request):
-    # Home page is public - no login required
-    return render(request, "app/index.html")
+    if request.method == "POST" and request.user.is_authenticated:
+        try:
+            rating = request.POST.get('rating')
+            review_text = request.POST.get('review')
+            if rating and review_text:
+                from .models import Review
+                Review.objects.create(user=request.user, rating=rating, review_text=review_text)
+                messages.success(request, "✅ Thank you for your review!")
+        except:
+            pass
+        return redirect('home')
+    
+    from .models import Review
+    reviews = Review.objects.filter(is_approved=True)[:6]
+    return render(request, "app/index.html", {'reviews': reviews})
 
 
 @login_required(login_url=reverse_lazy("app:login"))
@@ -59,6 +72,47 @@ def about(request):
 
 @login_required(login_url=reverse_lazy("app:login"))
 def contact(request):
+    if request.method == "POST":
+        try:
+            name = request.POST.get('name', '').strip()
+            email = request.POST.get('email', '').strip()
+            message = request.POST.get('message', '').strip()
+            
+            if name and email and message:
+                def send_email():
+                    try:
+                        import sib_api_v3_sdk
+                        from django.template.loader import render_to_string
+                        import os
+                        
+                        configuration = sib_api_v3_sdk.Configuration()
+                        configuration.api_key['api-key'] = os.getenv('BREVO_API_KEY', '')
+                        
+                        api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
+                        
+                        html_content = render_to_string('app/contact_thank_you_email.html', {
+                            'user_name': name,
+                            'user_message': message,
+                            'site_url': f"{request.scheme}://{request.get_host()}"
+                        })
+                        
+                        send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+                            to=[{"email": email, "name": name}],
+                            sender={"name": "Kisan Connect", "email": "kisansetu1@gmail.com"},
+                            subject="🙏 Thank You for Contacting Kisan Connect",
+                            html_content=html_content
+                        )
+                        api_instance.send_transac_email(send_smtp_email)
+                    except:
+                        pass
+                
+                threading.Thread(target=send_email).start()
+                messages.success(request, "✅ Thank you! Your message has been sent. We'll get back to you soon.")
+            else:
+                messages.error(request, "Please fill in all fields")
+        except Exception as e:
+            messages.error(request, "Failed to send message. Please try again.")
+        return redirect('app:contact')
     return render(request, "app/contact.html")
 
 
@@ -559,13 +613,21 @@ def place_order(request):
                 )
                 order_items.append(f"{item.product.title} x {item.quantity} = ₹{item.product.discounted_price * item.quantity}")
 
+            # Prepare email data before deleting cart
+            items_html = ""
+            subtotal = 0
+            for item in cart_items:
+                item_total = item.product.discounted_price * item.quantity
+                subtotal += item_total
+                items_html += f'<div style="padding:12px 0;border-bottom:1px solid #e0e0e0;"><strong style="color:#333;font-size:15px;">{item.product.title}</strong><br><span style="color:#666;font-size:13px;">Quantity: {item.quantity} × ₹{item.product.discounted_price} = ₹{item_total}</span></div>'
+            
             cart_items.delete()
 
             # Send email via Brevo API
             def send_email():
                 try:
                     import sib_api_v3_sdk
-                    from sib_api_v3_sdk.rest import ApiException
+                    from django.template.loader import render_to_string
                     import os
                     
                     configuration = sib_api_v3_sdk.Configuration()
@@ -573,27 +635,24 @@ def place_order(request):
                     
                     api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
                     
-                    items_text = "\n".join(order_items)
+                    html_content = render_to_string('app/order_confirmation_email.html', {
+                        'customer_name': customer.name,
+                        'order_items': items_html,
+                        'subtotal': subtotal,
+                        'total_amount': totalamount,
+                        'locality': customer.locality,
+                        'city': customer.city,
+                        'state': customer.state,
+                        'zipcode': customer.zipcode,
+                        'mobile': customer.mobile,
+                        'site_url': f"{request.scheme}://{request.get_host()}"
+                    })
+                    
                     send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
                         to=[{"email": user.email, "name": customer.name}],
                         sender={"name": "Kisan Connect", "email": "kisansetu1@gmail.com"},
-                        subject="Order Confirmation - Kisan Connect",
-                        text_content=f"""Hello {customer.name},
-
-Your order has been placed successfully!
-
-Order Details:
-{items_text}
-
-Shipping Address:
-{customer.locality}, {customer.city}
-{customer.state} - {customer.zipcode}
-Mobile: {customer.mobile}
-
-Total Amount: ₹{totalamount}
-Payment: Cash on Delivery
-
-Thank you for shopping with Kisan Connect!"""
+                        subject="🎉 Order Confirmed - Kisan Connect",
+                        html_content=html_content
                     )
                     api_instance.send_transac_email(send_smtp_email)
                 except:
@@ -866,3 +925,84 @@ def news(request):
         articles = []
         messages.warning(request, "Unable to load news at this time")
     return render(request, "app/news.html", {"articles": articles})
+
+
+@login_required(login_url=reverse_lazy("app:login"))
+def subscribe_newsletter(request):
+    if request.method == "POST":
+        try:
+            email = request.POST.get('email', '').strip()
+            if email:
+                from .models import Newsletter
+                Newsletter.objects.get_or_create(email=email)
+                return JsonResponse({'success': True, 'message': 'Thank you for subscribing!'})
+            return JsonResponse({'success': False, 'message': 'Please enter a valid email'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': 'Subscription failed'}, status=500)
+    return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
+
+
+def send_newsletter_email(subject, message):
+    """Send email to all active newsletter subscribers"""
+    from .models import Newsletter
+    import sib_api_v3_sdk
+    import os
+    
+    subscribers = Newsletter.objects.filter(is_active=True)
+    
+    configuration = sib_api_v3_sdk.Configuration()
+    configuration.api_key['api-key'] = os.getenv('BREVO_API_KEY', '')
+    api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
+    
+    for subscriber in subscribers:
+        try:
+            send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+                to=[{"email": subscriber.email}],
+                sender={"name": "Kisan Connect", "email": "kisansetu1@gmail.com"},
+                subject=subject,
+                html_content=message
+            )
+            api_instance.send_transac_email(send_smtp_email)
+        except:
+            pass
+
+
+from django.contrib.admin.views.decorators import staff_member_required
+
+@staff_member_required
+def send_newsletter_view(request):
+    from .models import Newsletter
+    import sib_api_v3_sdk
+    import os
+    
+    subscriber_count = Newsletter.objects.filter(is_active=True).count()
+    
+    if request.method == "POST":
+        email_type = request.POST.get('email_type')
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        
+        subscribers = Newsletter.objects.filter(is_active=True)
+        
+        configuration = sib_api_v3_sdk.Configuration()
+        configuration.api_key['api-key'] = os.getenv('BREVO_API_KEY', '')
+        api_instance = sib_api_v3_sdk.TransactionalEmailsApi(sib_api_v3_sdk.ApiClient(configuration))
+        
+        sent_count = 0
+        for subscriber in subscribers:
+            try:
+                send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+                    to=[{"email": subscriber.email}],
+                    sender={"name": "Kisan Connect", "email": "kisansetu1@gmail.com"},
+                    subject=subject,
+                    html_content=message
+                )
+                api_instance.send_transac_email(send_smtp_email)
+                sent_count += 1
+            except:
+                pass
+        
+        messages.success(request, f"✅ Newsletter sent to {sent_count} subscribers!")
+        return redirect('app:send_newsletter')
+    
+    return render(request, 'app/send_newsletter.html', {'subscriber_count': subscriber_count})

@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Send Newsletter - Kisan Connect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background:#f5f5f5">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0" style="border-radius:20px">
+                <div class="card-header text-white text-center py-4" style="background:linear-gradient(135deg,#2e7d32,#4caf50);border-radius:20px 20px 0 0">
+                    <h2 class="mb-0">📧 Send Newsletter</h2>
+                    <p class="mb-0 mt-2">Send emails to {{ subscriber_count }} subscribers</p>
+                </div>
+                <div class="card-body p-5">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Email Type</label>
+                            <select name="email_type" class="form-select form-select-lg" required>
+                                <option value="">Select Type</option>
+                                <option value="product_launch">🚀 Product Launch</option>
+                                <option value="special_offer">💰 Special Offer/Discount</option>
+                                <option value="new_feature">✨ New Feature Announcement</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Subject</label>
+                            <input type="text" name="subject" class="form-control form-control-lg" placeholder="Email subject" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Message</label>
+                            <textarea name="message" class="form-control" rows="8" placeholder="Email content (HTML supported)" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-lg w-100 text-white fw-bold" style="background:linear-gradient(135deg,#2e7d32,#4caf50);border-radius:10px">Send to All Subscribers</button>
+                    </form>
+                    {% if messages %}
+                    <div class="mt-4">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="{% url 'admin:index' %}" class="btn btn-secondary">Back to Admin</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

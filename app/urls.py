@@ -127,7 +127,8 @@ path("prediction/", views.prediction, name="prediction"),
 
     # AI Chatbot
     path('ai-chat/', ai_chatbot, name='ai_chatbot'),
-
+    
+    # Newsletter
+    path('subscribe-newsletter/', views.subscribe_newsletter, name='subscribe_newsletter'),
+    path('admin/send-newsletter/', views.send_newsletter_view, name='send_newsletter'),
 ]
-
-
