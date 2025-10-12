@@ -20,6 +20,7 @@ import threading
 from .models import Product, Customer, Cart, OrderPlaced, Payment, CommunityGroup
 from .forms import CustomerProfileForm, CustomerRegistrationForm, CommunityGroupForm
 from .utils import STATE_CHOICES, DISTRICTS_BY_STATE
+from .ml_predict import predict_disease as ml_predict
 
 # Configure Gemini AI
 try:
@@ -221,7 +222,6 @@ def predict_disease(request):
     """API endpoint for disease prediction"""
     if request.method == "POST" and request.FILES.get('image'):
         try:
-            from .ml_predict import predict_disease as ml_predict
             import os
             
             image = request.FILES['image']
