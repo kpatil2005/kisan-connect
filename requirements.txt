@@ -19,5 +19,5 @@ sqlparse==0.5.3
 urllib3==2.5.0
 whitenoise==6.8.2
 opencv-python-headless==4.8.1.78
-tensorflow-cpu==2.17.0
+tensorflow-cpu==2.20.0
 reportlab==4.2.5
