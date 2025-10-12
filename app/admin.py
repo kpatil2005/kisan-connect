@@ -60,8 +60,13 @@ from django.contrib import admin
 from django.urls import path
 from django.shortcuts import render, redirect
 from django.contrib import messages
-import sib_api_v3_sdk
 import os
+
+try:
+    import sib_api_v3_sdk
+    BREVO_AVAILABLE = True
+except ImportError:
+    BREVO_AVAILABLE = False
 
 @admin.register(Newsletter)
 class NewsletterAdmin(admin.ModelAdmin):
@@ -87,6 +92,10 @@ class NewsletterAdmin(admin.ModelAdmin):
             message = request.POST.get('message')
             
             subscribers = Newsletter.objects.filter(is_active=True)
+            
+            if not BREVO_AVAILABLE:
+                messages.error(request, "Brevo API not available. Install sib-api-v3-sdk")
+                return redirect('..')
             
             configuration = sib_api_v3_sdk.Configuration()
             configuration.api_key['api-key'] = os.getenv('BREVO_API_KEY', '')

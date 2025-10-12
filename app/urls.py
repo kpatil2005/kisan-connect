@@ -128,6 +128,12 @@ path("prediction/", views.prediction, name="prediction"),
     # AI Chatbot
     path('ai-chat/', ai_chatbot, name='ai_chatbot'),
     
+    # Disease Prediction
+    path('disease-detection/', views.disease_detection, name='disease_detection'),
+    path('predict-disease/', views.predict_disease, name='predict_disease'),
+    path('download-disease-pdf/', views.download_disease_pdf, name='download_disease_pdf'),
+    path('weather-disease-alert/', views.weather_disease_alert, name='weather_disease_alert'),
+    
     # Newsletter
     path('subscribe-newsletter/', views.subscribe_newsletter, name='subscribe_newsletter'),
     path('admin/send-newsletter/', views.send_newsletter_view, name='send_newsletter'),

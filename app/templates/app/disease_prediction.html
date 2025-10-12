@@ -1,0 +1,242 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Plant Disease Detection{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+{% endblock %}
+
+{% block main-content %}
+<div style="min-height:100vh;background:linear-gradient(to bottom,#f0f9f4,#fff);padding:90px 0 60px">
+  <div class="container" style="max-width:1300px">
+    
+    <div class="text-center mb-5">
+      <h1 class="fw-bold mb-3" style="color:#1b5e20;font-size:3rem;letter-spacing:-1px">Plant Disease Detector</h1>
+      <p style="color:#666;font-size:1.15rem">Upload or capture leaf photos • Get instant AI diagnosis • 38+ diseases detected</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      
+      <div class="col-lg-6">
+        <div class="card border-0" style="border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,0.08);overflow:hidden">
+          <div class="card-body p-4">
+            
+            <div class="d-flex gap-2 mb-4 p-2" style="background:#f8fdf9;border-radius:16px">
+              <button id="uploadTab" class="btn btn-success flex-grow-1 py-3 fw-bold" style="border-radius:12px;box-shadow:0 4px 12px rgba(76,175,80,0.25)">
+                <i class="bi bi-cloud-upload me-2"></i>Upload
+              </button>
+              <button id="cameraTab" class="btn btn-outline-success flex-grow-1 py-3 fw-bold" style="border-radius:12px">
+                <i class="bi bi-camera-fill me-2"></i>Camera
+              </button>
+            </div>
+
+            <div id="uploadSection">
+              <div id="uploadArea" class="text-center p-5" style="border:3px dashed #4caf50;border-radius:20px;background:linear-gradient(135deg,#f8fdf9,#e8f5e9);cursor:pointer;min-height:420px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all 0.3s;position:relative">
+                <div style="position:absolute;inset:0;background:radial-gradient(circle,rgba(76,175,80,0.05),transparent);pointer-events:none"></div>
+                <i class="bi bi-cloud-arrow-up" style="font-size:5rem;color:#4caf50;margin-bottom:1.5rem;position:relative"></i>
+                <h5 class="fw-bold mb-2" style="color:#2e7d32;position:relative">Drop image(s) here</h5>
+                <p class="text-muted mb-3" style="position:relative">or click to browse</p>
+                <div class="d-flex gap-2 mb-3" style="position:relative">
+                  <span class="badge px-3 py-2" style="background:#4caf50;color:#fff">📷 Single</span>
+                  <span class="badge px-3 py-2" style="background:linear-gradient(135deg,#ff9800,#f57c00);color:#fff;box-shadow:0 2px 8px rgba(255,152,0,0.3)">📸 Batch Upload</span>
+                </div>
+                <small class="text-muted" style="position:relative">JPG, PNG • Max 5MB each</small>
+                <input type="file" id="imageInput" accept="image/*" multiple hidden>
+              </div>
+            </div>
+
+            <div id="cameraSection" style="display:none">
+              <div class="position-relative" style="border-radius:20px;overflow:hidden;background:#000;min-height:420px">
+                <video id="cameraStream" autoplay playsinline style="width:100%;height:100%;object-fit:cover;display:none"></video>
+                <canvas id="cameraCanvas" style="display:none"></canvas>
+                <div id="cameraPlaceholder" class="text-center text-white d-flex flex-column align-items-center justify-content-center" style="min-height:420px">
+                  <i class="bi bi-camera-video-fill" style="font-size:5rem;margin-bottom:1.5rem;opacity:0.6"></i>
+                  <p class="mb-4" style="font-size:1.1rem">Ready to capture</p>
+                  <button id="startCameraBtn" class="btn btn-light px-5 py-3 fw-bold" style="border-radius:30px;box-shadow:0 4px 15px rgba(255,255,255,0.3)">
+                    <i class="bi bi-play-circle-fill me-2"></i>Start Camera
+                  </button>
+                </div>
+              </div>
+              <div id="cameraControls" class="text-center mt-4" style="display:none">
+                <button id="captureBtn" class="btn btn-success px-5 py-3 fw-bold" style="border-radius:30px;font-size:1.15rem;box-shadow:0 6px 20px rgba(76,175,80,0.4)">
+                  <i class="bi bi-camera-fill me-2"></i>Capture Photo
+                </button>
+              </div>
+            </div>
+
+            <div id="previewSection" style="display:none">
+              <div style="border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.1)">
+                <img id="imagePreview" style="width:100%;max-height:450px;object-fit:contain;background:linear-gradient(135deg,#f8fdf9,#e8f5e9)">
+              </div>
+              <div class="d-flex gap-3 mt-4">
+                <button id="analyzeBtn" class="btn btn-success flex-grow-1 py-3 fw-bold" style="border-radius:16px;font-size:1.1rem;box-shadow:0 6px 20px rgba(76,175,80,0.4)">
+                  <i class="bi bi-stars me-2"></i>Analyze Now
+                </button>
+                <button id="retakeBtn" class="btn btn-outline-secondary py-3 px-4" style="border-radius:16px">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+              </div>
+            </div>
+
+            <div id="loadingSection" style="display:none" class="text-center py-5">
+              <div class="mb-4">
+                <div class="spinner-grow text-success" style="width:4rem;height:4rem"></div>
+              </div>
+              <h5 class="fw-bold" style="color:#2e7d32;font-size:1.3rem">🔬 Analyzing...</h5>
+              <p class="text-muted" style="font-size:1.05rem">AI is examining your plant</p>
+              <div class="mt-3">
+                <div class="progress" style="height:6px;border-radius:10px;max-width:300px;margin:0 auto">
+                  <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width:100%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div id="resultsCard" class="card border-0" style="border-radius:24px;display:none;box-shadow:0 10px 40px rgba(0,0,0,0.08)">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 class="fw-bold mb-0" style="color:#2e7d32;font-size:1.3rem">📋 Results</h5>
+              <button id="analyzeAnotherBtn" class="btn btn-sm btn-success" style="border-radius:25px;padding:0.5rem 1rem">
+                <i class="bi bi-arrow-repeat me-1"></i>New Scan
+              </button>
+            </div>
+            
+            <div id="batchNavigation"></div>
+            <div id="severityIndicator"></div>
+            
+            <div id="diseaseAlert" class="p-4 mb-4" style="border-radius:20px;background:linear-gradient(135deg,#f8fdf9,#e8f5e9);box-shadow:0 4px 15px rgba(76,175,80,0.15)">
+              <div class="d-flex align-items-start gap-3 mb-3">
+                <div id="diseaseIcon" style="font-size:3rem"></div>
+                <div class="flex-grow-1">
+                  <h6 class="fw-bold mb-2" id="diseaseName" style="color:#1b5e20;font-size:1.2rem">-</h6>
+                  <p class="mb-0 text-muted" id="plantName">-</p>
+                </div>
+              </div>
+              <div>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <span class="text-muted small">Confidence</span>
+                  <span class="badge bg-success ms-auto" id="confidenceText" style="padding:0.4rem 0.8rem">0%</span>
+                </div>
+                <div class="progress" style="height:10px;border-radius:10px">
+                  <div id="confidenceBar" class="progress-bar bg-success" style="width:0%"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="d-flex gap-2 mb-4 flex-wrap">
+              <button onclick="downloadResultPDF()" class="feature-btn-simple">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span>PDF</span>
+              </button>
+              <button onclick="shareResultsNow()" class="feature-btn-simple">
+                <i class="bi bi-share"></i>
+                <span>Share</span>
+              </button>
+              <button id="voiceBtn" onclick="toggleVoice()" class="feature-btn-simple">
+                <i class="bi bi-volume-up"></i>
+                <span>Voice</span>
+              </button>
+              <button onclick="contactExpertNow()" class="feature-btn-simple">
+                <i class="bi bi-headset"></i>
+                <span>Expert</span>
+              </button>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold mb-0" style="color:#2e7d32;font-size:1.05rem">💊 Treatment</h6>
+                <select id="langSelect" onchange="changeLanguage()" class="form-select form-select-sm" style="width:auto;border-radius:20px">
+                  <option value="en">English</option>
+                  <option value="hi">हिंदी</option>
+                  <option value="mr">मराठी</option>
+                </select>
+              </div>
+              <ul id="recommendationsList" class="list-unstyled mb-0" style="line-height:2"></ul>
+            </div>
+
+            <div>
+              <h6 class="fw-bold mb-3" style="color:#2e7d32;font-size:1.05rem">📊 Other Possibilities</h6>
+              <div id="otherPredictions" style="max-height:220px;overflow-y:auto"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="infoCard" class="card border-0" style="border-radius:24px;box-shadow:0 10px 40px rgba(0,0,0,0.08)">
+          <div class="card-body p-4">
+            <div id="weatherAlert" class="mb-4" style="display:none"></div>
+            
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h6 class="fw-bold mb-0" style="color:#2e7d32;font-size:1.15rem">💡 Quick Tips</h6>
+              <button onclick="toggleHistory()" class="history-btn" style="background:#fff;color:#666;border:2px solid #e0e0e0;padding:0.5rem 1.2rem;border-radius:25px;font-weight:600;transition:all 0.3s">
+                <i class="bi bi-clock-history me-1"></i>History
+              </button>
+            </div>
+            <div class="d-flex flex-column gap-2">
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-check-circle-fill text-success mt-1"></i>
+                <small class="text-muted">Use good lighting for clear photos</small>
+              </div>
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-check-circle-fill text-success mt-1"></i>
+                <small class="text-muted">Focus on the affected leaf area</small>
+              </div>
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-check-circle-fill text-success mt-1"></i>
+                <small class="text-muted">Avoid blurry or dark images</small>
+              </div>
+              <div class="d-flex gap-2 align-items-start">
+                <i class="bi bi-check-circle-fill text-success mt-1"></i>
+                <small class="text-muted">Works on mobile & desktop</small>
+              </div>
+            </div>
+            <div class="mt-4 p-3" style="background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border-radius:16px;border:2px solid #4caf50">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                <strong style="color:#2e7d32">38+ Diseases Detected</strong>
+              </div>
+              <small class="text-muted">Apple, Tomato, Potato, Corn, Grape, Pepper, Cherry, Peach, Strawberry & more</small>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div id="historyModal" class="modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;overflow-y:auto" onclick="if(event.target===this)toggleHistory()">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border-radius:24px;border:none">
+          <div class="modal-header" style="border:none;padding:2rem 2rem 1rem">
+            <h5 class="fw-bold" style="color:#2e7d32">📊 Scan History</h5>
+            <button onclick="toggleHistory()" class="btn-close"></button>
+          </div>
+          <div class="modal-body" id="historyContent" style="padding:1rem 2rem 2rem;max-height:500px;overflow-y:auto"></div>
+        </div>
+      </div>
+    </div>
+    
+
+    
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'app/js/disease_features.js' %}"></script>
+<script>
+const uploadTab=document.getElementById('uploadTab'),cameraTab=document.getElementById('cameraTab'),uploadSection=document.getElementById('uploadSection'),cameraSection=document.getElementById('cameraSection'),uploadArea=document.getElementById('uploadArea'),imageInput=document.getElementById('imageInput'),previewSection=document.getElementById('previewSection'),imagePreview=document.getElementById('imagePreview'),analyzeBtn=document.getElementById('analyzeBtn'),retakeBtn=document.getElementById('retakeBtn'),loadingSection=document.getElementById('loadingSection'),resultsCard=document.getElementById('resultsCard'),infoCard=document.getElementById('infoCard'),analyzeAnotherBtn=document.getElementById('analyzeAnotherBtn'),cameraStream=document.getElementById('cameraStream'),cameraCanvas=document.getElementById('cameraCanvas'),cameraPlaceholder=document.getElementById('cameraPlaceholder'),startCameraBtn=document.getElementById('startCameraBtn'),captureBtn=document.getElementById('captureBtn'),cameraControls=document.getElementById('cameraControls');let stream=null,capturedFile=null,currentResult=null,isVoicePlaying=false;loadWeatherAlert();async function loadWeatherAlert(){try{console.log('Loading weather alert...');const response=await fetch('/weather-disease-alert/');console.log('Response status:',response.status);const data=await response.json();console.log('Weather data:',data);if(data.alert){displayWeatherAlert(data)}else{console.log('No alert to display')}}catch(e){console.error('Weather alert error:',e)}}function displayWeatherAlert(data){console.log('Displaying weather alert');const alertDiv=document.getElementById('weatherAlert');if(!alertDiv){console.error('weatherAlert div not found');return}const riskColor=data.risk==='High'?'#f44336':data.risk==='Medium'?'#ff9800':'#4caf50';alertDiv.innerHTML=`<div class="p-3 rounded" style="background:${riskColor}15;border-left:4px solid ${riskColor}"><div class="d-flex align-items-start gap-2 mb-2"><i class="bi bi-cloud-rain" style="font-size:1.5rem;color:${riskColor}"></i><div><strong style="color:${riskColor}">⚠️ ${data.risk} Disease Risk</strong><p class="mb-1 small text-muted">${data.weather}</p></div></div><div class="small"><strong>Preventive Measures:</strong><ul class="mb-0 mt-1">${data.preventive_measures.map(m=>`<li>${m}</li>`).join('')}</ul></div></div>`;alertDiv.style.display='block';console.log('Weather alert displayed successfully')}uploadTab.onclick=()=>{uploadTab.className='btn btn-success flex-grow-1 py-3 fw-bold';cameraTab.className='btn btn-outline-success flex-grow-1 py-3 fw-bold';uploadSection.style.display='block';cameraSection.style.display='none';stopCamera()};cameraTab.onclick=()=>{cameraTab.className='btn btn-success flex-grow-1 py-3 fw-bold';uploadTab.className='btn btn-outline-success flex-grow-1 py-3 fw-bold';cameraSection.style.display='block';uploadSection.style.display='none'};uploadArea.onclick=()=>imageInput.click();uploadArea.ondragover=e=>{e.preventDefault();uploadArea.style.borderColor='#2e7d32';uploadArea.style.background='linear-gradient(135deg,#e8f5e9,#c8e6c9)'};uploadArea.ondragleave=()=>{uploadArea.style.borderColor='#4caf50';uploadArea.style.background='linear-gradient(135deg,#f8fdf9,#e8f5e9)'};uploadArea.ondrop=e=>{e.preventDefault();uploadArea.style.borderColor='#4caf50';uploadArea.style.background='linear-gradient(135deg,#f8fdf9,#e8f5e9)';const file=e.dataTransfer.files[0];if(file&&file.type.startsWith('image/'))handleImageFile(file)};imageInput.onchange=e=>{const files=e.target.files;if(files.length>1){handleBatchUpload(files);showBatchPreview(files)}else if(files.length===1){handleImageFile(files[0])}};function handleImageFile(file){capturedFile=file;const reader=new FileReader();reader.onload=e=>{imagePreview.src=e.target.result;showPreview()};reader.readAsDataURL(file)}function showBatchPreview(files){uploadSection.style.display='none';cameraSection.style.display='none';previewSection.style.display='none';loadingSection.style.display='block';document.querySelector('#loadingSection h5').textContent='📸 Processing Batch...';document.querySelector('#loadingSection p').textContent=`Analyzing ${files.length} images`;analyzeBatchImages()}startCameraBtn.onclick=async()=>{try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});cameraStream.srcObject=stream;cameraStream.style.display='block';cameraPlaceholder.style.display='none';cameraControls.style.display='block'}catch(error){alert('❌ Camera access denied')}};captureBtn.onclick=()=>{const canvas=cameraCanvas,video=cameraStream;canvas.width=video.videoWidth;canvas.height=video.videoHeight;canvas.getContext('2d').drawImage(video,0,0);canvas.toBlob(blob=>{capturedFile=new File([blob],'camera-capture.jpg',{type:'image/jpeg'});imagePreview.src=canvas.toDataURL('image/jpeg');stopCamera();showPreview()},'image/jpeg',0.95)};function stopCamera(){if(stream){stream.getTracks().forEach(track=>track.stop());stream=null;cameraStream.style.display='none';cameraPlaceholder.style.display='flex';cameraControls.style.display='none'}}function showPreview(){uploadSection.style.display='none';cameraSection.style.display='none';previewSection.style.display='block'}retakeBtn.onclick=()=>{previewSection.style.display='none';resultsCard.style.display='none';infoCard.style.display='block';capturedFile=null;imageInput.value='';analyzeBtn.style.display='block';retakeBtn.style.display='block';if(uploadTab.className.includes('btn-success'))uploadSection.style.display='block';else cameraSection.style.display='block'};analyzeAnotherBtn.onclick=()=>{previewSection.style.display='none';resultsCard.style.display='none';infoCard.style.display='block';capturedFile=null;imageInput.value='';analyzeBtn.style.display='block';retakeBtn.style.display='block';uploadSection.style.display='block';uploadTab.click()};analyzeBtn.onclick=async()=>{if(!capturedFile)return;previewSection.style.display='none';loadingSection.style.display='block';const formData=new FormData();formData.append('image',capturedFile);try{const response=await fetch('/predict-disease/',{method:'POST',body:formData,headers:{'X-CSRFToken':'{{ csrf_token }}'}});const result=await response.json();loadingSection.style.display='none';displayResults(result)}catch(error){loadingSection.style.display='none';alert('❌ Analysis failed');previewSection.style.display='block'}};function displayResults(result){if(result.error){alert('❌ '+result.error);previewSection.style.display='block';return}currentResult=result;batchResults=[];saveToHistory(result,imagePreview.src);previewSection.style.display='block';analyzeBtn.style.display='none';retakeBtn.style.display='none';infoCard.style.display='none';resultsCard.style.display='block';document.getElementById('batchNavigation').innerHTML='';document.getElementById('severityIndicator').innerHTML=displaySeverity(result.disease,result.confidence);const isHealthy=result.disease.toLowerCase().includes('healthy');document.getElementById('diseaseIcon').textContent=isHealthy?'✅':'⚠️';document.getElementById('diseaseName').textContent=result.disease;let plantText=result.plant;if(result.enhanced)plantText+=' • 🔬 OpenCV Enhanced';document.getElementById('plantName').textContent=plantText;document.getElementById('confidenceText').textContent=result.confidence+'%';document.getElementById('confidenceBar').style.width=result.confidence+'%';const recList=document.getElementById('recommendationsList');recList.innerHTML=result.recommendations.map(r=>`<li class="text-muted"><i class="bi bi-check2 text-success me-2"></i>${r}</li>`).join('');const otherDiv=document.getElementById('otherPredictions');otherDiv.innerHTML=result.all_predictions.slice(1,4).map(p=>`<div class="d-flex justify-content-between align-items-center mb-2 p-2" style="background:#f8fdf9;border-radius:10px"><small class="text-muted">${p.disease}</small><span class="badge bg-light text-dark">${p.confidence}%</span></div>`).join('')}function downloadResultPDF(){if(!currentResult)return;downloadPDF(currentResult,imagePreview.src)}function shareResultsNow(){if(!currentResult)return;const menu=confirm('Share via:\n\nOK = WhatsApp\nCancel = Email');menu?shareWhatsApp(currentResult):shareEmail(currentResult)}function toggleVoice(){if(!currentResult)return;if(isVoicePlaying){stopSpeaking();document.getElementById('voiceBtn').innerHTML='<i class="bi bi-volume-up"></i> Voice';isVoicePlaying=false}else{speakRecommendations(currentResult.recommendations);document.getElementById('voiceBtn').innerHTML='<i class="bi bi-stop-circle"></i> Stop';isVoicePlaying=true}}function contactExpertNow(){if(!currentResult)return;contactExpert(currentResult)}function toggleHistory(){const modal=document.getElementById('historyModal');if(modal.style.display==='none'){document.getElementById('historyContent').innerHTML=showHistory();modal.style.display='block'}else{modal.style.display='none'}}function changeLanguage(){alert('🌍 Translation feature coming soon!')}let batchResults=[],currentBatchIndex=0;async function analyzeBatchImages(){batchResults=await analyzeBatch();loadingSection.style.display='none';document.querySelector('#loadingSection h5').textContent='🔬 Analyzing...';document.querySelector('#loadingSection p').textContent='AI is examining your plant';currentBatchIndex=0;showBatchResult(0)}function showBatchResult(index){if(!batchResults[index])return;const result=batchResults[index];currentResult=result;currentBatchIndex=index;infoCard.style.display='none';resultsCard.style.display='block';document.getElementById('batchNavigation').innerHTML=`<div class="d-flex justify-content-between align-items-center mb-3 p-3" style="background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-radius:16px"><button onclick="showBatchResult(${index-1})" class="btn btn-sm" style="background:#ff9800;color:#fff;border-radius:20px" ${index===0?'disabled':''}><i class="bi bi-chevron-left"></i> Prev</button><strong style="color:#e65100">📸 Image ${index+1} of ${batchResults.length}</strong><button onclick="showBatchResult(${index+1})" class="btn btn-sm" style="background:#ff9800;color:#fff;border-radius:20px" ${index===batchResults.length-1?'disabled':''}>Next <i class="bi bi-chevron-right"></i></button></div>`;document.getElementById('severityIndicator').innerHTML=displaySeverity(result.disease,result.confidence);const isHealthy=result.disease.toLowerCase().includes('healthy');document.getElementById('diseaseIcon').textContent=isHealthy?'✅':'⚠️';document.getElementById('diseaseName').textContent=result.disease;document.getElementById('plantName').textContent=result.plant+(result.enhanced?' • 🔬 OpenCV Enhanced':'');document.getElementById('confidenceText').textContent=result.confidence+'%';document.getElementById('confidenceBar').style.width=result.confidence+'%';document.getElementById('recommendationsList').innerHTML=result.recommendations.map(r=>`<li class="text-muted"><i class="bi bi-check2 text-success me-2"></i>${r}</li>`).join('');document.getElementById('otherPredictions').innerHTML=result.all_predictions.slice(1,4).map(p=>`<div class="d-flex justify-content-between align-items-center mb-2 p-2" style="background:#f8fdf9;border-radius:10px"><small class="text-muted">${p.disease}</small><span class="badge bg-light text-dark">${p.confidence}%</span></div>`).join('')}function viewHistoryItem(id){const history=loadHistory();const item=history.find(h=>h.id===id);if(item){toggleHistory();imagePreview.src=item.image;currentResult=item;displayResults(item)}}
+</script>
+<style>
+.upload-zone:hover{border-color:#2e7d32!important;background:linear-gradient(135deg,#e8f5e9,#c8e6c9)!important;transform:translateY(-4px) scale(1.01);box-shadow:0 8px 25px rgba(76,175,80,0.2)!important}
+.btn{transition:all 0.3s}
+.btn:hover{transform:translateY(-2px)}
+.feature-btn-simple{background:#fff;border:2px solid #e0e0e0;padding:0.6rem 1rem;border-radius:12px;font-weight:600;font-size:0.8rem;color:#666;transition:all 0.3s;display:flex;align-items:center;gap:0.4rem;cursor:pointer}
+.feature-btn-simple:hover{border-color:#4caf50;color:#2e7d32;background:#f8fdf9;transform:translateY(-2px);box-shadow:0 4px 12px rgba(76,175,80,0.15)}
+.feature-btn-simple i{font-size:1.1rem}
+.feature-btn-simple span{font-size:0.8rem}
+.history-btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,172,193,0.4)!important}
+</style>
+{% endblock %}
