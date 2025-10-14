@@ -22,7 +22,13 @@ SECRET_KEY = "django-insecure-xe@b@aer1*c9)#aw=hol7q+7r5w%%m8d21r&370*kqhxx*!#bm
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['kisan-connect.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = [
+    "kisan-connect.onrender.com",
+    "web-production-2d128.up.railway.app",
+    "127.0.0.1",
+    "localhost"
+]
+
 
 
 
