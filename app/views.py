@@ -208,7 +208,75 @@ def search(request):
 
 @login_required(login_url=reverse_lazy("app:login"))
 def prediction(request):
-    return render(request, "app/prediction.html")
+    """Render crop yield prediction page"""
+    return render(request, "app/yield_prediction.html")
+
+
+@login_required(login_url=reverse_lazy("app:login"))
+def scan_soil_report(request):
+    """API endpoint to scan soil report photo and extract data"""
+    if request.method == "POST" and request.FILES.get('image'):
+        try:
+            import os
+            from .soil_report_scanner import extract_soil_data_from_image
+            
+            image = request.FILES['image']
+            
+            # Save temporarily
+            temp_dir = 'media/temp'
+            os.makedirs(temp_dir, exist_ok=True)
+            image_path = os.path.join(temp_dir, image.name)
+            
+            with open(image_path, 'wb+') as f:
+                for chunk in image.chunks():
+                    f.write(chunk)
+            
+            # Extract data
+            result = extract_soil_data_from_image(image_path)
+            
+            # Clean up
+            try:
+                os.remove(image_path)
+            except:
+                pass
+            
+            return JsonResponse(result)
+            
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)}, status=500)
+    
+    return JsonResponse({'success': False, 'message': 'Invalid request'}, status=400)
+
+
+@login_required(login_url=reverse_lazy("app:login"))
+def predict_yield(request):
+    """API endpoint for yield prediction"""
+    if request.method == "POST":
+        try:
+            from .yield_predict import predict_yield as ml_predict_yield
+            
+            crop = request.POST.get('crop')
+            state = request.POST.get('state')
+            rainfall = float(request.POST.get('rainfall'))
+            temperature = float(request.POST.get('temperature'))
+            humidity = float(request.POST.get('humidity'))
+            ph = float(request.POST.get('ph'))
+            nitrogen = float(request.POST.get('nitrogen'))
+            phosphorus = float(request.POST.get('phosphorus'))
+            potassium = float(request.POST.get('potassium'))
+            area = float(request.POST.get('area'))
+            
+            result = ml_predict_yield(
+                crop, state, rainfall, temperature, humidity,
+                ph, nitrogen, phosphorus, potassium, area
+            )
+            
+            return JsonResponse(result)
+            
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 @login_required(login_url=reverse_lazy("app:login"))

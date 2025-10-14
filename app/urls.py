@@ -134,6 +134,10 @@ path("prediction/", views.prediction, name="prediction"),
     path('download-disease-pdf/', views.download_disease_pdf, name='download_disease_pdf'),
     path('weather-disease-alert/', views.weather_disease_alert, name='weather_disease_alert'),
     
+    # Yield Prediction
+    path('predict-yield/', views.predict_yield, name='predict_yield'),
+    path('scan-soil-report/', views.scan_soil_report, name='scan_soil_report'),
+    
     # Newsletter
     path('subscribe-newsletter/', views.subscribe_newsletter, name='subscribe_newsletter'),
     path('admin/send-newsletter/', views.send_newsletter_view, name='send_newsletter'),

@@ -1,0 +1,635 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Crop Yield Prediction{% endblock %}
+
+{% block extra_head %}
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+body{background:#0a1f0d!important;min-height:100vh;overflow-x:hidden;overflow-y:auto;font-family:'Poppins',sans-serif!important;position:relative;margin:0;padding:0}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%,rgba(76,175,80,0.15),transparent 50%),radial-gradient(circle at 80% 80%,rgba(102,187,106,0.1),transparent 50%),linear-gradient(135deg,#0a1f0d,#1b3a1e);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><circle cx="1" cy="1" r="1" fill="%234caf50" opacity="0.03"/></svg>');pointer-events:none;z-index:0}
+.yield-container{max-width:100%;min-height:100vh;margin:0;padding:0;position:relative;z-index:1;display:flex;flex-direction:column}
+.yield-card{background:rgba(255,255,255,0.98)!important;border-radius:0!important;box-shadow:none!important;overflow:visible;min-height:100vh;display:flex;flex-direction:column;backdrop-filter:blur(20px);border:none}
+@keyframes fadeIn{from{opacity:0;transform:translateY(40px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
+.yield-header{background:linear-gradient(135deg,#1b5e20,#2e7d32,#43a047,#66bb6a);color:#fff;padding:0.8rem 1.5rem;text-align:center;position:relative;overflow:hidden;box-shadow:0 10px 40px rgba(27,94,32,0.3) inset;flex-shrink:0}
+.yield-header::before{content:'';position:absolute;top:-50%;right:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(255,255,255,0.15),transparent 60%);animation:pulse 6s ease-in-out infinite}
+.yield-header::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);animation:shimmer 3s infinite}
+@keyframes shimmer{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.yield-header h1{font-size:1.4rem;font-weight:800;margin:0;position:relative;z-index:1;text-shadow:2px 4px 8px rgba(0,0,0,0.3),0 0 20px rgba(255,255,255,0.1);letter-spacing:-0.5px}
+.yield-header p{font-size:0.85rem;margin:0.2rem 0 0;opacity:0.95;position:relative;z-index:1}
+.yield-form{padding:0;flex:1;display:flex;flex-direction:column;overflow:hidden}
+.wizard-steps{display:flex;justify-content:center;align-items:center;gap:0.5rem;padding:0.8rem;background:linear-gradient(to bottom,rgba(245,245,245,0.8),rgba(250,250,250,0.6));border-bottom:1px solid rgba(224,224,224,0.5);position:relative;backdrop-filter:blur(10px);flex-shrink:0}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:0.5rem;position:relative;flex:1;max-width:150px}
+.step-circle{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#e0e0e0,#f5f5f5);display:flex;align-items:center;justify-content:center;font-weight:800;color:#999;font-size:1rem;transition:all 0.5s cubic-bezier(0.4,0,0.2,1);box-shadow:0 4px 15px rgba(0,0,0,0.1),0 0 0 3px rgba(255,255,255,0.5) inset;position:relative;z-index:2}
+.step-circle.active{background:linear-gradient(135deg,#4caf50,#66bb6a);color:#fff;transform:scale(1.15);box-shadow:0 8px 30px rgba(76,175,80,0.5),0 0 0 4px rgba(76,175,80,0.2),0 0 20px rgba(76,175,80,0.3);animation:glow 2s ease-in-out infinite}
+.step-circle.completed{background:linear-gradient(135deg,#2e7d32,#43a047);color:#fff;box-shadow:0 4px 15px rgba(46,125,50,0.4)}
+@keyframes glow{0%,100%{box-shadow:0 8px 30px rgba(76,175,80,0.5),0 0 0 4px rgba(76,175,80,0.2),0 0 20px rgba(76,175,80,0.3)}50%{box-shadow:0 8px 30px rgba(76,175,80,0.7),0 0 0 4px rgba(76,175,80,0.3),0 0 30px rgba(76,175,80,0.5)}}
+.step-label{font-size:0.75rem;color:#666;font-weight:600;text-align:center}
+.step-circle.active + .step-label{color:#2e7d32;font-weight:800}
+.step-item::after{content:'';position:absolute;width:100%;height:2px;background:#e0e0e0;left:50%;top:20px;z-index:1}
+.step-item:last-child::after{display:none}
+.step-item.completed::after{background:#4caf50}
+.wizard-content{display:none;flex:1;overflow-y:auto;overflow-x:hidden;padding:1.2rem 1.5rem;min-height:400px}
+.wizard-content.active{display:flex;flex-direction:column;animation:fadeSlide 0.4s ease}
+.wizard-content::-webkit-scrollbar{width:8px}
+.wizard-content::-webkit-scrollbar-track{background:rgba(241,241,241,0.5);border-radius:10px}
+.wizard-content::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#4caf50,#66bb6a);border-radius:10px;box-shadow:0 0 10px rgba(76,175,80,0.5)}
+.wizard-content::-webkit-scrollbar-thumb:hover{background:linear-gradient(135deg,#2e7d32,#43a047)}
+@keyframes fadeSlide{from{opacity:0;transform:translateX(30px) scale(0.98)}to{opacity:1;transform:translateX(0) scale(1)}}
+.welcome-box{text-align:center;padding:1.2rem 0.8rem;background:linear-gradient(135deg,rgba(232,245,233,0.9),rgba(241,248,233,0.9));border-radius:14px;margin:0;box-shadow:0 20px 60px rgba(76,175,80,0.15),0 0 1px rgba(255,255,255,0.5) inset;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.3)}
+.welcome-box h2{font-size:1.3rem;font-weight:800;color:#1b5e20;margin-bottom:0.5rem}
+.welcome-box p{font-size:0.85rem;color:#555;margin-bottom:1rem;line-height:1.4}
+.welcome-icon{font-size:2.5rem;margin-bottom:0.6rem;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+.feature-list{display:grid;grid-template-columns:repeat(3,1fr);gap:0.8rem;margin:1rem 0;text-align:center}
+@media(max-width:768px){.feature-list{grid-template-columns:1fr}}
+.feature-item{background:rgba(255,255,255,0.9);padding:1rem;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,0.08),0 0 1px rgba(255,255,255,0.5) inset;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.3)}
+.feature-item:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 15px 40px rgba(76,175,80,0.2),0 0 1px rgba(255,255,255,0.8) inset}
+.feature-item-icon{font-size:2rem;margin-bottom:0.5rem}
+.feature-item h4{font-size:0.9rem;font-weight:700;color:#2e7d32;margin-bottom:0.25rem}
+.feature-item p{font-size:0.75rem;color:#666;margin:0}
+.wizard-actions{display:flex;gap:0.8rem;justify-content:space-between;margin-top:auto;padding-top:0.8rem;border-top:2px solid #e8f5e9;flex-shrink:0}
+.btn-nav{padding:0.65rem 1.3rem;border-radius:8px;font-weight:700;font-size:0.85rem;cursor:pointer;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);border:none;position:relative;overflow:hidden}
+.btn-nav::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.3);transition:width 0.6s,height 0.6s,top 0.6s,left 0.6s;transform:translate(-50%,-50%)}
+.btn-nav:hover::before{width:300px;height:300px}
+.btn-prev{background:linear-gradient(135deg,#6c757d,#5a6268);color:#fff;box-shadow:0 4px 15px rgba(108,117,125,0.3)}
+.btn-prev:hover{background:linear-gradient(135deg,#5a6268,#495057);transform:translateY(-3px);box-shadow:0 8px 25px rgba(108,117,125,0.4)}
+.btn-next{background:linear-gradient(135deg,#4caf50,#66bb6a);color:#fff;box-shadow:0 4px 15px rgba(76,175,80,0.4),0 0 20px rgba(76,175,80,0.2)}
+.btn-next:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 8px 30px rgba(76,175,80,0.5),0 0 30px rgba(76,175,80,0.3)}
+.section-title{font-size:0.95rem;font-weight:700;color:#1b5e20;margin-bottom:0.7rem;display:flex;align-items:center;gap:0.4rem;padding-bottom:0.3rem;border-bottom:2px solid #e8f5e9;flex-shrink:0}
+.auto-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;margin-bottom:0;flex:1;overflow:hidden}
+@media(max-width:768px){.auto-grid{grid-template-columns:1fr}}
+.feature-box{background:linear-gradient(135deg,rgba(248,249,250,0.95),rgba(255,255,255,0.95));padding:0.8rem;border-radius:12px;border:2px solid;transition:all 0.5s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;backdrop-filter:blur(10px);box-shadow:0 10px 30px rgba(0,0,0,0.1),0 0 1px rgba(255,255,255,0.5) inset;display:flex;flex-direction:column;max-height:100%}
+.feature-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:inherit;box-shadow:0 0 15px currentColor}
+.feature-box:hover{transform:translateY(-8px) scale(1.01);box-shadow:0 15px 40px rgba(0,0,0,0.2),0 0 1px rgba(255,255,255,0.8) inset,0 0 30px rgba(76,175,80,0.1)}
+.feature-box h4{font-size:0.9rem;font-weight:700;margin:0 0 0.3rem}
+.feature-box p{margin:0 0 0.6rem;color:#666;line-height:1.2;font-size:0.75rem}
+.btn-action{border:none;padding:0.6rem 1rem;border-radius:8px;font-weight:700;cursor:pointer;font-size:0.8rem;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);width:100%;text-transform:uppercase;letter-spacing:0.3px;position:relative;overflow:hidden;margin-top:auto;flex-shrink:0}
+.btn-action::before{content:'';position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,0.4);transition:width 0.6s,height 0.6s,top 0.6s,left 0.6s;transform:translate(-50%,-50%)}
+.btn-action:hover::before{width:350px;height:350px}
+.btn-blue{background:linear-gradient(135deg,#2196f3,#42a5f5);color:#fff;box-shadow:0 6px 20px rgba(33,150,243,0.4),0 0 20px rgba(33,150,243,0.2)}
+.btn-blue:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 10px 35px rgba(33,150,243,0.5),0 0 30px rgba(33,150,243,0.3)}
+.btn-green{background:linear-gradient(135deg,#4caf50,#66bb6a);color:#fff;box-shadow:0 6px 20px rgba(76,175,80,0.4),0 0 20px rgba(76,175,80,0.2)}
+.btn-green:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 10px 35px rgba(76,175,80,0.5),0 0 30px rgba(76,175,80,0.3)}
+.form-group{margin-bottom:0.5rem}
+.form-group label{font-weight:700;color:#1b5e20;margin-bottom:0.2rem;display:block;font-size:0.75rem}
+.form-control{border:2px solid rgba(224,224,224,0.5)!important;border-radius:8px!important;padding:0.5rem 0.7rem!important;font-size:0.8rem!important;transition:all 0.4s cubic-bezier(0.4,0,0.2,1)!important;background:rgba(250,250,250,0.8)!important;font-family:'Poppins',sans-serif!important;height:auto!important;backdrop-filter:blur(10px)!important;box-shadow:0 2px 8px rgba(0,0,0,0.05) inset!important}
+.form-control:focus{border-color:#4caf50!important;box-shadow:0 0 0 4px rgba(76,175,80,0.15),0 4px 20px rgba(76,175,80,0.1),0 2px 8px rgba(0,0,0,0.05) inset!important;outline:none!important;background:rgba(255,255,255,0.95)!important;transform:translateY(-2px) scale(1.01)!important}
+.btn-predict{background:linear-gradient(135deg,#1b5e20,#2e7d32,#43a047);color:#fff;border:none;padding:1rem 1.8rem;border-radius:12px;font-weight:800;font-size:1.1rem;width:100%;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);cursor:pointer;text-transform:uppercase;letter-spacing:1px;box-shadow:0 8px 30px rgba(27,94,32,0.5),0 0 40px rgba(76,175,80,0.3);margin:0;position:relative;overflow:hidden}
+.btn-predict::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.5s}
+.btn-predict:hover::before{left:100%}
+.btn-predict:hover{background:linear-gradient(135deg,#2e7d32,#43a047,#66bb6a);transform:translateY(-4px) scale(1.02);box-shadow:0 12px 40px rgba(27,94,32,0.6),0 0 60px rgba(76,175,80,0.4)}
+.result-card{background:linear-gradient(135deg,#e8f5e9,#f1f8e9);border-radius:12px;padding:1rem;margin-top:0.8rem;display:none;border:2px solid #4caf50;box-shadow:0 8px 25px rgba(76,175,80,0.3);animation:scaleIn 0.4s ease;max-height:calc(100vh - 250px);overflow-y:auto}
+.result-card::-webkit-scrollbar{width:6px}
+.result-card::-webkit-scrollbar-track{background:rgba(241,241,241,0.5);border-radius:10px}
+.result-card::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#4caf50,#66bb6a);border-radius:10px}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.result-card h3{font-size:1.1rem;font-weight:800;color:#1b5e20;text-align:center;margin-bottom:0.8rem}
+.result-box{background:#fff;padding:1.2rem;border-radius:10px;text-align:center;margin-bottom:1rem;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+.result-value{font-size:2.5rem;font-weight:900;color:#2e7d32;margin:0.5rem 0;text-shadow:2px 2px 4px rgba(0,0,0,0.1);line-height:1}
+.result-label{color:#555;font-size:0.85rem;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.info-card{background:#fff;border-left:4px solid #4caf50;padding:1rem;border-radius:10px;box-shadow:0 4px 15px rgba(0,0,0,0.08)}
+.info-card h5{color:#1b5e20;font-size:0.95rem;font-weight:800;margin-bottom:0.6rem}
+.info-card ul{margin:0;padding-left:1.3rem;line-height:1.6}
+.info-card li{color:#555;font-size:0.75rem}
+.loading{display:none;text-align:center;padding:1.5rem;background:rgba(255,255,255,0.95);border-radius:12px;margin-top:0.8rem;box-shadow:0 8px 25px rgba(0,0,0,0.1)}
+.loading-spinner{border:4px solid #e0e0e0;border-top:4px solid #4caf50;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite;margin:0 auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{margin-top:1rem;color:#2e7d32;font-weight:700;font-size:0.9rem}
+.status-msg{margin-top:0.6rem;padding:0.7rem;border-radius:8px;border-left:3px solid;animation:slideIn 0.4s ease;font-size:0.8rem}
+@keyframes slideIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.status-success{background:#e8f5e9;border-color:#4caf50;color:#2e7d32}
+.status-error{background:#ffebee;border-color:#f44336;color:#c62828}
+.data-display{background:#fff;padding:0.8rem;border-radius:10px;margin-top:0.6rem;box-shadow:0 4px 15px rgba(0,0,0,0.08);font-size:0.8rem}
+@media(max-width:768px){.yield-header h1{font-size:2rem}.yield-form{padding:2rem 1.5rem}}
+.row{margin-left:-6px;margin-right:-6px;display:grid;grid-template-columns:repeat(2,1fr);gap:0;flex-shrink:1;overflow-y:auto}
+.col-md-6{padding-left:6px;padding-right:6px}
+.col-12{grid-column:1/-1;padding-left:6px;padding-right:6px;margin-bottom:0.3rem}
+.col-12 p{font-size:0.75rem;margin:0}
+@media(max-width:768px){.row{grid-template-columns:1fr}}
+.review-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.6rem;height:100%;overflow:hidden}
+@media(max-width:1200px){.review-grid{grid-template-columns:1fr}}
+.review-section{background:rgba(255,255,255,0.95);border-radius:8px;padding:0.6rem;box-shadow:0 4px 15px rgba(0,0,0,0.08);border:1px solid rgba(224,224,224,0.5);display:flex;flex-direction:column;overflow:hidden}
+.review-data{flex:1;overflow-y:auto;font-size:0.7rem;line-height:1.3}
+.review-data::-webkit-scrollbar{width:5px}
+.review-data::-webkit-scrollbar-track{background:rgba(241,241,241,0.5);border-radius:10px}
+.review-data::-webkit-scrollbar-thumb{background:linear-gradient(135deg,#4caf50,#66bb6a);border-radius:10px}
+.review-item{background:#f8f9fa;padding:0.4rem 0.5rem;border-radius:6px;margin-bottom:0.4rem;border-left:3px solid #4caf50}
+.review-item strong{color:#1b5e20;display:block;margin-bottom:0.15rem;font-size:0.65rem;text-transform:uppercase;letter-spacing:0.3px}
+.review-item span{color:#555;font-size:0.7rem;font-weight:600}
+.lab-preview{flex:1;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#f8f9fa;border-radius:6px;border:2px dashed #ddd;position:relative}
+.lab-preview img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px}
+.no-report{color:#999;font-size:0.75rem;text-align:center}
+.predict-section{background:linear-gradient(135deg,rgba(232,245,233,0.95),rgba(241,248,233,0.95));border:2px solid #4caf50}
+.predict-box{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:0.5rem}
+.yield-footer{background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;text-align:center;padding:1rem;margin-top:2rem;position:relative;z-index:1}
+.yield-footer p{margin:0;font-size:0.85rem;opacity:0.95}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="yield-container">
+    <div class="yield-card">
+        <div class="yield-header">
+            <h1>Crop Yield Prediction</h1>
+            <p style="margin:0.5rem 0 0 0;opacity:0.9">Predict your crop yield using AI-powered analysis</p>
+        </div>
+        
+        <div class="yield-form">
+            <div class="wizard-steps">
+                <div class="step-item active" data-step="1">
+                    <div class="step-circle active">1</div>
+                    <div class="step-label">Welcome</div>
+                </div>
+                <div class="step-item" data-step="2">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Auto-Fill</div>
+                </div>
+                <div class="step-item" data-step="3">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Details</div>
+                </div>
+                <div class="step-item" data-step="4">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Review</div>
+                </div>
+            </div>
+            
+            <form id="yieldForm">
+                {% csrf_token %}
+                
+                <!-- Step 1: Welcome -->
+                <div class="wizard-content active" data-step="1">
+                <div class="welcome-box">
+                    <div class="welcome-icon">🌾</div>
+                    <h2>Welcome to Crop Yield Prediction</h2>
+                    <p>Get accurate crop yield predictions powered by AI and machine learning.<br>Our system analyzes multiple factors to provide reliable forecasts.</p>
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <div class="feature-item-icon">🎯</div>
+                            <h4>Accurate Predictions</h4>
+                            <p>AI-powered analysis for reliable results</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-item-icon">⚡</div>
+                            <h4>Quick & Easy</h4>
+                            <p>Simple 3-step process with auto-fill</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-item-icon">📊</div>
+                            <h4>Detailed Insights</h4>
+                            <p>Get recommendations with predictions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <div></div>
+                    <button type="button" class="btn-nav btn-next" onclick="nextStep()">Start Prediction →</button>
+                </div>
+                </div>
+                
+                <!-- Step 2: Auto-Fill -->
+                <div class="wizard-content" data-step="2">
+                <div class="section-title">⚡ Quick Auto-Fill (Optional)</div>
+                <div class="auto-grid">
+                    <div class="feature-box" style="border-color:#2196f3">
+                        <h4 style="color:#1976d2">📍 Location & Weather</h4>
+                        <p>Auto-detect location and fill weather data instantly</p>
+                        <button type="button" onclick="getLocation()" class="btn-action btn-blue">Detect Location</button>
+                        <div id="locationStatus"></div>
+                    </div>
+                    <div class="feature-box" style="border-color:#4caf50">
+                        <h4 style="color:#2e7d32">📸 Soil Report Scanner</h4>
+                        <p>Upload soil report to extract NPK values automatically</p>
+                        <input type="file" id="soilReportUpload" accept="image/*" style="display:none">
+                        <button type="button" onclick="document.getElementById('soilReportUpload').click()" class="btn-action btn-green">Upload Report</button>
+                        <div id="uploadStatus"></div>
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <div></div>
+                    <button type="button" class="btn-nav btn-next" onclick="nextStep()">Next Step →</button>
+                </div>
+                </div>
+                
+                <!-- Step 3: Crop Details -->
+                <div class="wizard-content" data-step="3">
+                <div class="section-title">📝 Crop Information</div>
+                <div class="row">
+                    <div class="col-12">
+                        <p class="text-muted mb-3">Fill in the details below to get your crop yield prediction</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🌱 Crop Type</label>
+                            <select class="form-control" name="crop" required>
+                                <option value="">Select Crop</option>
+                                <option value="Rice">Rice</option>
+                                <option value="Wheat">Wheat</option>
+                                <option value="Cotton">Cotton</option>
+                                <option value="Sugarcane">Sugarcane</option>
+                                <option value="Maize">Maize</option>
+                                <option value="Soybean">Soybean</option>
+                                <option value="Potato">Potato</option>
+                                <option value="Tomato">Tomato</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>📍 Country</label>
+                            <select class="form-control" name="state" required>
+                                <option value="">Select Country</option>
+                                <option value="India">India</option>
+                                <option value="Pakistan">Pakistan</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                                <option value="China">China</option>
+                                <option value="United States of America">United States</option>
+                                <option value="Brazil">Brazil</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🌧️ Rainfall (mm)</label>
+                            <input type="number" class="form-control" name="rainfall" placeholder="e.g., 800" min="0" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🌡️ Temperature (°C)</label>
+                            <input type="number" class="form-control" name="temperature" placeholder="e.g., 25" min="-10" max="50" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>💧 Humidity (%)</label>
+                            <input type="number" class="form-control" name="humidity" placeholder="e.g., 65" min="0" max="100" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🌿 Soil pH</label>
+                            <input type="number" class="form-control" name="ph" placeholder="e.g., 6.5" min="0" max="14" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🧪 Nitrogen (N) kg/ha</label>
+                            <input type="number" class="form-control" name="nitrogen" placeholder="e.g., 80" min="0" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🧪 Phosphorus (P) kg/ha</label>
+                            <input type="number" class="form-control" name="phosphorus" placeholder="e.g., 40" min="0" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🧪 Potassium (K) kg/ha</label>
+                            <input type="number" class="form-control" name="potassium" placeholder="e.g., 40" min="0" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>📏 Area (hectares)</label>
+                            <input type="number" class="form-control" name="area" placeholder="e.g., 2.5" min="0.1" step="0.1" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <button type="button" class="btn-nav btn-prev" onclick="prevStep()">← Previous</button>
+                    <button type="button" class="btn-nav btn-next" onclick="nextStep()">Review →</button>
+                </div>
+                </div>
+                
+                <!-- Step 4: Review & Predict -->
+                <div class="wizard-content" data-step="4">
+                <div class="review-grid">
+                    <div class="review-section">
+                        <div class="section-title" style="margin-bottom:0.5rem">✅ Review</div>
+                        <div id="reviewSummary" class="review-data"></div>
+                    </div>
+                    <div class="review-section">
+                        <div class="section-title" style="margin-bottom:0.5rem">📄 Lab Report</div>
+                        <div id="labReportPreview" class="lab-preview">
+                            <div class="no-report">No report uploaded</div>
+                        </div>
+                    </div>
+                    <div class="review-section predict-section">
+                        <div class="section-title" style="margin-bottom:0.5rem">🔮 Predict</div>
+                        <div class="predict-box">
+                            <p style="font-size:0.7rem;color:#666;margin:0 0 0.6rem;line-height:1.3">Ready to get your crop yield prediction?</p>
+                            <button type="submit" class="btn-predict" style="margin:0;width:100%;padding:0.7rem 1rem;font-size:0.85rem;border-radius:8px">Predict Yield</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="wizard-actions">
+                    <button type="button" class="btn-nav btn-prev" onclick="prevStep()">← Previous</button>
+                    <div></div>
+                </div>
+                </div>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p style="margin-top:1rem;color:#666">Analyzing data...</p>
+            </div>
+            
+            <div class="result-card" id="resultCard">
+                <h3>📊 Predicted Yield</h3>
+                <div class="result-box">
+                    <div class="result-value" id="yieldValue">0</div>
+                    <div class="result-label">quintals per hectare</div>
+                </div>
+                <div class="info-card">
+                    <h5>💡 Recommendations</h5>
+                    <ul id="recommendations"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="yield-footer">
+    <p>© 2025 Kisan Connect - Agricultural Marketplace | Crop Yield Prediction System</p>
+</footer>
+
+<script>
+let currentStep = 1;
+let autoFillUsed = false;
+
+function nextStep() {
+    if (currentStep < 4) {
+        if (currentStep === 3 && !validateStep3()) return;
+        currentStep++;
+        updateWizard();
+        if (currentStep === 3 && autoFillUsed) {
+            // Form already filled, show filled form
+        }
+        if (currentStep === 4) showReview();
+    }
+}
+
+function prevStep() {
+    if (currentStep > 1) {
+        currentStep--;
+        updateWizard();
+    }
+}
+
+function updateWizard() {
+    document.querySelectorAll('.wizard-content').forEach(el => el.classList.remove('active'));
+    document.querySelector(`.wizard-content[data-step="${currentStep}"]`).classList.add('active');
+    
+    document.querySelectorAll('.step-item').forEach((el, idx) => {
+        const circle = el.querySelector('.step-circle');
+        circle.classList.remove('active', 'completed');
+        el.classList.remove('active', 'completed');
+        
+        if (idx + 1 < currentStep) {
+            circle.classList.add('completed');
+            el.classList.add('completed');
+        } else if (idx + 1 === currentStep) {
+            circle.classList.add('active');
+            el.classList.add('active');
+        }
+    });
+    
+    document.querySelector('.yield-header').scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+function validateStep3() {
+    const form = document.getElementById('yieldForm');
+    const inputs = form.querySelectorAll('[required]');
+    for (let input of inputs) {
+        if (!input.value) {
+            alert('⚠️ Please fill all required fields');
+            input.focus();
+            return false;
+        }
+    }
+    return true;
+}
+
+function showReview() {
+    const form = document.getElementById('yieldForm');
+    const data = new FormData(form);
+    let html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">';
+    
+    const labels = {
+        crop: '🌱 Crop Type',
+        state: '📍 Country',
+        rainfall: '🌧️ Rainfall',
+        temperature: '🌡️ Temperature',
+        humidity: '💧 Humidity',
+        ph: '🌿 Soil pH',
+        nitrogen: '🧪 Nitrogen',
+        phosphorus: '🧪 Phosphorus',
+        potassium: '🧪 Potassium',
+        area: '📏 Area'
+    };
+    
+    for (let [key, value] of data.entries()) {
+        if (key !== 'csrfmiddlewaretoken' && value) {
+            html += `<div style="background:#f8f9fa;padding:1rem;border-radius:8px"><strong>${labels[key] || key}:</strong> ${value}</div>`;
+        }
+    }
+    
+    html += '</div>';
+    document.getElementById('reviewSummary').innerHTML = html;
+}
+
+// Get user location
+function getLocation() {
+    const statusDiv = document.getElementById('locationStatus');
+    statusDiv.innerHTML = '<div class="status-msg" style="background:#fff3e0;border-color:#ff9800;color:#e65100">🔄 Detecting location...</div>';
+    
+    if (!navigator.geolocation) {
+        statusDiv.innerHTML = '<div class="status-msg status-error">❌ Geolocation not supported</div>';
+        return;
+    }
+    
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            
+            // Get location name using reverse geocoding
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+                const data = await response.json();
+                
+                const city = data.address.city || data.address.town || data.address.village || 'Unknown';
+                const country = data.address.country || 'Unknown';
+                
+                // Get weather data
+                statusDiv.innerHTML = '<div class="status-msg" style="background:#fff3e0;border-color:#ff9800;color:#e65100">🔄 Fetching weather data...</div>';
+                
+                try {
+                    const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&daily=precipitation_sum&timezone=auto`);
+                    const weatherData = await weatherResponse.json();
+                    
+                    const temperature = weatherData.current.temperature_2m;
+                    const humidity = weatherData.current.relative_humidity_2m;
+                    const rainfall = weatherData.daily.precipitation_sum[0] || 0;
+                    
+                    statusDiv.innerHTML = `
+                        <div class="status-msg status-success">✅ Data captured successfully!</div>
+                        <div class="data-display" style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;text-align:center">
+                            <div style="padding:1rem;background:#e3f2fd;border-radius:10px"><div style="font-size:1.8rem">🌡️</div><div style="font-weight:800;font-size:1.3rem;color:#1976d2;margin:0.5rem 0">${temperature}°C</div><div style="color:#666;font-size:0.85rem">Temperature</div></div>
+                            <div style="padding:1rem;background:#e1f5fe;border-radius:10px"><div style="font-size:1.8rem">💧</div><div style="font-weight:800;font-size:1.3rem;color:#0288d1;margin:0.5rem 0">${humidity}%</div><div style="color:#666;font-size:0.85rem">Humidity</div></div>
+                            <div style="padding:1rem;background:#e0f2f1;border-radius:10px"><div style="font-size:1.8rem">🌧️</div><div style="font-weight:800;font-size:1.3rem;color:#00796b;margin:0.5rem 0">${rainfall} mm</div><div style="color:#666;font-size:0.85rem">Rainfall</div></div>
+                        </div>
+                    `;
+                    fillWeatherData(temperature, humidity, rainfall);
+                    autoFillUsed = true;
+                    
+                    // Set country in form
+                    const countrySelect = document.querySelector('[name="state"]');
+                    const options = Array.from(countrySelect.options);
+                    const matchingOption = options.find(opt => opt.value.toLowerCase().includes(country.toLowerCase()));
+                    if (matchingOption) {
+                        countrySelect.value = matchingOption.value;
+                    }
+                } catch (error) {
+                    statusDiv.innerHTML = `
+                        <div style="color:#4caf50;font-weight:600">✅ Location detected!</div>
+                        <div style="background:#fff;padding:1rem;border-radius:8px;margin:1rem 0;border:1px solid #ddd">
+                            <div><strong>🌍 Location:</strong> ${city}, ${country}</div>
+                        </div>
+                        <p style="color:#f44336;font-size:0.9rem">Could not fetch weather data. Please fill manually.</p>
+                    `;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div style="color:#4caf50;font-weight:600">✅ Location: ${lat.toFixed(4)}, ${lon.toFixed(4)}</div>
+                    <p style="color:#666;font-size:0.9rem">Please fill in the remaining fields below</p>
+                `;
+            }
+        },
+        (error) => {
+            statusDiv.innerHTML = '<div class="status-msg status-error">❌ Location access denied</div>';
+        }
+    );
+}
+
+// Handle soil report upload
+document.getElementById('soilReportUpload').onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const statusDiv = document.getElementById('uploadStatus');
+    statusDiv.innerHTML = '<div class="status-msg" style="background:#fff3e0;border-color:#ff9800;color:#e65100">🔄 Processing image...</div>';
+    
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    try {
+        const response = await fetch('/scan-soil-report/', {
+            method: 'POST',
+            body: formData,
+            headers: {'X-CSRFToken': '{{ csrf_token }}'}
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            statusDiv.innerHTML = `
+                <div class="status-msg status-success">✅ Values extracted successfully!</div>
+                <div class="data-display" style="display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;text-align:center">
+                    ${result.ph ? `<div style="padding:1rem;background:#f1f8e9;border-radius:10px"><div style="font-weight:800;font-size:1.3rem;color:#558b2f">${result.ph}</div><div style="color:#666;font-size:0.85rem;margin-top:0.3rem">pH Level</div></div>` : ''}
+                    ${result.nitrogen ? `<div style="padding:1rem;background:#e8f5e9;border-radius:10px"><div style="font-weight:800;font-size:1.3rem;color:#2e7d32">${result.nitrogen}</div><div style="color:#666;font-size:0.85rem;margin-top:0.3rem">Nitrogen</div></div>` : ''}
+                    ${result.phosphorus ? `<div style="padding:1rem;background:#fff3e0;border-radius:10px"><div style="font-weight:800;font-size:1.3rem;color:#f57c00">${result.phosphorus}</div><div style="color:#666;font-size:0.85rem;margin-top:0.3rem">Phosphorus</div></div>` : ''}
+                    ${result.potassium ? `<div style="padding:1rem;background:#fce4ec;border-radius:10px"><div style="font-weight:800;font-size:1.3rem;color:#c2185b">${result.potassium}</div><div style="color:#666;font-size:0.85rem;margin-top:0.3rem">Potassium</div></div>` : ''}
+                </div>
+            `;
+            fillForm(result.ph, result.nitrogen, result.phosphorus, result.potassium);
+            autoFillUsed = true;
+        } else {
+            statusDiv.innerHTML = `<div class="status-msg status-error">❌ ${result.message}</div>`;
+        }
+    } catch (error) {
+        statusDiv.innerHTML = '<div class="status-msg status-error">❌ Failed to process image</div>';
+    }
+};
+
+// Fill weather data into form
+function fillWeatherData(temperature, humidity, rainfall) {
+    document.querySelector('[name="temperature"]').value = temperature;
+    document.querySelector('[name="humidity"]').value = humidity;
+    document.querySelector('[name="rainfall"]').value = rainfall;
+    
+    // Auto-filled, no message needed
+}
+
+// Fill form with extracted values
+function fillForm(ph, nitrogen, phosphorus, potassium) {
+    if (ph) document.querySelector('[name="ph"]').value = ph;
+    if (nitrogen) document.querySelector('[name="nitrogen"]').value = nitrogen;
+    if (phosphorus) document.querySelector('[name="phosphorus"]').value = phosphorus;
+    if (potassium) document.querySelector('[name="potassium"]').value = potassium;
+    
+    // Auto-filled, no message needed
+    
+    // Scroll to form
+    document.querySelector('[name="ph"]').scrollIntoView({behavior: 'smooth', block: 'center'});
+}
+
+document.getElementById('yieldForm').onsubmit = async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const loading = document.getElementById('loading');
+    const resultCard = document.getElementById('resultCard');
+    
+    loading.style.display = 'block';
+    resultCard.style.display = 'none';
+    
+    try {
+        const response = await fetch('/predict-yield/', {
+            method: 'POST',
+            body: formData,
+            headers: {'X-CSRFToken': '{{ csrf_token }}'}
+        });
+        
+        const result = await response.json();
+        loading.style.display = 'none';
+        
+        if (result.error) {
+            alert('❌ ' + result.error);
+            return;
+        }
+        
+        document.getElementById('yieldValue').textContent = result.yield;
+        
+        const recList = document.getElementById('recommendations');
+        recList.innerHTML = result.recommendations.map(r => `<li>${r}</li>`).join('');
+        
+        resultCard.style.display = 'block';
+        
+        // Scroll wizard content to show result
+        const wizardContent = document.querySelector('.wizard-content.active');
+        if (wizardContent) {
+            wizardContent.scrollTop = wizardContent.scrollHeight;
+        }
+        
+    } catch (error) {
+        loading.style.display = 'none';
+        alert('❌ Prediction failed. Please try again.');
+    }
+};
+</script>
+{% endblock %}

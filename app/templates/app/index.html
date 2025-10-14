@@ -151,19 +151,28 @@
         color: var(--secondary-green);
     }
 
-    /* ===== HERO SECTION ===== */
-    header {
-        position: relative;
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        color: white;
-        overflow: hidden;
-    }
+    /* ===== HERO SLIDER ===== */
+    .hero-slider-container{position:relative;width:100%;height:100vh;overflow:hidden}
+    @media (max-width:768px){.hero-slider-container{height:70vh;min-height:500px}}
+    .hero-slides-wrapper{display:flex;width:100%;height:100%;transition:transform 1s ease-in-out}
+    .hero-slide{min-width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
+    .hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1}
+    .hero-content{position:relative;z-index:2;text-align:center;padding:0 20px;max-width:900px;animation:fadeInUp 1s ease}
+    @media (max-width:768px){.hero-content{padding:0 15px;max-width:100%}}
+    .hero-title{font-family:'Oswald',sans-serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:700;color:#fff;margin-bottom:20px;text-shadow:2px 2px 10px rgba(0,0,0,0.7)}
+    @media (max-width:768px){.hero-title{font-size:clamp(1.5rem,6vw,2rem);margin-bottom:12px;line-height:1.2}}
+    .hero-subtitle{font-size:clamp(1.1rem,2vw,1.5rem);color:#fff;margin-bottom:30px;text-shadow:1px 1px 8px rgba(0,0,0,0.5)}
+    @media (max-width:768px){.hero-subtitle{font-size:clamp(0.9rem,3.5vw,1.1rem);margin-bottom:20px;line-height:1.4}}
+    .hero-indicators{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:10}
+    @media (max-width:768px){.hero-indicators{bottom:15px;gap:8px}.indicator{width:8px;height:8px}}
+    .indicator{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.3s;border:2px solid transparent}
+    .indicator.active{background:#fff;transform:scale(1.3);border-color:#ffc107}
+    .scroll-indicator{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);z-index:10;text-align:center;cursor:pointer}
+    @media (max-width:768px){.scroll-indicator{bottom:40px}}
+    .mouse{width:26px;height:40px;border:2px solid #fff;border-radius:15px;position:relative;animation:bounce 2s infinite}
+    .mouse::before{content:'';width:4px;height:8px;background:#fff;border-radius:2px;position:absolute;top:8px;left:50%;transform:translateX(-50%);animation:scroll 2s infinite}
+    @keyframes bounce{0%,20%,50%,80%,100%{transform:translateY(0)}40%{transform:translateY(-10px)}60%{transform:translateY(-5px)}}
+    @keyframes scroll{0%{opacity:1;top:8px}100%{opacity:0;top:20px}}
 
     #bg-video {
         position: absolute;
@@ -235,8 +244,11 @@
     /* ===== SECTION STYLES ===== */
     .custom-section {
         padding: 80px 0;
+        opacity:0;
+        transform:translateY(50px);
+        transition:all 0.8s ease;
     }
-
+    .custom-section.visible{opacity:1;transform:translateY(0)}
     .custom-section:nth-child(even) {
         background: var(--white);
     }
@@ -253,7 +265,9 @@
         margin-bottom: 20px;
         color: var(--primary-green);
         position: relative;
+        transition:all 0.3s ease;
     }
+    .section-title:hover{color:#66bb6a;transform:translateX(10px)}
 
     .section-text {
         font-size: 1.1rem;
@@ -271,12 +285,13 @@
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         border: 3px solid var(--primary-green);
         object-fit: cover;
-        transition: var(--transition);
+        transition: all 0.5s cubic-bezier(0.4,0,0.2,1);
     }
 
     .styled-video:hover {
-        transform: scale(1.02);
-        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        transform: scale(1.05) rotate(2deg);
+        box-shadow: 0 20px 50px rgba(76,175,80,0.4);
+        border-color:#66bb6a;
     }
 
     /* ===== ABOUT SECTION ===== */
@@ -334,6 +349,26 @@
         margin-bottom: 5px;
         font-weight: 500;
     }
+
+    /* ===== WHATSAPP BUTTON ===== */
+    .whatsapp-float {
+        position: fixed;
+        bottom: 100px;
+        right: 25px;
+        z-index: 1000;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+    .whatsapp-float:hover {
+        transform: scale(1.1);
+    }
+    .whatsapp-float img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(37, 211, 102, 0.5);
+    }
+    @media (max-width:768px){.whatsapp-float{display:none}}
 
     /* ===== CHAT STYLES ===== */
     #chat-toggle-btn {
@@ -1164,6 +1199,11 @@
     </div>
   </div>
 </nav>
+
+<!-- WhatsApp Float Button -->
+<a href="https://wa.me/YOUR_PHONE_NUMBER" target="_blank" class="whatsapp-float" aria-label="Contact us on WhatsApp">
+  <img src="{% static 'app/images/icons8-whatsapp.gif' %}" alt="WhatsApp">
+</a>
   <style>
 .modern-navbar{background:linear-gradient(135deg,#1b5e20,#2e7d32);position:sticky;top:0;z-index:99999;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
 .nav-wrapper{display:flex;align-items:center;justify-content:space-between;padding:0.5rem 1rem;position:relative;z-index:99999}
@@ -1251,18 +1291,109 @@
 }
   </style>
 
- <header id="home" class="position-relative" style="background:url('{% static 'app/images/herosection.jpg' %}') center/cover no-repeat;min-height:100vh;display:flex;align-items:center;justify-content:center">
-  <div class="position-absolute top-0 start-0 w-100 h-100" style="background:rgba(0,0,0,0.4);z-index:1"></div>
-  <div class="d-flex flex-column justify-content-center align-items-center text-center position-relative" style="z-index: 2; padding: 0 15px;">
-    <h1 class="display-3 fw-bold mb-3" style="color: #fff; text-shadow: 2px 2px 10px rgba(0,0,0,0.4);">
-      Empowering Farmers, Inspiring Growth
-    </h1>
-    <p class="lead mb-4" style="color: #fff; font-size: 1.5rem; text-shadow: 1px 1px 8px rgba(0,0,0,0.3);">
-      Access government schemes, expert advice, and connect with a thriving farming community.
-    </p>
-    <a href="{% url 'app:schemes' %}" class="btn btn-success btn-lg shadow" style="border-radius: 50px;">Explore Opportunities</a>
+<div class="hero-slider-container">
+  <div class="hero-slides-wrapper">
+  <div class="hero-slide" style="background:url('{% static 'app/images/herosection.jpg' %}') center/cover no-repeat">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Empowering Farmers, Inspiring Growth</h1>
+      <p class="hero-subtitle">Access government schemes, expert advice, and connect with a thriving farming community</p>
+      <a href="{% url 'app:schemes' %}" class="btn btn-success btn-lg shadow" style="border-radius:50px;font-weight:700">Explore Opportunities</a>
+    </div>
+    <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
+      <div class="mouse"></div>
+    </div>
   </div>
-</header>
+  <div class="hero-slide" style="background:url('{% static 'app/images/heromarket.png' %}') center/cover no-repeat">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Smart Farming Marketplace</h1>
+      <p class="hero-subtitle">Premium seeds, fertilizers, and farming tools from trusted suppliers to boost your productivity</p>
+      <a href="{% url 'app:schemes' %}" class="btn btn-warning btn-lg shadow" style="border-radius:50px;font-weight:700">Visit Marketplace</a>
+    </div>
+    <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
+      <div class="mouse"></div>
+    </div>
+  </div>
+  <div class="hero-slide" style="background:url('{% static 'app/images/plantdetection.png' %}') center/cover no-repeat">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">AI-Powered Disease Detection</h1>
+      <p class="hero-subtitle">Advanced computer vision technology to detect crop diseases and protect your harvest</p>
+      <a href="{% url 'app:disease_detection' %}" class="btn btn-danger btn-lg shadow" style="border-radius:50px;font-weight:700">Detect Disease</a>
+    </div>
+    <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
+      <div class="mouse"></div>
+    </div>
+  </div>
+  <div class="hero-slide" style="background:url('{% static 'app/images/weatherhero.jpg' %}') center/cover no-repeat">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Weather & Farming Insights</h1>
+      <p class="hero-subtitle">Real-time weather forecasts and expert farming tips to maximize your crop yield</p>
+      <a href="{% url 'app:farming_advice' %}" class="btn btn-info btn-lg shadow" style="border-radius:50px;font-weight:700">View Advice</a>
+    </div>
+    <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
+      <div class="mouse"></div>
+    </div>
+  </div>
+  <div class="hero-slide" style="background:url('{% static 'app/images/Crop Yield Prediction.webp' %}') center/cover no-repeat">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Crop Yield Prediction</h1>
+      <p class="hero-subtitle">Data-driven insights using rainfall, temperature, and soil quality for better harvests</p>
+      <a href="{% url 'app:prediction' %}" class="btn btn-success btn-lg shadow" style="border-radius:50px;font-weight:700">Predict Yield</a>
+    </div>
+    <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
+      <div class="mouse"></div>
+    </div>
+  </div>
+  <div class="hero-slide" style="background:url('{% static 'app/images/scheme.jpg' %}') center/cover no-repeat">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Government Schemes & Support</h1>
+      <p class="hero-subtitle">Discover subsidies, loans, and support programs designed specifically for farmers</p>
+      <a href="{% url 'app:schemes' %}" class="btn btn-primary btn-lg shadow" style="border-radius:50px;font-weight:700">Find Schemes</a>
+    </div>
+    <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
+      <div class="mouse"></div>
+    </div>
+  </div>
+  <div class="hero-slide" style="background:url('{% static 'app/images/farmingnews.jpg' %}') center/cover no-repeat">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Latest Farming News</h1>
+      <p class="hero-subtitle">Stay informed with agricultural news, policy changes, and market trends</p>
+      <a href="{% url 'app:news' %}" class="btn btn-warning btn-lg shadow" style="border-radius:50px;font-weight:700">Read More</a>
+    </div>
+    <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
+      <div class="mouse"></div>
+    </div>
+  </div>
+  <div class="hero-slide" style="background:url('{% static 'app/images/Farmer Community Forum.jpeg' %}') center/cover no-repeat">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Farmer Community Forum</h1>
+      <p class="hero-subtitle">Connect, share knowledge, and learn from experienced agricultural professionals</p>
+      <a href="{% url 'app:forum' %}" class="btn btn-success btn-lg shadow" style="border-radius:50px;font-weight:700">Join Forum</a>
+    </div>
+    <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
+      <div class="mouse"></div>
+    </div>
+  </div>
+  <div class="hero-indicators">
+    <span class="indicator active" data-slide="0"></span>
+    <span class="indicator" data-slide="1"></span>
+    <span class="indicator" data-slide="2"></span>
+    <span class="indicator" data-slide="3"></span>
+    <span class="indicator" data-slide="4"></span>
+    <span class="indicator" data-slide="5"></span>
+    <span class="indicator" data-slide="6"></span>
+    <span class="indicator" data-slide="7"></span>
+  </div>
+
+  </div>
+</div>
 
 <!-- Login/Register Section -->
 {% if not user.is_authenticated %}
@@ -1294,24 +1425,38 @@
   <div class="row align-items-center">
     
     <!-- Left Content -->
-    <div class="col-lg-6 mb-4 mb-lg-0">
-      <h1 class="fw-bold" style="color:#2c3e50;">🌾 Welcome to Our Marketplace</h1>
-      <p class="lead text-muted mt-3">
+    <div class="col-lg-6 order-1 order-lg-1 mb-4 mb-lg-0">
+      <h1 class="fw-bold" style="color:#2c3e50;font-size:clamp(1.8rem,4vw,2.8rem)">🌾 Welcome to Our Marketplace</h1>
+      <p class="lead text-muted mt-3" style="font-size:clamp(1rem,2vw,1.2rem)">
         Discover high-quality seeds, organic fertilizers, modern farming tools, and crop protection products – 
         all in one place. Our marketplace connects farmers with trusted suppliers to ensure better yield and 
         sustainable farming practices.
       </p>
-      <ul class="list-unstyled mt-4">
+      
+      <!-- Video for Mobile (shown between description and list) -->
+      <div class="d-lg-none text-center my-4">
+        <div style="position: relative; width: 100%; max-width: 600px; margin: 0 auto;">
+          <img src="{% static 'app/images/laptop_frame.png' %}" alt="Laptop Frame" style="width: 100%; height: auto; display: block;">
+          <div style="position: absolute; top: 28%; left: 15%; width: 70%; height: 42%; overflow: hidden; border-radius: 10px;">
+            <video autoplay loop muted playsinline style="width: 100%; height: 100%; object-fit: cover;">
+              <source src="{% static 'app/images/marketplace.mp4' %}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        </div>
+      </div>
+      
+      <ul class="list-unstyled mt-4" style="font-size:clamp(0.95rem,2vw,1.1rem)">
         <li class="mb-2">✅ Trusted & Verified Products</li>
         <li class="mb-2">✅ Affordable Prices with Discounts</li>
         <li class="mb-2">✅ Fast & Reliable Delivery</li>
         <li class="mb-2">✅ 24/7 Support for Farmers</li>
       </ul>
-      <a href="{% url 'app:schemes' %}" class="btn btn-success btn-lg mt-4">Explore Marketplace</a>
+      <a href="{% url 'app:schemes' %}" class="btn btn-success btn-lg mt-4" style="border-radius:50px;padding:12px 30px;font-weight:700">Explore Marketplace</a>
     </div>
 
-    <!-- Right Image/Video -->
-    <div class="col-lg-6 text-center">
+    <!-- Right Image/Video (Desktop only) -->
+    <div class="col-lg-6 order-2 order-lg-2 text-center d-none d-lg-block">
       <div style="position: relative; width: 100%; max-width: 600px; margin: 0 auto;">
         
         <!-- Laptop Frame -->
@@ -1340,47 +1485,60 @@
 </div>
 </section>
 
-<section class="py-5" style="background:linear-gradient(135deg,#f8f9fa,#e9ecef);position:relative;overflow:hidden">
-<div class="position-absolute" style="top:0;left:0;width:100%;height:100%;opacity:0.03;background:url('data:image/svg+xml,<svg width="60" height="60" xmlns="http://www.w3.org/2000/svg"><path d="M30 0L60 30L30 60L0 30Z" fill="%232e7d32"/></svg>') repeat"></div>
+<section class="py-5" style="background:linear-gradient(135deg,#e8f5e9,#f1f8e9);position:relative;overflow:hidden">
+<div class="position-absolute" style="top:0;left:0;width:100%;height:100%;opacity:0.05;background:url('data:image/svg+xml,<svg width="80" height="80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="30" fill="%232e7d32" opacity="0.1"/></svg>') repeat"></div>
 <div class="container position-relative" style="z-index:1">
 <div class="text-center mb-5">
-<h1 class="fw-bold mb-3" style="font-size:clamp(2rem,5vw,3.5rem);background:linear-gradient(135deg,#2e7d32,#66bb6a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">🌾 Empower Your Farm, Every Day</h1>
-<p class="lead text-muted mx-auto" style="max-width:700px;font-size:clamp(1rem,2vw,1.3rem)">Access tools, seeds, weather updates, and expert advice — everything you need to grow smarter and stronger.</p>
+<h1 class="fw-bold mb-3" style="font-size:clamp(2.2rem,5vw,3.8rem);color:#1b5e20;text-shadow:2px 2px 4px rgba(0,0,0,0.1)">🌾 Empower Your Farm, Every Day</h1>
+<p class="lead mx-auto" style="max-width:750px;font-size:clamp(1.1rem,2vw,1.4rem);color:#2e7d32;font-weight:500">Access tools, seeds, weather updates, and expert advice — everything you need to grow smarter and stronger</p>
 </div>
 <div class="row g-4 justify-content-center">
-<div class="col-6">
-<div class="card border-0 shadow-sm h-100 text-center p-4" style="border-radius:20px;transition:transform 0.3s">
-<div class="mb-3" style="font-size:3rem">🌱</div>
-<h5 class="fw-bold text-success">Premium Seeds</h5>
-<p class="text-muted small mb-0">High-yield certified seeds</p>
+<div class="col-lg-3 col-md-6 col-6">
+<div class="feature-card text-center p-4">
+<div class="icon-wrapper mb-3">
+<div class="icon-circle">🌱</div>
+</div>
+<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">Premium Seeds</h5>
+<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">High-yield certified seeds</p>
 </div>
 </div>
-<div class="col-6">
-<div class="card border-0 shadow-sm h-100 text-center p-4" style="border-radius:20px;transition:transform 0.3s">
-<div class="mb-3" style="font-size:3rem">🌤️</div>
-<h5 class="fw-bold text-success">Weather Insights</h5>
-<p class="text-muted small mb-0">Real-time forecasts</p>
+<div class="col-lg-3 col-md-6 col-6">
+<div class="feature-card text-center p-4">
+<div class="icon-wrapper mb-3">
+<div class="icon-circle">🌤️</div>
+</div>
+<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">Weather Insights</h5>
+<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">Real-time forecasts</p>
 </div>
 </div>
-<div class="col-6">
-<div class="card border-0 shadow-sm h-100 text-center p-4" style="border-radius:20px;transition:transform 0.3s">
-<div class="mb-3" style="font-size:3rem">🧑‍🌾</div>
-<h5 class="fw-bold text-success">Expert Advice</h5>
-<p class="text-muted small mb-0">24/7 agricultural support</p>
+<div class="col-lg-3 col-md-6 col-6">
+<div class="feature-card text-center p-4">
+<div class="icon-wrapper mb-3">
+<div class="icon-circle">🧑‍🌾</div>
+</div>
+<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">Expert Advice</h5>
+<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">24/7 agricultural support</p>
 </div>
 </div>
-<div class="col-6">
-<div class="card border-0 shadow-sm h-100 text-center p-4" style="border-radius:20px;transition:transform 0.3s">
-<div class="mb-3" style="font-size:3rem">🚜</div>
-<h5 class="fw-bold text-success">Modern Tools</h5>
-<p class="text-muted small mb-0">Latest farming equipment</p>
+<div class="col-lg-3 col-md-6 col-6">
+<div class="feature-card text-center p-4">
+<div class="icon-wrapper mb-3">
+<div class="icon-circle">🚜</div>
+</div>
+<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">Modern Tools</h5>
+<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">Latest farming equipment</p>
 </div>
 </div>
 </div>
 </div>
 </section>
 <style>
-.card:hover{transform:translateY(-10px);box-shadow:0 15px 40px rgba(46,125,50,0.2)!important}
+.feature-card{background:#fff;border-radius:20px;border:2px solid transparent;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);cursor:pointer;height:100%;box-shadow:0 4px 15px rgba(0,0,0,0.08)}
+.feature-card:hover{transform:translateY(-12px);box-shadow:0 20px 40px rgba(46,125,50,0.25);border-color:#66bb6a}
+.icon-wrapper{position:relative;display:inline-block}
+.icon-circle{width:80px;height:80px;margin:0 auto;background:linear-gradient(135deg,#66bb6a,#81c784);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;box-shadow:0 8px 20px rgba(102,187,106,0.3);transition:all 0.3s ease}
+.feature-card:hover .icon-circle{transform:rotate(360deg) scale(1.1);box-shadow:0 12px 30px rgba(102,187,106,0.5)}
+@media (max-width:768px){.icon-circle{width:60px;height:60px;font-size:2rem}}
 </style>
 
 
@@ -1390,6 +1548,14 @@
   <div class="container">
     <div class="row align-items-center">
 
+
+       <div class="col-lg-6 text-center">
+        <video autoplay loop muted playsinline class="styled-video">
+          <source src="{% static 'app/images/marketplaceintro.mp4' %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
       <div class="col-lg-6 mb-4 mb-lg-0">
         <h2 class="section-title">🛒 Smart Farming Marketplace</h2>
         <p class="section-text">
@@ -1397,17 +1563,38 @@
         </p>
         <a href="{% url 'app:schemes' %}" class="btn-custom">Visit Marketplace</a>
       </div>
- <div class="col-lg-6 text-center">
-        <video autoplay loop muted playsinline class="styled-video">
-          <source src="{% static 'app/images/Farming_AI_Project_Intro_Video.mp4' %}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
+
      
 
     </div>
   </div>
 </section>
+
+
+
+  <!-- AI Disease Detection Section -->
+  <section id="disease-detection" class="custom-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">
+          <h2 class="section-title">🔬 AI-Powered Disease Detection</h2>
+          <p class="section-text">Utilize computer vision to analyze your crop photos and accurately detect common diseases, helping you protect your harvest with advanced AI technology.</p>
+          <a href="{% url 'app:disease_detection' %}" class="btn-custom">Detect Disease</a>
+        </div>
+        <div class="col-lg-6 text-center">
+          <video autoplay loop muted playsinline class="styled-video">
+            <source src="{% static 'app/images/Farming_AI_Project_Intro_Video.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        
+        
+      </div>
+    </div>
+  </section>
+
+
+
 
 
  <!-- Weather & Farming Advice Section -->
@@ -1437,98 +1624,7 @@
 
 
 
-<!-- Forum Section -->
-<section id="forum" class="custom-section">
-  <div class="container">
-    <div class="row align-items-center">
-
-      <!-- Left Content -->
-      <div class="col-lg-6 mb-4 mb-lg-0">
-        <h2 class="section-title">💬 Join the Farmer Community</h2>
-        <p class="section-text">
-          Connect with other farmers, ask questions, share knowledge, and learn from experienced agricultural professionals in our vibrant community.
-        </p>
-        <a href="{% url 'app:forum' %}" class="btn-custom">Join Forum</a>
-      </div>
-
-      <!-- Right Video -->
-      <div class="col-lg-6 text-center">
-        <video autoplay loop muted playsinline class="styled-video">
-          <source src="{% static 'app/images/WhatsApp Video 2025-08-29 at 00.25.46_e37d6aa1.mp4' %}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-
-  <!-- News Section -->
-  <section id="news" class="custom-section">
-    <div class="container">
-      <div class="row align-items-center">
-         <div class="col-lg-6 text-center">
-          <video autoplay loop muted playsinline class="styled-video">
-            <source src="{% static 'app/images/Peaceful_Indian_Village_Life_Video.mp4' %}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        <div class="col-lg-6 mb-4 mb-lg-0">
-          <h2 class="section-title">📰 Latest Farming News</h2>
-          <p class="section-text">Stay updated with the latest agricultural news, policy changes, market trends, and technological innovations affecting the farming industry.</p>
-          <a href="{% url 'app:news' %}" class="btn-custom">Read More</a>
-        </div>
-       
-      </div>
-    </div>
-  </section>
-
-
-
-
-  <!-- AI Disease Detection Section -->
-  <section id="disease-detection" class="custom-section">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6 mb-4 mb-lg-0">
-          <h2 class="section-title">🔬 AI-Powered Disease Detection</h2>
-          <p class="section-text">Utilize computer vision to analyze your crop photos and accurately detect common diseases, helping you protect your harvest with advanced AI technology.</p>
-          <a href="{% url 'app:disease_detection' %}" class="btn-custom">Detect Disease</a>
-        </div>
-        <div class="col-lg-6 text-center">
-          <video autoplay loop muted playsinline class="styled-video">
-            <source src="{% static 'app/images/Farming_AI_Project_Intro_Video.mp4' %}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        
-        
-      </div>
-    </div>
-  </section>
-
-  <!-- Government Schemes Section -->
-  <section id="schemes" class="custom-section">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
-          <h2 class="section-title">📜 Find Government Schemes</h2>
-          <p class="section-text">Get access to the best government schemes tailored for you. Discover subsidies, loans, and support programs designed specifically for farmers.</p>
-          <a href="{% url 'app:schemes' %}" class="btn-custom">Find Schemes</a>
-        </div>
-        <div class="col-lg-6 order-lg-1 text-center">
-          <video autoplay loop muted playsinline class="styled-video">
-            <source src="{% static 'app/images/Government_Scheme_Finder_Intro_Video.mp4' %}" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Crop Yield Prediction Section -->
+<!-- Crop Yield Prediction Section -->
   <section id="prediction" class="custom-section">
     <div class="container">
       <div class="row align-items-center">
@@ -1550,25 +1646,73 @@
 
 
 
-
-  <!-- Contact Section -->
-  <section id="contact" class="custom-section">
+ <!-- Government Schemes Section -->
+  <section id="schemes" class="custom-section">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
-          <h2 class="section-title">📞 Contact Us</h2>
-          <p class="section-text">If you need any help, have questions, or want to provide feedback, feel free to reach out. Our support team is here to assist you.</p>
-          <a href="{% url 'app:support' %}" class="btn-custom">Get in Touch</a>
+          <h2 class="section-title">📜 Find Government Schemes</h2>
+          <p class="section-text">Get access to the best government schemes tailored for you. Discover subsidies, loans, and support programs designed specifically for farmers.</p>
+          <a href="{% url 'app:schemes' %}" class="btn-custom">Find Schemes</a>
         </div>
         <div class="col-lg-6 order-lg-1 text-center">
           <video autoplay loop muted playsinline class="styled-video">
-            <source src="{% static 'app/images/WhatsApp Video 2025-08-29 at 00.30.32_6059262a.mp4' %}" type="video/mp4">
+            <source src="{% static 'app/images/Government_Scheme_Finder_Intro_Video.mp4' %}" type="video/mp4">
             Your browser does not support the video tag.
           </video>
         </div>
       </div>
     </div>
   </section>
+
+
+
+ <!-- News Section -->
+  <section id="news" class="custom-section">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
+          <h2 class="section-title">📰 Latest Farming News</h2>
+          <p class="section-text">Stay updated with the latest agricultural news, policy changes, market trends, and technological innovations affecting the farming industry.</p>
+          <a href="{% url 'app:news' %}" class="btn-custom">Read More</a>
+        </div>
+        <div class="col-lg-6 order-lg-1 text-center">
+          <video autoplay loop muted playsinline class="styled-video">
+            <source src="{% static 'app/images/Peaceful_Indian_Village_Life_Video.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- Forum Section -->
+<section id="forum" class="custom-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-1 mb-4 mb-lg-0">
+        <h2 class="section-title">💬 Join the Farmer Community</h2>
+        <p class="section-text">
+          Connect with other farmers, ask questions, share knowledge, and learn from experienced agricultural professionals in our vibrant community.
+        </p>
+        <a href="{% url 'app:forum' %}" class="btn-custom">Join Forum</a>
+      </div>
+      <div class="col-lg-6 order-lg-2 text-center">
+        <video autoplay loop muted playsinline class="styled-video">
+          <source src="{% static 'app/images/WhatsApp Video 2025-08-29 at 00.25.46_e37d6aa1.mp4' %}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
 
 <section id="about" class="py-4 py-md-5" style="background:linear-gradient(180deg,#f8f9fa 0%,#e8f5e9 100%)">
 <div class="container">
@@ -1893,28 +2037,18 @@ document.getElementById('newsletterForm').addEventListener('submit', function(e)
 <!-- Standalone AI Chatbot -->
 <script src="{% static 'app/js/chatbot.js' %}"></script>
 
-<!-- Background Video Fix -->
+<!-- Hero Slider Script -->
 <script>
-  // Force background video to play
-  document.addEventListener('DOMContentLoaded', function() {
-    const bgVideo = document.getElementById('bg-video');
-    if (bgVideo) {
-      // Try to play video
-      bgVideo.play().catch(function(error) {
-        console.log('Video autoplay failed:', error);
-      });
-      
-      // Log when video plays
-      bgVideo.addEventListener('playing', function() {
-        console.log('✅ Background video is playing');
-      });
-      
-      // Log if video has error
-      bgVideo.addEventListener('error', function() {
-        console.log('❌ Video failed to load');
-      });
-    }
-  });
+let currentSlide=0;const wrapper=document.querySelector('.hero-slides-wrapper');const slides=document.querySelectorAll('.hero-slide');const indicators=document.querySelectorAll('.indicator');const totalSlides=slides.length;function showSlide(n,instant=false){indicators.forEach(i=>i.classList.remove('active'));currentSlide=(n+totalSlides)%totalSlides;if(instant){wrapper.style.transition='none';wrapper.style.transform=`translateX(-${currentSlide*100}%)`;setTimeout(()=>wrapper.style.transition='transform 1s ease-in-out',50)}else{wrapper.style.transform=`translateX(-${currentSlide*100}%)`}indicators[currentSlide].classList.add('active')}
+function nextSlide(){if(currentSlide===totalSlides-1){showSlide(currentSlide+1);setTimeout(()=>showSlide(0,true),1000)}else{showSlide(currentSlide+1)}}
+setInterval(nextSlide,4000);indicators.forEach((ind,idx)=>{ind.addEventListener('click',()=>showSlide(idx))});showSlide(0);
+</script>
+
+<!-- Scroll Animation Script -->
+<script>
+const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('visible')}})},{threshold:0.1});
+document.querySelectorAll('.custom-section').forEach(section=>observer.observe(section));
+document.querySelectorAll('.card').forEach((card,i)=>{card.style.animationDelay=`${i*0.1}s`;card.style.animation='fadeInUp 0.6s ease forwards'});
 </script>
 
 </body>

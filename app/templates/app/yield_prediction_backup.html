@@ -1,0 +1,358 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Crop Yield Prediction{% endblock %}
+
+{% block extra_head %}
+<style>
+body{background:linear-gradient(135deg,#e8f5e9,#f1f8e9);min-height:100vh}
+.yield-container{max-width:1200px;margin:2rem auto;padding:0 1rem}
+.yield-card{background:#fff;border-radius:20px;box-shadow:0 10px 40px rgba(46,125,50,0.15);overflow:hidden}
+.yield-header{background:linear-gradient(135deg,#2e7d32,#388e3c);color:#fff;padding:2rem;text-align:center}
+.yield-header h1{font-size:2rem;font-weight:700;margin:0}
+.yield-form{padding:2rem}
+.form-group{margin-bottom:1.5rem}
+.form-group label{font-weight:600;color:#2e7d32;margin-bottom:0.5rem;display:block}
+.form-control{border:2px solid #e0e0e0;border-radius:12px;padding:0.75rem 1rem;font-size:1rem;transition:all 0.3s}
+.form-control:focus{border-color:#4caf50;box-shadow:0 0 0 3px rgba(76,175,80,0.1);outline:none}
+.btn-predict{background:linear-gradient(135deg,#2e7d32,#388e3c);color:#fff;border:none;padding:1rem 2rem;border-radius:12px;font-weight:600;font-size:1.1rem;width:100%;transition:all 0.3s;cursor:pointer}
+.btn-predict:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(46,125,50,0.3)}
+.result-card{background:linear-gradient(135deg,#e8f5e9,#c8e6c9);border-radius:16px;padding:2rem;margin-top:2rem;display:none}
+.result-value{font-size:3rem;font-weight:700;color:#2e7d32;text-align:center;margin:1rem 0}
+.result-label{text-align:center;color:#666;font-size:1.2rem}
+.info-card{background:#f8fdf9;border-left:4px solid #4caf50;padding:1rem;border-radius:8px;margin-top:1rem}
+.loading{display:none;text-align:center;padding:2rem}
+.loading-spinner{border:4px solid #e0e0e0;border-top:4px solid #4caf50;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite;margin:0 auto}
+@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="yield-container">
+    <div class="yield-card">
+        <div class="yield-header">
+            <h1>🌾 Crop Yield Prediction</h1>
+            <p style="margin:0.5rem 0 0 0;opacity:0.9">Predict your crop yield using AI-powered analysis</p>
+        </div>
+        
+        <div class="yield-form">
+            <form id="yieldForm">
+                {% csrf_token %}
+                
+                <!-- Get Location Section -->
+                <div class="location-section" style="background:#e3f2fd;padding:1.5rem;border-radius:12px;margin-bottom:2rem;border:2px dashed #2196f3">
+                    <h4 style="color:#1976d2;margin-bottom:1rem">📍 Get Your Location</h4>
+                    <p style="color:#666;font-size:0.9rem;margin-bottom:1rem">Click to detect your current location automatically</p>
+                    <button type="button" onclick="getLocation()" style="background:#2196f3;color:#fff;border:none;padding:0.8rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600">
+                        📍 Detect My Location
+                    </button>
+                    <div id="locationStatus" style="margin-top:1rem;display:none"></div>
+                </div>
+
+                <!-- Upload Soil Report Section -->
+                <div class="upload-section" style="background:#f0f8f0;padding:1.5rem;border-radius:12px;margin-bottom:2rem;border:2px dashed #4caf50">
+                    <h4 style="color:#2e7d32;margin-bottom:1rem">📸 Quick Fill from Soil Report</h4>
+                    <p style="color:#666;font-size:0.9rem;margin-bottom:1rem">Upload a photo of your soil test report and we'll automatically fill the values</p>
+                    <input type="file" id="soilReportUpload" accept="image/*" style="display:none">
+                    <button type="button" class="btn-upload" onclick="document.getElementById('soilReportUpload').click()" style="background:#4caf50;color:#fff;border:none;padding:0.8rem 1.5rem;border-radius:8px;cursor:pointer;font-weight:600">
+                        📷 Upload Soil Report Photo
+                    </button>
+                    <div id="uploadStatus" style="margin-top:1rem;display:none"></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🌱 Crop Type</label>
+                            <select class="form-control" name="crop" required>
+                                <option value="">Select Crop</option>
+                                <option value="Rice">Rice</option>
+                                <option value="Wheat">Wheat</option>
+                                <option value="Cotton">Cotton</option>
+                                <option value="Sugarcane">Sugarcane</option>
+                                <option value="Maize">Maize</option>
+                                <option value="Soybean">Soybean</option>
+                                <option value="Potato">Potato</option>
+                                <option value="Tomato">Tomato</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>📍 Country</label>
+                            <select class="form-control" name="state" required>
+                                <option value="">Select Country</option>
+                                <option value="India">India</option>
+                                <option value="Pakistan">Pakistan</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                                <option value="China">China</option>
+                                <option value="United States of America">United States</option>
+                                <option value="Brazil">Brazil</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🌧️ Rainfall (mm)</label>
+                            <input type="number" class="form-control" name="rainfall" placeholder="e.g., 800" min="0" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🌡️ Temperature (°C)</label>
+                            <input type="number" class="form-control" name="temperature" placeholder="e.g., 25" min="-10" max="50" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>💧 Humidity (%)</label>
+                            <input type="number" class="form-control" name="humidity" placeholder="e.g., 65" min="0" max="100" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🌿 Soil pH</label>
+                            <input type="number" class="form-control" name="ph" placeholder="e.g., 6.5" min="0" max="14" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🧪 Nitrogen (N) kg/ha</label>
+                            <input type="number" class="form-control" name="nitrogen" placeholder="e.g., 80" min="0" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🧪 Phosphorus (P) kg/ha</label>
+                            <input type="number" class="form-control" name="phosphorus" placeholder="e.g., 40" min="0" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>🧪 Potassium (K) kg/ha</label>
+                            <input type="number" class="form-control" name="potassium" placeholder="e.g., 40" min="0" step="0.1" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>📏 Area (hectares)</label>
+                            <input type="number" class="form-control" name="area" placeholder="e.g., 2.5" min="0.1" step="0.1" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-predict">🔮 Predict Yield</button>
+            </form>
+            
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p style="margin-top:1rem;color:#666">Analyzing data...</p>
+            </div>
+            
+            <div class="result-card" id="resultCard">
+                <h3 style="text-align:center;color:#2e7d32;margin-bottom:1rem">📊 Predicted Yield</h3>
+                <div class="result-value" id="yieldValue">0</div>
+                <div class="result-label">quintals per hectare</div>
+                
+                <div class="info-card">
+                    <h5 style="color:#2e7d32;margin-bottom:0.5rem">💡 Recommendations</h5>
+                    <ul id="recommendations" style="margin:0;padding-left:1.5rem"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Get user location
+function getLocation() {
+    const statusDiv = document.getElementById('locationStatus');
+    statusDiv.style.display = 'block';
+    statusDiv.innerHTML = '<div style="color:#ff9800">🔄 Getting your location...</div>';
+    
+    if (!navigator.geolocation) {
+        statusDiv.innerHTML = '<div style="color:#f44336">❌ Geolocation not supported</div>';
+        return;
+    }
+    
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            
+            // Get location name using reverse geocoding
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+                const data = await response.json();
+                
+                const city = data.address.city || data.address.town || data.address.village || 'Unknown';
+                const country = data.address.country || 'Unknown';
+                
+                // Get weather data
+                statusDiv.innerHTML = '<div style="color:#ff9800">🔄 Getting weather data...</div>';
+                
+                try {
+                    const weatherResponse = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m&daily=precipitation_sum&timezone=auto`);
+                    const weatherData = await weatherResponse.json();
+                    
+                    const temperature = weatherData.current.temperature_2m;
+                    const humidity = weatherData.current.relative_humidity_2m;
+                    const rainfall = weatherData.daily.precipitation_sum[0] || 0;
+                    
+                    statusDiv.innerHTML = `
+                        <div style="color:#4caf50;font-weight:600">✅ Location & Weather detected!</div>
+                        <div style="background:#fff;padding:1rem;border-radius:8px;margin:1rem 0;border:1px solid #ddd">
+                            <div><strong>🌍 Location:</strong> ${city}, ${country}</div>
+                            <div><strong>🌡️ Temperature:</strong> ${temperature}°C</div>
+                            <div><strong>💧 Humidity:</strong> ${humidity}%</div>
+                            <div><strong>🌧️ Rainfall:</strong> ${rainfall} mm</div>
+                        </div>
+                        <button type="button" onclick="fillWeatherData(${temperature}, ${humidity}, ${rainfall})" style="background:#2196f3;color:#fff;border:none;padding:0.6rem 1.5rem;border-radius:6px;cursor:pointer;font-weight:600;width:100%">
+                            ✓ Fill Weather Data into Form
+                        </button>
+                    `;
+                    
+                    // Set country in form
+                    const countrySelect = document.querySelector('[name="state"]');
+                    const options = Array.from(countrySelect.options);
+                    const matchingOption = options.find(opt => opt.value.toLowerCase().includes(country.toLowerCase()));
+                    if (matchingOption) {
+                        countrySelect.value = matchingOption.value;
+                    }
+                } catch (error) {
+                    statusDiv.innerHTML = `
+                        <div style="color:#4caf50;font-weight:600">✅ Location detected!</div>
+                        <div style="background:#fff;padding:1rem;border-radius:8px;margin:1rem 0;border:1px solid #ddd">
+                            <div><strong>🌍 Location:</strong> ${city}, ${country}</div>
+                        </div>
+                        <p style="color:#f44336;font-size:0.9rem">Could not fetch weather data. Please fill manually.</p>
+                    `;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `
+                    <div style="color:#4caf50;font-weight:600">✅ Location: ${lat.toFixed(4)}, ${lon.toFixed(4)}</div>
+                    <p style="color:#666;font-size:0.9rem">Please fill in the remaining fields below</p>
+                `;
+            }
+        },
+        (error) => {
+            statusDiv.innerHTML = '<div style="color:#f44336">❌ Location access denied. Please enable location permissions.</div>';
+        }
+    );
+}
+
+// Handle soil report upload
+document.getElementById('soilReportUpload').onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const statusDiv = document.getElementById('uploadStatus');
+    statusDiv.style.display = 'block';
+    statusDiv.innerHTML = '<div style="color:#ff9800">🔄 Processing image...</div>';
+    
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    try {
+        const response = await fetch('/scan-soil-report/', {
+            method: 'POST',
+            body: formData,
+            headers: {'X-CSRFToken': '{{ csrf_token }}'}
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+            statusDiv.innerHTML = `
+                <div style="color:#4caf50;font-weight:600">✅ Values extracted! Review and confirm:</div>
+                <div style="background:#fff;padding:1rem;border-radius:8px;margin:1rem 0;border:1px solid #ddd">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1rem">
+                        ${result.ph ? `<div><strong>pH:</strong> ${result.ph}</div>` : '<div style="color:#999">pH: Not found</div>'}
+                        ${result.nitrogen ? `<div><strong>Nitrogen:</strong> ${result.nitrogen} kg/ha</div>` : '<div style="color:#999">Nitrogen: Not found</div>'}
+                        ${result.phosphorus ? `<div><strong>Phosphorus:</strong> ${result.phosphorus} kg/ha</div>` : '<div style="color:#999">Phosphorus: Not found</div>'}
+                        ${result.potassium ? `<div><strong>Potassium:</strong> ${result.potassium} kg/ha</div>` : '<div style="color:#999">Potassium: Not found</div>'}
+                    </div>
+                    <button type="button" onclick="fillForm(${result.ph}, ${result.nitrogen}, ${result.phosphorus}, ${result.potassium})" style="background:#4caf50;color:#fff;border:none;padding:0.6rem 1.5rem;border-radius:6px;cursor:pointer;font-weight:600;width:100%">
+                        ✓ Confirm & Fill Form
+                    </button>
+                </div>
+            `;
+        } else {
+            statusDiv.innerHTML = `<div style="color:#f44336">❌ ${result.message}</div>`;
+        }
+    } catch (error) {
+        statusDiv.innerHTML = '<div style="color:#f44336">❌ Failed to process image</div>';
+    }
+};
+
+// Fill weather data into form
+function fillWeatherData(temperature, humidity, rainfall) {
+    document.querySelector('[name="temperature"]').value = temperature;
+    document.querySelector('[name="humidity"]').value = humidity;
+    document.querySelector('[name="rainfall"]').value = rainfall;
+    
+    document.getElementById('locationStatus').innerHTML = '<div style="color:#4caf50;font-weight:600">✅ Weather data filled into form!</div>';
+}
+
+// Fill form with extracted values
+function fillForm(ph, nitrogen, phosphorus, potassium) {
+    if (ph) document.querySelector('[name="ph"]').value = ph;
+    if (nitrogen) document.querySelector('[name="nitrogen"]').value = nitrogen;
+    if (phosphorus) document.querySelector('[name="phosphorus"]').value = phosphorus;
+    if (potassium) document.querySelector('[name="potassium"]').value = potassium;
+    
+    document.getElementById('uploadStatus').innerHTML = '<div style="color:#4caf50;font-weight:600">✅ Values filled into form!</div>';
+    
+    // Scroll to form
+    document.querySelector('[name="ph"]').scrollIntoView({behavior: 'smooth', block: 'center'});
+}
+
+document.getElementById('yieldForm').onsubmit = async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(e.target);
+    const loading = document.getElementById('loading');
+    const resultCard = document.getElementById('resultCard');
+    
+    loading.style.display = 'block';
+    resultCard.style.display = 'none';
+    
+    try {
+        const response = await fetch('/predict-yield/', {
+            method: 'POST',
+            body: formData,
+            headers: {'X-CSRFToken': '{{ csrf_token }}'}
+        });
+        
+        const result = await response.json();
+        loading.style.display = 'none';
+        
+        if (result.error) {
+            alert('❌ ' + result.error);
+            return;
+        }
+        
+        document.getElementById('yieldValue').textContent = result.yield + ' Q/ha';
+        
+        const recList = document.getElementById('recommendations');
+        recList.innerHTML = result.recommendations.map(r => `<li>${r}</li>`).join('');
+        
+        resultCard.style.display = 'block';
+        resultCard.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+        
+    } catch (error) {
+        loading.style.display = 'none';
+        alert('❌ Prediction failed. Please try again.');
+    }
+};
+</script>
+{% endblock %}
