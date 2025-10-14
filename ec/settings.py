@@ -25,6 +25,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "kisan-connect.onrender.com",
     "web-production-2d128.up.railway.app",
+    ".pythonanywhere.com",
+    ".fly.dev",
     "127.0.0.1",
     "localhost"
 ]
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
