@@ -7,21 +7,26 @@ import numpy as np
 from PIL import Image, ImageEnhance
 import json
 import os
+from pathlib import Path
 
-MODEL_PATH = 'app/ml_models/plant_disease_model.h5'
-CLASSES_PATH = 'app/ml_models/classes.json'
+# Use absolute paths
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / 'ml_models' / 'plant_disease_model.h5'
+CLASSES_PATH = BASE_DIR / 'ml_models' / 'classes.json'
 IMG_SIZE = 224
 
 # Load model and classes
 try:
-    model = tf.keras.models.load_model(MODEL_PATH)
-    with open(CLASSES_PATH, 'r') as f:
+    model = tf.keras.models.load_model(str(MODEL_PATH))
+    with open(str(CLASSES_PATH), 'r') as f:
         class_names = json.load(f)
     MODEL_LOADED = True
-except:
+    print(f"✅ Model loaded successfully from {MODEL_PATH}")
+except Exception as e:
     MODEL_LOADED = False
     model = None
     class_names = []
+    print(f"❌ Model loading failed: {e}")
 
 def enhance_image_pil(image_path):
     """Enhance image using PIL for better prediction"""
