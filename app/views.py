@@ -1283,3 +1283,38 @@ def send_newsletter_view(request):
         return redirect('app:send_newsletter')
     
     return render(request, 'app/send_newsletter.html', {'subscriber_count': subscriber_count})
+
+
+@login_required(login_url=reverse_lazy("app:login"))
+
+
+@login_required(login_url=reverse_lazy("app:login"))
+def schemes(request):
+    from .scrape_schemes import scrape_government_schemes
+    schemes = scrape_government_schemes()
+    return render(request, 'app/schemes.html', {'schemes': schemes})
+
+
+@login_required(login_url=reverse_lazy("app:login"))
+def schemes(request):
+    from .scrape_schemes import scrape_government_schemes
+    schemes = scrape_government_schemes()
+    
+    subsidy_data = []
+    try:
+        import os
+        supabase_url = os.getenv('SUPABASE_URL', '')
+        supabase_key = os.getenv('SUPABASE_ANON_KEY', '')
+        
+        if supabase_url and supabase_key:
+            response = requests.get(
+                f"{supabase_url}/rest/v1/food_subsidy?select=*",
+                headers={'apikey': supabase_key, 'Authorization': f'Bearer {supabase_key}'},
+                timeout=10
+            )
+            if response.status_code == 200:
+                subsidy_data = response.json()
+    except:
+        pass
+    
+    return render(request, 'app/schemes.html', {'schemes': schemes, 'subsidy_data': subsidy_data})

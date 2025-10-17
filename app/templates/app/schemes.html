@@ -1,0 +1,101 @@
+{% extends 'app/base.html' %}
+{% load static %}
+{% block title %}Government Schemes{% endblock %}
+
+{% block main-content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">🏛️ Government Schemes for Farmers</h1>
+    <p class="text-center text-muted">Live schemes from MyScheme.gov.in</p>
+    
+    {% if subsidy_data %}
+    <section class="mb-5">
+        <h2 class="fw-bold mb-4" style="color:#2e7d32">🌱 State-wise Food Subsidy</h2>
+        <div id="schemeData" class="row g-3"></div>
+        <canvas id="subsidyChart" class="mt-4" style="max-height:400px"></canvas>
+    </section>
+    {% endif %}
+    
+    <!-- Schemes List -->
+    <div class="row">
+        {% for scheme in schemes %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <span class="badge bg-success mb-2">{{scheme.category}}</span>
+                    <h5 class="card-title">{{scheme.title}}</h5>
+                    <p class="card-text text-muted small">{{scheme.ministry}}</p>
+                    <p class="card-text">{{scheme.description|truncatewords:20}}</p>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#scheme{{forloop.counter}}">View Details</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="scheme{{forloop.counter}}" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{scheme.title}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Ministry:</strong> {{scheme.ministry}}</p>
+                        <p><strong>Description:</strong> {{scheme.description}}</p>
+                        <p><strong>Eligibility:</strong> {{scheme.eligibility}}</p>
+                        <p><strong>Benefits:</strong> {{scheme.benefits}}</p>
+                        <p><strong>How to Apply:</strong> {{scheme.how_to_apply}}</p>
+                        <a href="{{scheme.official_link}}" target="_blank" class="btn btn-success">Apply Now →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>No schemes found. Check back later!</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const subsidyData = {{ subsidy_data|safe }};
+if(subsidyData.length > 0) {
+    const div = document.getElementById('schemeData');
+    const states = [], subsidy2014 = [], subsidy2015 = [];
+    
+    subsidyData.forEach(row => {
+        states.push(row.state);
+        subsidy2014.push(row.subsidy_2014_15);
+        subsidy2015.push(row.subsidy_2015_16);
+        
+        div.innerHTML += `
+            <div class="col-md-4">
+                <div class="card border-success">
+                    <div class="card-body">
+                        <h6 class="fw-bold">${row.state}</h6>
+                        <p class="mb-1">2014-15: ₹${row.subsidy_2014_15} Cr</p>
+                        <p class="mb-0">2015-16: ₹${row.subsidy_2015_16} Cr</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    new Chart(document.getElementById('subsidyChart'), {
+        type: 'bar',
+        data: {
+            labels: states,
+            datasets: [
+                { label: '2014-15', data: subsidy2014, backgroundColor: 'rgba(75, 192, 192, 0.6)' },
+                { label: '2015-16', data: subsidy2015, backgroundColor: 'rgba(255, 159, 64, 0.6)' }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+}
+</script>

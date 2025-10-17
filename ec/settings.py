@@ -50,6 +50,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",  # Language detection
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -75,6 +76,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.i18n",  # Language context
                 "app.context_processors.cart_count",
             ],
         },
@@ -89,31 +91,26 @@ WSGI_APPLICATION = "ec.wsgi.application"
 import os
 import dj_database_url
 
-try:
-    if os.getenv('DATABASE_URL'):
-        DATABASES = {
-            'default': dj_database_url.config(default=os.getenv('DATABASE_URL'), conn_max_age=600)
-        }
-    else:
-        DATABASES = {
-            "default": {
-                "ENGINE": "django.db.backends.postgresql",
-                "NAME": "postgres",
-                "USER": "postgres",
-                "PASSWORD": "Kalpesh12345@#$%",
-                "HOST": "db.zkcwnazosqzxbjsvtkxy.supabase.co",
-                "PORT": "5432",
-                "OPTIONS": {
-                    "connect_timeout": 10,
-                },
-            }
-        }
-except Exception as e:
-    print(f"Database configuration error: {e}")
+if os.getenv('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+else:
     DATABASES = {
         "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": BASE_DIR / "db.sqlite3",
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "postgres",
+            "USER": "postgres",
+            "PASSWORD": "Kalpesh12345@#$%",
+            "HOST": "db.zkcwnazosqzxbjsvtkxy.supabase.co",
+            "PORT": "5432",
+            "OPTIONS": {
+                "connect_timeout": 10,
+            },
         }
     }
 
@@ -138,34 +135,51 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
-LANGUAGE_CODE = "en-us"
+from django.utils.translation import gettext_lazy as _
 
-TIME_ZONE = "UTC"
+LANGUAGE_CODE = "en"  # Default language
+
+LANGUAGES = [
+    ('en', 'English'),
+    ('hi', 'हिन्दी (Hindi)'),
+    ('ta', 'தமிழ் (Tamil)'),
+    ('te', 'తెలుగు (Telugu)'),
+    ('bn', 'বাংলা (Bengali)'),
+    ('mr', 'मराठी (Marathi)'),
+    ('kn', 'ಕನ್ನಡ (Kannada)'),
+    ('ml', 'മലയാളം (Malayalam)'),
+    ('pa', 'ਪੰਜਾਬੀ (Punjabi)'),
+]
+
+LOCALE_PATHS = [
+    BASE_DIR / 'locale',
+]
+
+TIME_ZONE = "Asia/Kolkata"  # Indian Standard Time
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]   # 👈 add this
-STATIC_ROOT = BASE_DIR / "staticfiles"     # for collectstatic (optional, needed in production)
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = [BASE_DIR / "app" / "static"]
 
-# Media files configuration
-if DEBUG:
-    MEDIA_URL = "/media/"
-    MEDIA_ROOT = BASE_DIR / "media"
-else:
-    # Production: Use Cloudinary or AWS S3
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME', ''),
-        'API_KEY': os.getenv('CLOUDINARY_API_KEY', ''),
-        'API_SECRET': os.getenv('CLOUDINARY_API_SECRET', ''),
-    }
-    MEDIA_URL = '/media/'
+# WhiteNoise configuration for serving static files
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Media files configuration - Always use Cloudinary in production
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME', ''),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY', ''),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET', ''),
+}
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -202,6 +216,8 @@ GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 NEWSDATA_API_KEY = os.getenv("NEWSDATA_API_KEY", "")
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:Kalpesh12345@#$%@db.zkcwnazosqzxbjsvtkxy.supabase.co:5432/postgres")
+SUPABASE_URL = os.getenv("SUPABASE_URL", "")
+SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY", "")
 
 # ========================
 # LOGGING CONFIGURATION
@@ -243,6 +259,12 @@ LOGGING = {
         },
     },
 }
+
+# ========================
+# SUPABASE SETTINGS
+# ========================
+SUPABASE_URL = os.getenv("SUPABASE_URL", "")
+SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY", "")
 
 # ========================
 # LOGIN SETTINGS
