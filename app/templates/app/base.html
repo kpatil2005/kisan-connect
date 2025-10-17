@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="en">
+{% load heroicons %}
+{% load i18n %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -17,8 +19,9 @@
   </style>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <!-- Bootstrap Icons -->
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <!-- Font Awesome 6 - Professional Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>.heroicon{width:1.25rem;height:1.25rem;display:inline-block;vertical-align:middle}</style>
 
   <link rel="stylesheet" href="{% static 'app/css/owl.carousel.min.css' %}"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,9 +30,45 @@
   <link rel="icon" href="{% static 'app/images/logo.png' %}" type="image/png">
   <title>Dairy Product | {% block title %}{% endblock title %} Document</title>
   {% block extra_head %}{% endblock %}
+  <style>
+    #pageLoader{position:fixed;top:0;left:0;width:100%;height:100vh;background:linear-gradient(135deg,#1b5e20 0%,#2e7d32 50%,#4caf50 100%);z-index:999999;display:flex;align-items:center;justify-content:center;transition:opacity 0.8s,visibility 0.8s;overflow:hidden}
+    #pageLoader.hide{opacity:0;visibility:hidden}
+    #pageLoader::before{content:'';position:absolute;width:200%;height:200%;background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="50" font-size="50" opacity="0.05">🌾</text></svg>') repeat;animation:float 20s linear infinite}
+    @keyframes float{to{transform:translate(-50px,-50px)}}
+    .loader-box{text-align:center;max-width:500px;padding:20px;position:relative;z-index:1}
+    .logo-animate{width:100px;height:100px;margin:0 auto 20px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 40px rgba(0,0,0,0.3);animation:pulse 2s ease-in-out infinite;cursor:pointer;transition:transform 0.3s}
+    .logo-animate:hover{transform:scale(1.15)!important}
+    .logo-animate img{width:70px;height:70px;border-radius:50%}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+    .loader-text{color:#fff;font-size:2rem;font-weight:700;margin-bottom:15px;text-shadow:2px 2px 4px rgba(0,0,0,0.3)}
+    .progress-container{background:rgba(255,255,255,0.2);border-radius:25px;height:30px;margin:20px 0;overflow:hidden;position:relative}
+    .progress-bar{height:100%;background:linear-gradient(90deg,#ffc107,#ff9800);border-radius:25px;transition:width 0.3s;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.9rem}
+    .tip-box{background:rgba(255,255,255,0.15);backdrop-filter:blur(10px);border-radius:15px;padding:20px;margin-top:20px;min-height:80px;border:2px solid rgba(255,255,255,0.3)}
+    .tip-icon{font-size:2rem;margin-bottom:10px}
+    .tip-text{color:#fff;font-size:1rem;line-height:1.5;font-weight:500}
+    .click-hint{color:#ffc107;font-size:0.85rem;margin-top:10px;animation:blink 2s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.5}}
+  </style>
 </head>
 
 <body>
+  <div id="pageLoader">
+    <div class="loader-box">
+      <div class="logo-animate" id="logoClick">
+        <img src="{% static 'app/images/logo.png' %}" alt="Logo" />
+      </div>
+      <h2 class="loader-text">Kisan Connect</h2>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar" style="width:0%">0%</div>
+      </div>
+      <div class="tip-box">
+        <div class="tip-icon" id="tipIcon" style="transition:transform 0.3s">🌱</div>
+        <div class="tip-text" id="tipText">🌱 Tip: Rotate crops to maintain soil health</div>
+        <div class="click-hint">⬆️ Click logo for more tips</div>
+      </div>
+    </div>
+  </div>
+
 <nav class="modern-navbar">
   <div class="container-fluid">
     <div class="nav-wrapper">
@@ -39,44 +78,45 @@
       </a>
       
       <button class="mobile-toggle" type="button" onclick="document.getElementById('mobileNav').classList.toggle('show')">
-        <i class="bi bi-list"></i>
+        <i class="fa-solid fa-bars"></i>
       </button>
 
       <div class="nav-content" id="mobileNav">
         <ul class="nav-menu">
           {% block navbar_items %}
           {% if request.user.is_authenticated %}
-          <li><a href="{% url 'app:schemes' %}"><i class="bi bi-shop"></i> Marketplace</a></li>
+          <li><a href="{% url 'app:marketplace_home' %}">{% heroicon 'shopping-cart' 'outline' 'heroicon' %} Marketplace</a></li>
           <li class="dropdown">
             <a href="#" data-bs-toggle="dropdown"><i class="bi bi-grid-3x3-gap"></i> Categories</a>
             <ul class="dropdown-menu">
-              <li><a href="{% url 'category' 'SD' %}"><i class="bi bi-flower1"></i> Seeds</a></li>
-              <li><a href="{% url 'category' 'FT' %}"><i class="bi bi-droplet-half"></i> Fertilizers</a></li>
-              <li><a href="{% url 'category' 'MC' %}"><i class="bi bi-gear-fill"></i> Machinery</a></li>
-              <li><a href="{% url 'category' 'EQ' %}"><i class="bi bi-tools"></i> Equipment</a></li>
+              <li><a href="{% url 'category' 'SD' %}"><i class="fa-solid fa-seedling"></i> Seeds</a></li>
+              <li><a href="{% url 'category' 'FT' %}"><i class="fa-solid fa-flask"></i> Fertilizers</a></li>
+              <li><a href="{% url 'category' 'MC' %}"><i class="fa-solid fa-tractor"></i> Machinery</a></li>
+              <li><a href="{% url 'category' 'EQ' %}"><i class="fa-solid fa-wrench"></i> Equipment</a></li>
             </ul>
           </li>
-          <li><a href="{% url 'app:about' %}"><i class="bi bi-info-circle"></i> About</a></li>
-          <li><a href="{% url 'app:contact' %}"><i class="bi bi-telephone"></i> Contact</a></li>
+          <li><a href="{% url 'app:about' %}"><i class="fa-solid fa-circle-info"></i> About</a></li>
+          <li><a href="{% url 'app:contact' %}"><i class="fa-solid fa-phone"></i> Contact</a></li>
           {% endif %}
           {% endblock %}
         </ul>
         
         <form class="search-form" method="GET" action="{% url 'app:search' %}">
           <input type="search" name="q" placeholder="Search..." required />
-          <button type="submit"><i class="bi bi-search"></i></button>
+          <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
         </form>
         
         <div class="nav-actions">
+          {% include 'app/language_switcher.html' %}
           {% if request.user.is_authenticated %}
-          <a href="{% url 'app:profile' %}" class="user-btn"><i class="bi bi-person"></i> <span class="btn-text">Profile</span></a>
-          <a href="{% url 'app:orders' %}" class="user-btn"><i class="bi bi-bag-check"></i> <span class="btn-text">Orders</span></a>
-          <a href="{% url 'app:passwordchange' %}" class="user-btn"><i class="bi bi-key"></i> <span class="btn-text">Password</span></a>
-          <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;" class="logout-btn"><i class="bi bi-box-arrow-right"></i> <span class="btn-text">Logout</span></a>
-          <a href="{% url 'app:showcart' %}" class="cart-btn"><i class="bi bi-cart-fill"></i> <span class="btn-text">Cart</span><span class="badge">{% if totalitem > 0 %}{{ totalitem }}{% else %}0{% endif %}</span></a>
+          <a href="{% url 'app:profile' %}" class="user-btn">{% heroicon 'user' 'outline' 'heroicon' %} <span class="btn-text">Profile</span></a>
+          <a href="{% url 'app:orders' %}" class="user-btn"><i class="fa-solid fa-box"></i> <span class="btn-text">Orders</span></a>
+          <a href="{% url 'app:passwordchange' %}" class="user-btn"><i class="fa-solid fa-key"></i> <span class="btn-text">Password</span></a>
+          <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;" class="logout-btn">{% heroicon 'logout' 'outline' 'heroicon' %} <span class="btn-text">Logout</span></a>
+          <a href="{% url 'app:showcart' %}" class="cart-btn"><i class="fa-solid fa-cart-shopping"></i> <span class="btn-text">Cart</span><span class="badge">{% if totalitem > 0 %}{{ totalitem }}{% else %}0{% endif %}</span></a>
           {% else %}
-          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="login-btn"><i class="bi bi-box-arrow-in-right"></i> <span class="btn-text">Login</span></a>
-          <a href="{% url 'app:customerregistration' %}" class="register-btn"><i class="bi bi-person-plus"></i> <span class="btn-text">Register</span></a>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="login-btn">{% heroicon 'login' 'outline' 'heroicon' %} <span class="btn-text">Login</span></a>
+          <a href="{% url 'app:customerregistration' %}" class="register-btn">{% heroicon 'user-plus' 'outline' 'heroicon' %} <span class="btn-text">Register</span></a>
           {% endif %}
         </div>
       </div>
@@ -105,6 +145,42 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="{% static 'app/js/owl.carousel.min.js' %}"></script>
   <script src="{% static 'app/js/myscript.js' %}"></script>
+  <script>
+    const MIN_DISPLAY_TIME=3000;// Change to 800 for production
+    const tips=['🌱 Tip: Rotate crops to maintain soil health','💧 Tip: Drip irrigation saves 60% water','🌾 Tip: Organic farming increases soil fertility','🚜 Tip: Regular equipment maintenance saves costs','☀️ Tip: Check weather before planting','🌿 Tip: Mulching reduces water evaporation','🐛 Tip: Natural pest control protects crops','📊 Tip: Track expenses for better profits'];
+    let progress=0,tipIndex=0,startTime=Date.now(),pageLoaded=false;
+    const bar=document.getElementById('progressBar'),tipText=document.getElementById('tipText'),tipIcon=document.getElementById('tipIcon');
+    const icons=['🌱','💧','🌾','🚜','☀️','🌿','🐛','📊'];
+    function updateTip(){
+      tipIcon.style.transform='scale(0)';
+      setTimeout(()=>{
+        tipIndex=(tipIndex+1)%tips.length;
+        tipIcon.textContent=icons[tipIndex];
+        tipText.textContent=tips[tipIndex];
+        tipIcon.style.transform='scale(1)';
+      },200);
+    }
+    document.getElementById('logoClick').onclick=updateTip;
+    const interval=setInterval(()=>{
+      progress+=2;
+      bar.style.width=progress+'%';
+      bar.textContent=progress+'%';
+      if(progress>=50&&progress<52)updateTip();
+      if(progress>=100)clearInterval(interval);
+    },MIN_DISPLAY_TIME/50);
+    function hideLoader(){
+      const elapsed=Date.now()-startTime;
+      const remaining=Math.max(0,MIN_DISPLAY_TIME-elapsed);
+      clearInterval(interval);
+      bar.style.width='100%';
+      bar.textContent='100%';
+      setTimeout(()=>document.getElementById('pageLoader').classList.add('hide'),remaining+300);
+    }
+    window.addEventListener('load',function(){
+      pageLoaded=true;
+      hideLoader();
+    });
+  </script>
 </body>
 </html>
 

@@ -1,7 +1,9 @@
 {% load static %}
+{% load heroicons %}
+{% load i18n %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ LANGUAGE_CODE }}">
 
 <head>
   <meta charset="UTF-8">
@@ -18,9 +20,15 @@
   
   <!-- Bootstrap Icons -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <!-- Heroicons Style -->
+  <style>.heroicon{width:1.25rem;height:1.25rem;display:inline-block;vertical-align:middle;stroke:currentColor;fill:none}</style>
   
   <!-- Favicon -->
   <link rel="icon" href="{% static 'app/images/logo.png' %}" type="image/png">
+  
+  <!-- Intro.js for User Guide -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/introjs.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/7.2.0/intro.min.js"></script>
   
   <style>
     /* ===== GLOBAL STYLES ===== */
@@ -1165,33 +1173,35 @@
       </button>
 
       <div class="nav-content" id="mobileNav">
-        <ul class="nav-menu">
-          <li><a href="{% url 'app:home' %}"><i class="bi bi-house-fill"></i> Home</a></li>
-          <li><a href="{% url 'app:schemes' %}"><i class="bi bi-shop"></i> Marketplace</a></li>
+        <ul class="nav-menu" data-intro="Navigate through different sections: Home, Marketplace, Services, Forum, and News" data-step="1">
+          <li><a href="{% url 'app:home' %}">{% heroicon 'home' %} {% trans "Home" %}</a></li>
+          <li><a href="{% url 'app:marketplace_home' %}">{% heroicon 'shopping-cart' %} {% trans "Marketplace" %}</a></li>
           <li class="dropdown">
-            <a href="#" data-bs-toggle="dropdown"><i class="bi bi-lightbulb"></i> Services</a>
+            <a href="#" data-bs-toggle="dropdown"><i class="bi bi-lightbulb"></i> {% trans "Services" %}</a>
             <ul class="dropdown-menu">
-              <li><a href="{% url 'app:weather' %}"><i class="bi bi-cloud-sun"></i> Weather</a></li>
-              <li><a href="{% url 'app:crops' %}"><i class="bi bi-flower1"></i> Crop Selection</a></li>
-              <li><a href="{% url 'app:fertilizers' %}"><i class="bi bi-droplet"></i> Fertilizers</a></li>
-              <li><a href="{% url 'app:capture_and_predict' %}"><i class="bi bi-camera"></i> Disease Detection</a></li>
-              <li><a href="{% url 'app:prediction' %}"><i class="bi bi-graph-up"></i> Yield Prediction</a></li>
+              <li><a href="{% url 'app:weather' %}"><i class="bi bi-cloud-sun"></i> {% trans "Weather" %}</a></li>
+              <li><a href="{% url 'app:crops' %}"><i class="bi bi-flower1"></i> {% trans "Crop Selection" %}</a></li>
+              <li><a href="{% url 'app:fertilizers' %}"><i class="bi bi-droplet"></i> {% trans "Fertilizers" %}</a></li>
+              <li><a href="{% url 'app:capture_and_predict' %}"><i class="bi bi-camera"></i> {% trans "Disease Detection" %}</a></li>
+              <li><a href="{% url 'app:prediction' %}"><i class="bi bi-graph-up"></i> {% trans "Yield Prediction" %}</a></li>
             </ul>
           </li>
-          <li><a href="{% url 'app:forum' %}"><i class="bi bi-chat-dots"></i> Forum</a></li>
-          <li><a href="{% url 'app:news' %}"><i class="bi bi-newspaper"></i> News</a></li>
+          <li><a href="{% url 'app:forum' %}"><i class="bi bi-chat-dots"></i> {% trans "Forum" %}</a></li>
+          <li><a href="{% url 'app:news' %}"><i class="bi bi-newspaper"></i> {% trans "News" %}</a></li>
+          <li><a href="#" onclick="document.getElementById('mobileNav').classList.remove('show');setTimeout(()=>startUserGuide(),300);return false;" style="background:linear-gradient(135deg,#ffc107,#ff9800);color:#000;font-weight:700"><i class="fa-solid fa-circle-question"></i> {% trans "Help Guide" %}</a></li>
         </ul>
         
         <div class="nav-actions">
+          {% include 'app/language_switcher.html' %}
           {% if user.is_authenticated %}
           <div class="user-profile">
             <span class="user-name">Welcome, {{ user.first_name|default:user.username }}</span>
           </div>
-          <a href="{% url 'app:profile' %}" class="user-btn"><i class="bi bi-person"></i> <span class="btn-text">Profile</span></a>
-          <a href="#" onclick="document.getElementById('logoutFormIndex').submit(); return false;" class="logout-btn"><i class="bi bi-box-arrow-right"></i> <span class="btn-text">Logout</span></a>
+          <a href="{% url 'app:profile' %}" class="user-btn">{% heroicon 'user' %} <span class="btn-text">{% trans "Profile" %}</span></a>
+          <a href="#" onclick="document.getElementById('logoutFormIndex').submit(); return false;" class="logout-btn">{% heroicon 'logout' %} <span class="btn-text">{% trans "Logout" %}</span></a>
           {% else %}
-          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="login-btn"><i class="bi bi-box-arrow-in-right"></i> <span class="btn-text">Login</span></a>
-          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="register-btn"><i class="bi bi-person-plus"></i> <span class="btn-text">Register</span></a>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="login-btn">{% heroicon 'login' %} <span class="btn-text">Login</span></a>
+          <a href="#" data-bs-toggle="modal" data-bs-target="#roleSelectModal" class="register-btn">{% heroicon 'user-plus' %} <span class="btn-text">Register</span></a>
           {% endif %}
         </div>
         <form method="post" action="{% url 'app:logout' %}" id="logoutFormIndex" style="display:none;">{% csrf_token %}</form>
@@ -1296,9 +1306,9 @@
   <div class="hero-slide" style="background:url('{% static 'app/images/herosection.jpg' %}') center/cover no-repeat">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">Empowering Farmers, Inspiring Growth</h1>
-      <p class="hero-subtitle">Access government schemes, expert advice, and connect with a thriving farming community</p>
-      <a href="{% url 'app:schemes' %}" class="btn btn-success btn-lg shadow" style="border-radius:50px;font-weight:700">Explore Opportunities</a>
+      <h1 class="hero-title">{% trans "Empowering Farmers, Inspiring Growth" %}</h1>
+      <p class="hero-subtitle">{% trans "Access government schemes, expert advice, and connect with a thriving farming community" %}</p>
+      <a href="{% url 'app:marketplace_home' %}" class="btn btn-success btn-lg shadow" style="border-radius:50px;font-weight:700">{% trans "Explore Opportunities" %}</a>
     </div>
     <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
       <div class="mouse"></div>
@@ -1307,9 +1317,9 @@
   <div class="hero-slide" style="background:url('{% static 'app/images/heromarket.png' %}') center/cover no-repeat">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">Smart Farming Marketplace</h1>
-      <p class="hero-subtitle">Premium seeds, fertilizers, and farming tools from trusted suppliers to boost your productivity</p>
-      <a href="{% url 'app:schemes' %}" class="btn btn-warning btn-lg shadow" style="border-radius:50px;font-weight:700">Visit Marketplace</a>
+      <h1 class="hero-title">{% trans "Smart Farming Marketplace" %}</h1>
+      <p class="hero-subtitle">{% trans "Premium seeds, fertilizers, and farming tools from trusted suppliers to boost your productivity" %}</p>
+      <a href="{% url 'app:marketplace_home' %}" class="btn btn-warning btn-lg shadow" style="border-radius:50px;font-weight:700">{% trans "Visit Marketplace" %}</a>
     </div>
     <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
       <div class="mouse"></div>
@@ -1318,9 +1328,9 @@
   <div class="hero-slide" style="background:url('{% static 'app/images/plantdetection.png' %}') center/cover no-repeat">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">AI-Powered Disease Detection</h1>
-      <p class="hero-subtitle">Advanced computer vision technology to detect crop diseases and protect your harvest</p>
-      <a href="{% url 'app:disease_detection' %}" class="btn btn-danger btn-lg shadow" style="border-radius:50px;font-weight:700">Detect Disease</a>
+      <h1 class="hero-title">{% trans "AI-Powered Disease Detection" %}</h1>
+      <p class="hero-subtitle">{% trans "Advanced computer vision technology to detect crop diseases and protect your harvest" %}</p>
+      <a href="{% url 'app:disease_detection' %}" class="btn btn-danger btn-lg shadow" style="border-radius:50px;font-weight:700">{% trans "Detect Disease" %}</a>
     </div>
     <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
       <div class="mouse"></div>
@@ -1329,9 +1339,9 @@
   <div class="hero-slide" style="background:url('{% static 'app/images/weatherhero.jpg' %}') center/cover no-repeat">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">Weather & Farming Insights</h1>
-      <p class="hero-subtitle">Real-time weather forecasts and expert farming tips to maximize your crop yield</p>
-      <a href="{% url 'app:farming_advice' %}" class="btn btn-info btn-lg shadow" style="border-radius:50px;font-weight:700">View Advice</a>
+      <h1 class="hero-title">{% trans "Weather & Farming Insights" %}</h1>
+      <p class="hero-subtitle">{% trans "Real-time weather forecasts and expert farming tips to maximize your crop yield" %}</p>
+      <a href="{% url 'app:farming_advice' %}" class="btn btn-info btn-lg shadow" style="border-radius:50px;font-weight:700">{% trans "View Advice" %}</a>
     </div>
     <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
       <div class="mouse"></div>
@@ -1340,9 +1350,9 @@
   <div class="hero-slide" style="background:url('{% static 'app/images/Crop Yield Prediction.webp' %}') center/cover no-repeat">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">Crop Yield Prediction</h1>
-      <p class="hero-subtitle">Data-driven insights using rainfall, temperature, and soil quality for better harvests</p>
-      <a href="{% url 'app:prediction' %}" class="btn btn-success btn-lg shadow" style="border-radius:50px;font-weight:700">Predict Yield</a>
+      <h1 class="hero-title">{% trans "Crop Yield Prediction" %}</h1>
+      <p class="hero-subtitle">{% trans "Data-driven insights using rainfall, temperature, and soil quality for better harvests" %}</p>
+      <a href="{% url 'app:prediction' %}" class="btn btn-success btn-lg shadow" style="border-radius:50px;font-weight:700">{% trans "Predict Yield" %}</a>
     </div>
     <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
       <div class="mouse"></div>
@@ -1351,9 +1361,9 @@
   <div class="hero-slide" style="background:url('{% static 'app/images/scheme.jpg' %}') center/cover no-repeat">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">Government Schemes & Support</h1>
-      <p class="hero-subtitle">Discover subsidies, loans, and support programs designed specifically for farmers</p>
-      <a href="{% url 'app:schemes' %}" class="btn btn-primary btn-lg shadow" style="border-radius:50px;font-weight:700">Find Schemes</a>
+      <h1 class="hero-title">{% trans "Government Schemes & Support" %}</h1>
+      <p class="hero-subtitle">{% trans "Discover subsidies, loans, and support programs designed specifically for farmers" %}</p>
+      <a href="{% url 'app:schemes' %}" class="btn btn-primary btn-lg shadow" style="border-radius:50px;font-weight:700">{% trans "Find Schemes" %}</a>
     </div>
     <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
       <div class="mouse"></div>
@@ -1362,9 +1372,9 @@
   <div class="hero-slide" style="background:url('{% static 'app/images/farmingnews.jpg' %}') center/cover no-repeat">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">Latest Farming News</h1>
-      <p class="hero-subtitle">Stay informed with agricultural news, policy changes, and market trends</p>
-      <a href="{% url 'app:news' %}" class="btn btn-warning btn-lg shadow" style="border-radius:50px;font-weight:700">Read More</a>
+      <h1 class="hero-title">{% trans "Latest Farming News" %}</h1>
+      <p class="hero-subtitle">{% trans "Stay informed with agricultural news, policy changes, and market trends" %}</p>
+      <a href="{% url 'app:news' %}" class="btn btn-warning btn-lg shadow" style="border-radius:50px;font-weight:700">{% trans "Read More" %}</a>
     </div>
     <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
       <div class="mouse"></div>
@@ -1373,9 +1383,9 @@
   <div class="hero-slide" style="background:url('{% static 'app/images/Farmer Community Forum.jpeg' %}') center/cover no-repeat">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">Farmer Community Forum</h1>
-      <p class="hero-subtitle">Connect, share knowledge, and learn from experienced agricultural professionals</p>
-      <a href="{% url 'app:forum' %}" class="btn btn-success btn-lg shadow" style="border-radius:50px;font-weight:700">Join Forum</a>
+      <h1 class="hero-title">{% trans "Farmer Community Forum" %}</h1>
+      <p class="hero-subtitle">{% trans "Connect, share knowledge, and learn from experienced agricultural professionals" %}</p>
+      <a href="{% url 'app:forum' %}" class="btn btn-success btn-lg shadow" style="border-radius:50px;font-weight:700">{% trans "Join Forum" %}</a>
     </div>
     <div class="scroll-indicator" onclick="document.querySelector('#auth-section, #marketplace-intro').scrollIntoView({behavior:'smooth'})">
       <div class="mouse"></div>
@@ -1426,11 +1436,9 @@
     
     <!-- Left Content -->
     <div class="col-lg-6 order-1 order-lg-1 mb-4 mb-lg-0">
-      <h1 class="fw-bold" style="color:#2c3e50;font-size:clamp(1.8rem,4vw,2.8rem)">🌾 Welcome to Our Marketplace</h1>
+      <h1 class="fw-bold" style="color:#2c3e50;font-size:clamp(1.8rem,4vw,2.8rem)">🌾 {% trans "Welcome to Our Marketplace" %}</h1>
       <p class="lead text-muted mt-3" style="font-size:clamp(1rem,2vw,1.2rem)">
-        Discover high-quality seeds, organic fertilizers, modern farming tools, and crop protection products – 
-        all in one place. Our marketplace connects farmers with trusted suppliers to ensure better yield and 
-        sustainable farming practices.
+        {% trans "Discover high-quality seeds, organic fertilizers, modern farming tools, and crop protection products – all in one place. Our marketplace connects farmers with trusted suppliers to ensure better yield and sustainable farming practices." %}
       </p>
       
       <!-- Video for Mobile (shown between description and list) -->
@@ -1447,12 +1455,12 @@
       </div>
       
       <ul class="list-unstyled mt-4" style="font-size:clamp(0.95rem,2vw,1.1rem)">
-        <li class="mb-2">✅ Trusted & Verified Products</li>
-        <li class="mb-2">✅ Affordable Prices with Discounts</li>
-        <li class="mb-2">✅ Fast & Reliable Delivery</li>
-        <li class="mb-2">✅ 24/7 Support for Farmers</li>
+        <li class="mb-2">✅ {% trans "Trusted & Verified Products" %}</li>
+        <li class="mb-2">✅ {% trans "Affordable Prices with Discounts" %}</li>
+        <li class="mb-2">✅ {% trans "Fast & Reliable Delivery" %}</li>
+        <li class="mb-2">✅ {% trans "24/7 Support for Farmers" %}</li>
       </ul>
-      <a href="{% url 'app:schemes' %}" class="btn btn-success btn-lg mt-4" style="border-radius:50px;padding:12px 30px;font-weight:700">Explore Marketplace</a>
+      <a href="{% url 'app:marketplace_home' %}" class="btn btn-success btn-lg mt-4" style="border-radius:50px;padding:12px 30px;font-weight:700">{% trans "Explore Marketplace" %}</a>
     </div>
 
     <!-- Right Image/Video (Desktop only) -->
@@ -1489,8 +1497,8 @@
 <div class="position-absolute" style="top:0;left:0;width:100%;height:100%;opacity:0.05;background:url('data:image/svg+xml,<svg width="80" height="80" xmlns="http://www.w3.org/2000/svg"><circle cx="40" cy="40" r="30" fill="%232e7d32" opacity="0.1"/></svg>') repeat"></div>
 <div class="container position-relative" style="z-index:1">
 <div class="text-center mb-5">
-<h1 class="fw-bold mb-3" style="font-size:clamp(2.2rem,5vw,3.8rem);color:#1b5e20;text-shadow:2px 2px 4px rgba(0,0,0,0.1)">🌾 Empower Your Farm, Every Day</h1>
-<p class="lead mx-auto" style="max-width:750px;font-size:clamp(1.1rem,2vw,1.4rem);color:#2e7d32;font-weight:500">Access tools, seeds, weather updates, and expert advice — everything you need to grow smarter and stronger</p>
+<h1 class="fw-bold mb-3" style="font-size:clamp(2.2rem,5vw,3.8rem);color:#1b5e20;text-shadow:2px 2px 4px rgba(0,0,0,0.1)">🌾 {% trans "Empower Your Farm, Every Day" %}</h1>
+<p class="lead mx-auto" style="max-width:750px;font-size:clamp(1.1rem,2vw,1.4rem);color:#2e7d32;font-weight:500">{% trans "Access tools, seeds, weather updates, and expert advice — everything you need to grow smarter and stronger" %}</p>
 </div>
 <div class="row g-4 justify-content-center">
 <div class="col-lg-3 col-md-6 col-6">
@@ -1498,8 +1506,8 @@
 <div class="icon-wrapper mb-3">
 <div class="icon-circle">🌱</div>
 </div>
-<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">Premium Seeds</h5>
-<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">High-yield certified seeds</p>
+<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">{% trans "Premium Seeds" %}</h5>
+<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">{% trans "High-yield certified seeds" %}</p>
 </div>
 </div>
 <div class="col-lg-3 col-md-6 col-6">
@@ -1507,8 +1515,8 @@
 <div class="icon-wrapper mb-3">
 <div class="icon-circle">🌤️</div>
 </div>
-<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">Weather Insights</h5>
-<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">Real-time forecasts</p>
+<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">{% trans "Weather Insights" %}</h5>
+<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">{% trans "Real-time forecasts" %}</p>
 </div>
 </div>
 <div class="col-lg-3 col-md-6 col-6">
@@ -1516,8 +1524,8 @@
 <div class="icon-wrapper mb-3">
 <div class="icon-circle">🧑‍🌾</div>
 </div>
-<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">Expert Advice</h5>
-<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">24/7 agricultural support</p>
+<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">{% trans "Expert Advice" %}</h5>
+<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">{% trans "24/7 agricultural support" %}</p>
 </div>
 </div>
 <div class="col-lg-3 col-md-6 col-6">
@@ -1525,8 +1533,8 @@
 <div class="icon-wrapper mb-3">
 <div class="icon-circle">🚜</div>
 </div>
-<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">Modern Tools</h5>
-<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">Latest farming equipment</p>
+<h5 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1rem,2vw,1.3rem)">{% trans "Modern Tools" %}</h5>
+<p class="text-muted mb-0" style="font-size:clamp(0.85rem,1.5vw,1rem)">{% trans "Latest farming equipment" %}</p>
 </div>
 </div>
 </div>
@@ -1557,11 +1565,11 @@
       </div>
 
       <div class="col-lg-6 mb-4 mb-lg-0">
-        <h2 class="section-title">🛒 Smart Farming Marketplace</h2>
+        <h2 class="section-title">🛒 {% trans "Smart Farming Marketplace" %}</h2>
         <p class="section-text">
           Explore a wide range of seeds, fertilizers, and farming tools. Connect with trusted suppliers and make informed purchases to boost your farm's productivity.
         </p>
-        <a href="{% url 'app:schemes' %}" class="btn-custom">Visit Marketplace</a>
+        <a href="{% url 'app:marketplace_home' %}" class="btn-custom">Visit Marketplace</a>
       </div>
 
      
@@ -1577,8 +1585,8 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6 mb-4 mb-lg-0">
-          <h2 class="section-title">🔬 AI-Powered Disease Detection</h2>
-          <p class="section-text">Utilize computer vision to analyze your crop photos and accurately detect common diseases, helping you protect your harvest with advanced AI technology.</p>
+          <h2 class="section-title">🔬 {% trans "AI-Powered Disease Detection" %}</h2>
+          <p class="section-text">{% trans "Utilize computer vision to analyze your crop photos and accurately detect common diseases, helping you protect your harvest with advanced AI technology." %}</p>
           <a href="{% url 'app:disease_detection' %}" class="btn-custom">Detect Disease</a>
         </div>
         <div class="col-lg-6 text-center">
@@ -1610,7 +1618,7 @@
       </div>
 
       <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
-        <h2 class="section-title">🌤 Weather & Farming Insights</h2>
+        <h2 class="section-title">🌤 {% trans "Weather & Farming Insights" %}</h2>
         <p class="section-text">
           Stay updated with real-time weather, temperature, humidity, and get practical farming tips to maximize crop yield and prevent crop damage.
         </p>
@@ -1629,8 +1637,8 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6 mb-4 mb-lg-0">
-          <h2 class="section-title">🌱 Crop Yield Prediction</h2>
-          <p class="section-text">Predict your crop yield easily using rainfall, temperature, and soil quality data. Make informed decisions for better harvests with data-driven insights.</p>
+          <h2 class="section-title">🌱 {% trans "Crop Yield Prediction" %}</h2>
+          <p class="section-text">{% trans "Predict your crop yield easily using rainfall, temperature, and soil quality data. Make informed decisions for better harvests with data-driven insights." %}</p>
           <a href="{% url 'app:prediction' %}" class="btn-custom">Predict Yield</a>
         </div>
         <div class="col-lg-6 text-center">
@@ -1651,8 +1659,8 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
-          <h2 class="section-title">📜 Find Government Schemes</h2>
-          <p class="section-text">Get access to the best government schemes tailored for you. Discover subsidies, loans, and support programs designed specifically for farmers.</p>
+          <h2 class="section-title">📜 {% trans "Find Government Schemes" %}</h2>
+          <p class="section-text">{% trans "Get access to the best government schemes tailored for you. Discover subsidies, loans, and support programs designed specifically for farmers." %}</p>
           <a href="{% url 'app:schemes' %}" class="btn-custom">Find Schemes</a>
         </div>
         <div class="col-lg-6 order-lg-1 text-center">
@@ -1672,8 +1680,8 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
-          <h2 class="section-title">📰 Latest Farming News</h2>
-          <p class="section-text">Stay updated with the latest agricultural news, policy changes, market trends, and technological innovations affecting the farming industry.</p>
+          <h2 class="section-title">📰 {% trans "Latest Farming News" %}</h2>
+          <p class="section-text">{% trans "Stay updated with the latest agricultural news, policy changes, market trends, and technological innovations affecting the farming industry." %}</p>
           <a href="{% url 'app:news' %}" class="btn-custom">Read More</a>
         </div>
         <div class="col-lg-6 order-lg-1 text-center">
@@ -1692,7 +1700,7 @@
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-6 order-lg-1 mb-4 mb-lg-0">
-        <h2 class="section-title">💬 Join the Farmer Community</h2>
+        <h2 class="section-title">💬 {% trans "Join the Farmer Community" %}</h2>
         <p class="section-text">
           Connect with other farmers, ask questions, share knowledge, and learn from experienced agricultural professionals in our vibrant community.
         </p>
@@ -1708,6 +1716,78 @@
   </div>
 </section>
 
+<!-- Farming Tips Section with Hindi Support -->
+<section id="farming-tips" class="py-5" style="background:linear-gradient(135deg,#f1f8e9,#e8f5e9)">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold" style="color:#1b5e20;font-size:clamp(2rem,5vw,3rem)">🌾 आज की खेती सलाह | Today's Farming Tips</h2>
+      <p class="text-muted" style="font-size:clamp(1rem,2vw,1.2rem)">विशेषज्ञ सलाह हिंदी और अंग्रेजी में | Expert advice in Hindi & English</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="tip-card" style="background:#fff;border-radius:20px;padding:2rem;box-shadow:0 8px 25px rgba(0,0,0,0.1);border-left:5px solid #ff6b35">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold" style="color:#ff6b35;margin:0">🇮🇳 हिंदी सलाह</h4>
+            <button onclick="speakHindi()" class="btn btn-sm" style="background:#ff6b35;color:#fff;border-radius:25px;padding:8px 20px;font-weight:600">🔊 सुनें</button>
+          </div>
+          <div id="hindiTips" style="line-height:1.8;color:#333">
+            <p><strong>💧 सिंचाई:</strong> सुबह या शाम के समय पानी दें। दोपहर में पानी देने से बचें।</p>
+            <p><strong>🌱 बीज:</strong> प्रमाणित बीज का ही उपयोग करें। स्थानीय कृषि केंद्र से खरीदें।</p>
+            <p><strong>🐛 कीट नियंत्रण:</strong> नीम का तेल प्राकृतिक कीटनाशक है। रासायनिक दवाओं का कम प्रयोग करें।</p>
+            <p><strong>🌾 फसल चक्र:</strong> एक ही फसल बार-बार न उगाएं। मिट्टी की उर्वरता बनाए रखें।</p>
+            <p><strong>☀️ मौसम:</strong> मौसम पूर्वानुमान देखें। बारिश से पहले फसल की सुरक्षा करें।</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="tip-card" style="background:#fff;border-radius:20px;padding:2rem;box-shadow:0 8px 25px rgba(0,0,0,0.1);border-left:5px solid #2e7d32">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold" style="color:#2e7d32;margin:0">🇬🇧 English Tips</h4>
+            <button onclick="speakEnglish()" class="btn btn-sm" style="background:#2e7d32;color:#fff;border-radius:25px;padding:8px 20px;font-weight:600">🔊 Listen</button>
+          </div>
+          <div id="englishTips" style="line-height:1.8;color:#333">
+            <p><strong>💧 Irrigation:</strong> Water crops early morning or evening. Avoid watering at noon.</p>
+            <p><strong>🌱 Seeds:</strong> Use only certified seeds. Purchase from local agricultural centers.</p>
+            <p><strong>🐛 Pest Control:</strong> Neem oil is a natural pesticide. Minimize chemical usage.</p>
+            <p><strong>🌾 Crop Rotation:</strong> Don't grow the same crop repeatedly. Maintain soil fertility.</p>
+            <p><strong>☀️ Weather:</strong> Check weather forecasts. Protect crops before rainfall.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-4">
+      <a href="{% url 'app:farming_advice' %}" class="btn btn-lg" style="background:linear-gradient(135deg,#2e7d32,#4caf50);color:#fff;border-radius:50px;padding:15px 40px;font-weight:700;box-shadow:0 4px 15px rgba(46,125,50,0.3)">और सलाह देखें | View More Advice</a>
+    </div>
+  </div>
+</section>
+<style>
+.tip-card{transition:transform 0.3s,box-shadow 0.3s}
+.tip-card:hover{transform:translateY(-5px);box-shadow:0 12px 35px rgba(0,0,0,0.15)}
+.tip-card p{margin-bottom:1rem;padding-left:0.5rem}
+.tip-card strong{font-size:1.05rem}
+</style>
+<script>
+let synth=window.speechSynthesis;
+function speakHindi(){
+  synth.cancel();
+  const text=document.getElementById('hindiTips').innerText;
+  const utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang='hi-IN';
+  utterance.rate=0.85;
+  utterance.pitch=1;
+  synth.speak(utterance);
+}
+function speakEnglish(){
+  synth.cancel();
+  const text=document.getElementById('englishTips').innerText;
+  const utterance=new SpeechSynthesisUtterance(text);
+  utterance.lang='en-IN';
+  utterance.rate=0.9;
+  utterance.pitch=1;
+  synth.speak(utterance);
+}
+</script>
+
 
 
 
@@ -1718,14 +1798,14 @@
 <div class="container">
 <div class="text-center mb-3 mb-md-4">
 <h2 class="fw-bold mb-2" style="font-size:clamp(1.5rem,4vw,3rem);color:#1b5e20">ℹ️ About <span style="color:#2e7d32">Kisan Connect</span></h2>
-<p class="text-muted mx-auto" style="max-width:700px;font-size:clamp(0.9rem,2vw,1.2rem)">Empowering farmers with information, opportunities, and a connected farming community.</p>
+<p class="text-muted mx-auto" style="max-width:700px;font-size:clamp(0.9rem,2vw,1.2rem)">{% trans "Empowering farmers with information, opportunities, and a connected farming community." %}</p>
 <div style="width:60px;height:3px;background:linear-gradient(90deg,#2e7d32,#66bb6a);margin:1rem auto;border-radius:2px"></div>
 </div>
 <div class="row align-items-center g-3 g-md-4 mb-3 mb-md-4">
 <div class="col-lg-6">
-<h3 class="fw-bold mb-2 mb-md-3" style="color:#1b5e20;font-size:clamp(1.2rem,3vw,2rem)"><span style="font-size:clamp(1.8rem,5vw,2.5rem);margin-right:0.3rem">🌾</span>Who We Are</h3>
-<p class="text-muted mb-2" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem)">Kisan Connect is a one-stop digital platform designed to empower farmers by providing easy access to government schemes, expert farming advice, a marketplace for agricultural products, community discussions, and the latest farming news.</p>
-<p class="text-muted mb-3" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem)">We bridge traditional farming practices with modern technology, ensuring farmers have all the resources they need to grow sustainably and profitably.</p>
+<h3 class="fw-bold mb-2 mb-md-3" style="color:#1b5e20;font-size:clamp(1.2rem,3vw,2rem)"><span style="font-size:clamp(1.8rem,5vw,2.5rem);margin-right:0.3rem">🌾</span>{% trans "Who We Are" %}</h3>
+<p class="text-muted mb-2" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem)">{% trans "Kisan Connect is a one-stop digital platform designed to empower farmers by providing easy access to government schemes, expert farming advice, a marketplace for agricultural products, community discussions, and the latest farming news." %}</p>
+<p class="text-muted mb-3" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem)">{% trans "We bridge traditional farming practices with modern technology, ensuring farmers have all the resources they need to grow sustainably and profitably." %}</p>
 <a href="{% url 'app:contact' %}" class="btn btn-lg rounded-pill px-4 py-2 shadow" style="background:linear-gradient(135deg,#2e7d32,#388e3c);border:none;color:#fff;font-weight:600;font-size:clamp(0.9rem,2vw,1rem)">📩 Contact Us</a>
 </div>
 <div class="col-lg-6 text-center">
@@ -1735,13 +1815,13 @@
 <div class="row g-0 d-none d-md-flex">
 <div class="col-md-6 p-4 text-center">
 <div style="font-size:clamp(2.5rem,8vw,4rem);margin-bottom:0.8rem">🌱</div>
-<h4 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1.1rem,2.5vw,1.8rem)">Our Mission</h4>
-<p class="text-muted" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem);max-width:500px;margin:0 auto">To empower farmers with digital tools, transparent pricing, and direct market access. Reducing middlemen and creating opportunities for higher profits and sustainable growth.</p>
+<h4 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1.1rem,2.5vw,1.8rem)">{% trans "Our Mission" %}</h4>
+<p class="text-muted" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem);max-width:500px;margin:0 auto">{% trans "To empower farmers with digital tools, transparent pricing, and direct market access. Reducing middlemen and creating opportunities for higher profits and sustainable growth." %}</p>
 </div>
 <div class="col-md-6 p-4 text-center" style="border-left:2px solid #e0e0e0">
 <div style="font-size:clamp(2.5rem,8vw,4rem);margin-bottom:0.8rem">🚜</div>
-<h4 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1.1rem,2.5vw,1.8rem)">Our Vision</h4>
-<p class="text-muted" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem);max-width:500px;margin:0 auto">A connected farming ecosystem where every farmer has equal access to modern resources, buyers, and suppliers, ensuring prosperity for generations to come.</p>
+<h4 class="fw-bold mb-2" style="color:#1b5e20;font-size:clamp(1.1rem,2.5vw,1.8rem)">{% trans "Our Vision" %}</h4>
+<p class="text-muted" style="line-height:1.6;font-size:clamp(0.85rem,2vw,1.1rem);max-width:500px;margin:0 auto">{% trans "A connected farming ecosystem where every farmer has equal access to modern resources, buyers, and suppliers, ensuring prosperity for generations to come." %}</p>
 </div>
 </div>
 </div>
@@ -1754,8 +1834,8 @@
   <div class="container">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
       <div>
-        <h2 class="fw-bold mb-1" style="color:#1b5e20;font-size:clamp(1.5rem,5vw,2.5rem)">🌾 Customer Reviews</h2>
-        <p class="text-muted mb-0" style="font-size:clamp(0.85rem,2vw,1rem)">See what our farmers are saying</p>
+        <h2 class="fw-bold mb-1" style="color:#1b5e20;font-size:clamp(1.5rem,5vw,2.5rem)">🌾 {% trans "Customer Reviews" %}</h2>
+        <p class="text-muted mb-0" style="font-size:clamp(0.85rem,2vw,1rem)">{% trans "See what our farmers are saying" %}</p>
       </div>
       {% if user.is_authenticated %}
       <button onclick="document.getElementById('reviewForm').style.display='block';this.style.display='none'" style="background:#ffc107;border:none;color:#000;padding:12px 24px;border-radius:8px;font-weight:700;font-size:0.95rem;cursor:pointer;box-shadow:0 4px 12px rgba(255,193,7,0.3);white-space:nowrap">⭐ Write Review</button>
@@ -1914,7 +1994,7 @@ if(document.querySelector('.star-rating-input')){
       <div class="col-md-6">
         <h2 class="display-3 fw-bold mb-3 border-bottom border-warning pb-2" style="max-width: 450px; letter-spacing: 1px;">
           <i class="bi bi-envelope-fill me-3"></i>
-          Stay Updated with the Latest Agricultural Products
+          {% trans "Stay Updated with the Latest Agricultural Products" %}
         </h2>
         <p class="lead mb-4 fs-5">
           Get exclusive offers, expert farming tips, and seasonal advice delivered straight to your inbox. Don’t miss out on improving your yield!
@@ -1923,7 +2003,7 @@ if(document.querySelector('.star-rating-input')){
           <img src="{% static 'app/images/logo.png' %}" alt="Happy Farmer" class="shadow-lg" style="height:70px; border: 3px solid #ffc107;">
           <div>
             <p class="mb-0 fs-6">Join <strong>10,000+</strong> happy farmers who trust us!</p>
-            <small class="opacity-75">100% spam-free. Unsubscribe anytime.</small>
+            <small class="opacity-75">{% trans "100% spam-free. Unsubscribe anytime." %}</small>
           </div>
         </div>
       </div>
@@ -1932,31 +2012,31 @@ if(document.querySelector('.star-rating-input')){
       <div class="col-md-6">
         <form id="newsletterForm" class="d-flex gap-3 flex-column flex-sm-row align-items-center" style="max-width: 550px; margin-left: auto;">
           {% csrf_token %}
-          <input type="email" name="email" class="form-control form-control-lg rounded-pill shadow-sm" placeholder="Enter your email" aria-label="Email" required>
+          <input type="email" name="email" class="form-control form-control-lg rounded-pill shadow-sm" placeholder="{% trans 'Enter your email' %}" aria-label="Email" required>
           <button type="submit" class="btn btn-warning btn-lg rounded-pill px-5 fw-bold shadow-sm newsletter-btn">
             Subscribe <i class="bi bi-arrow-right ms-2"></i>
           </button>
         </form>
         <div class="mt-2 text-warning fw-semibold small email-feedback" role="alert" style="display:none;"></div>
-        <small class="d-block mt-3 opacity-75">We respect your privacy and never share your information.</small>
+        <small class="d-block mt-3 opacity-75">{% trans "We respect your privacy and never share your information." %}</small>
 
         <!-- Extra Benefits -->
         <div class="d-flex justify-content-around mt-5 text-center">
           <div>
             <i class="bi bi-truck fs-1 mb-2"></i>
-            <p>Fast Delivery</p>
+            <p>{% trans "Fast Delivery" %}</p>
           </div>
           <div>
             <i class="bi bi-patch-check fs-1 mb-2"></i>
-            <p>Trusted Quality</p>
+            <p>{% trans "Trusted Quality" %}</p>
           </div>
           <div>
             <i class="bi bi-chat-dots fs-1 mb-2"></i>
-            <p>Expert Support</p>
+            <p>{% trans "Expert Support" %}</p>
           </div>
           <div>
             <i class="bi bi-award fs-1 mb-2"></i>
-            <p>Best Offers</p>
+            <p>{% trans "Best Offers" %}</p>
           </div>
         </div>
 
@@ -2051,6 +2131,82 @@ document.querySelectorAll('.custom-section').forEach(section=>observer.observe(s
 document.querySelectorAll('.card').forEach((card,i)=>{card.style.animationDelay=`${i*0.1}s`;card.style.animation='fadeInUp 0.6s ease forwards'});
 </script>
 
+  <style>
+    .introjs-tooltip{max-width:400px!important;border-radius:var(--border-radius)!important;box-shadow:0 8px 30px rgba(0,0,0,0.25)!important;border:4px solid var(--primary-green)!important;z-index:999999!important;background:var(--white)!important;padding:20px 25px!important;position:absolute!important;overflow:hidden}
+    .introjs-tooltip:before{content:"";position:absolute;top:0;left:0;width:100%;height:8px;background:linear-gradient(90deg,var(--secondary-green),var(--primary-green));z-index:10;border-radius:12px 12px 0 0}
+    .introjs-tooltiptext{font-size:15px!important;line-height:1.7!important;color:var(--text-dark)!important;margin-top:5px}
+    .introjs-tooltip-title{font-family:"Oswald",sans-serif;font-size:1.5rem!important;font-weight:700!important;color:var(--primary-green)!important;margin-bottom:8px!important;padding-top:8px}
+    .introjs-button{border-radius:50px!important;padding:10px 20px!important;font-weight:600!important;margin:8px 5px!important;font-size:14px!important;text-transform:uppercase;letter-spacing:0.5px;transition:var(--transition)}
+    .introjs-nextbutton{background:var(--secondary-green)!important;color:var(--white)!important;border:none!important;box-shadow:0 4px 15px rgba(76,175,80,0.4)!important}
+    .introjs-nextbutton:hover{background:var(--primary-green)!important;transform:translateY(-1px)}
+    .introjs-prevbutton{background:var(--white)!important;color:var(--secondary-green)!important;border:2px solid var(--secondary-green)!important}
+    .introjs-prevbutton:hover{background:var(--secondary-green)!important;color:var(--white)!important}
+    .introjs-skipbutton,.introjs-donebutton{background:linear-gradient(135deg,var(--accent-yellow),var(--accent-gold))!important;color:var(--text-dark)!important;border:none!important;box-shadow:0 4px 15px rgba(255,215,0,0.4)!important}
+    .introjs-skipbutton:hover,.introjs-donebutton:hover{background:var(--accent-gold)!important;transform:translateY(-1px)}
+    .introjs-helperLayer{z-index:999998!important;box-shadow:rgba(0,0,0,0.7) 0 0 0 9999px!important;border-radius:8px!important}
+    .introjs-overlay{z-index:999997!important;opacity:0.85!important}
+    .introjs-tooltipReferenceLayer{z-index:999999!important;padding:10px!important;box-sizing:border-box}
+    .introjs-progressbar{background:linear-gradient(90deg,var(--accent-gold),var(--accent-yellow))!important;border-radius:50px!important;height:6px!important}
+    .introjs-helperLayer.introjs-noelement{position:fixed!important;top:0!important;left:0!important;width:100vw!important;height:100vh!important;border-radius:0!important;box-shadow:none!important;display:flex;align-items:flex-start;justify-content:center;padding-top:10vh}
+    .introjs-noelement .introjs-tooltip{position:relative!important;top:auto!important;left:auto!important;margin:0!important;transform:none!important;max-height:80vh;overflow-y:auto}
+    .marketplace-tooltip{animation:tooltipPulse 2s ease-in-out infinite!important;box-shadow:0 0 30px rgba(76,175,80,0.6),0 8px 30px rgba(0,0,0,0.25)!important}
+    @keyframes tooltipPulse{0%,100%{transform:scale(1);box-shadow:0 0 30px rgba(76,175,80,0.6),0 8px 30px rgba(0,0,0,0.25)}50%{transform:scale(1.02);box-shadow:0 0 40px rgba(76,175,80,0.8),0 12px 40px rgba(0,0,0,0.3)}}
+    @media (max-width:768px){.introjs-tooltip{max-width:calc(100vw - 30px)!important;padding:15px 18px!important}.introjs-tooltip-title{font-size:1.3rem!important}.introjs-tooltiptext{font-size:14px!important;line-height:1.6!important}.introjs-button{padding:8px 16px!important;font-size:12px!important;margin:6px 4px!important}.introjs-progressbar{height:5px!important}.introjs-noelement .introjs-tooltip{max-width:calc(100vw - 30px)!important;max-height:85vh}}
+    @media (max-width:576px){.introjs-tooltip{max-width:calc(100vw - 20px)!important;padding:12px 15px!important}.introjs-tooltip-title{font-size:1.1rem!important}.introjs-tooltiptext{font-size:13px!important}.introjs-button{padding:7px 14px!important;font-size:11px!important;letter-spacing:0.3px}}
+  </style>
+  <script>
+    function startUserGuide(){
+      const isMobile=window.innerWidth<=768;
+      const steps=isMobile?[
+        {intro:'<div style="text-align:center"><h3>👋 Welcome!</h3><p>Your farming companion. Let\'s explore the key features!</p></div>',title:'Kisan Connect'},
+        {element:'.mobile-toggle',title:'📱 Menu',intro:'Tap here to access all features: Marketplace, Services, Forum, and News.',position:'bottom'},
+        {intro:'<div style="text-align:center"><h3>🌾 All Features</h3><p><b>🛒 Marketplace:</b> Seeds & Tools<br><b>🔬 AI Detection:</b> Crop Diseases<br><b>🌤️ Weather:</b> Real-time Updates<br><b>📰 News:</b> Latest Farming Info<br><b>💬 Forum:</b> Community Support</p></div>',title:'What We Offer'},
+        {element:'#chat-toggle-btn',title:'🤖 AI Chatbot',intro:'Get instant farming advice 24/7. Just tap and ask!',position:'top'},
+        {intro:'<div style="text-align:center"><h3>✅ Ready!</h3><p>Explore all features from the menu. Happy Farming!</p></div>',title:'Get Started'}
+      ]:[
+        {intro:'<div style="text-align:center"><h3>👋 Welcome to Kisan Connect!</h3><p style="font-size:1.05rem;">Your complete digital solution for modern farming. Let\'s quickly show you around!</p><hr style="margin:15px 0;border-top:1px solid #e0e0e0;"><b>Ready to Grow Smarter?</b> Press "Next" to continue the tour.</div>',title:'Your Farming Companion'},
+        {element:'.nav-menu',title:'🧭 Main Navigation',intro:'This is your central hub.<br>Click here to access **Marketplace**, **Services** (Weather, Disease Detection, etc.), **Forum**, and **News**.',position:'bottom'},
+        {element:'.nav-actions',title:'🌍 Multi-Lingual Support',intro:'Easily switch the platform\'s language to **Hindi, Tamil, Telugu**, and many other regional Indian languages for a comfortable experience.',position:'bottom'},
+        {intro:'<div style="text-align:left;padding:10px"><h3 style="text-align:center;margin-bottom:15px">🌾 Platform Features</h3><p style="margin:8px 0"><b>🛒 Marketplace:</b> Premium seeds, fertilizers & tools from verified sellers</p><p style="margin:8px 0"><b>🔬 AI Disease Detection:</b> Instant crop disease diagnosis using computer vision</p><p style="margin:8px 0"><b>🌤️ Weather Insights:</b> Real-time forecasts & farming tips</p><p style="margin:8px 0"><b>🌱 Yield Prediction:</b> Data-driven harvest forecasting</p><p style="margin:8px 0"><b>📜 Gov Schemes:</b> Access subsidies & support programs</p><p style="margin:8px 0"><b>📰 Latest News:</b> Agricultural updates & market trends</p><p style="margin:8px 0"><b>💬 Community Forum:</b> Connect with fellow farmers</p></div>',title:'What We Offer'},
+        {element:'#chat-toggle-btn',title:'🤖 Kisan AI Chatbot',intro:'Need quick answers?<br>Our AI assistant is here to provide **instant, expert farming advice** 24/7—just tap and ask!',position:'left'},
+        {intro:'<div style="text-align:center"><h3>✅ Tour Complete!</h3><p style="font-size:1.05rem;">You are now ready to explore and utilize all the tools Kisan Connect has to offer. Happy Farming!</p><hr style="margin:15px 0;border-top:1px solid #e0e0e0;"><b>Tip:</b> You can access the guide anytime by clicking the **Help Guide** link in the navigation menu.</div>',title:'Start Your Journey!'}
+      ];
+      const voiceTexts=isMobile?[
+        'Welcome! Your farming companion. Let\'s explore the key features!',
+        'Tap here to access all features: Marketplace, Services, Forum, and News.',
+        'Kisan Connect offers: Marketplace for Seeds and Tools, AI Detection for Crop Diseases, Weather with Real-time Updates, News for Latest Farming Info, and Forum for Community Support.',
+        'Get instant farming advice twenty-four seven. Just tap and ask!',
+        'Ready! Explore all features from the menu. Happy Farming!'
+      ]:[
+        'Welcome to Kisan Connect! Your complete digital solution for modern farming. Let\'s quickly show you around!',
+        'This is your main navigation menu. Click here to access Marketplace, Services like Weather and Disease Detection, Forum, and News.',
+        'Here you can switch the platform\'s language to Hindi, Tamil, Telugu, and many other regional Indian languages.',
+        'Kisan Connect offers seven key features: A Marketplace for premium seeds and tools, AI Disease Detection using computer vision, Weather Insights with real-time forecasts, Yield Prediction for better harvests, Government Schemes for subsidies, Latest News on agriculture, and a Community Forum to connect with fellow farmers.',
+        'Need quick answers? Our AI chatbot provides instant expert farming advice twenty-four seven. Just tap and ask!',
+        'Tour complete! You\'re now ready to explore all the tools Kisan Connect has to offer. Happy Farming!'
+      ];
+      function speak(text){if('speechSynthesis'in window){const utterance=new SpeechSynthesisUtterance(text);utterance.rate=0.9;utterance.pitch=1;utterance.volume=1;speechSynthesis.speak(utterance);}}
+      introJs().setOptions({
+        steps:steps,
+        scrollPadding:50,
+        tooltipPosition:'bottom',
+        showProgress:true,
+        exitOnOverlayClick:false,
+        doneLabel:'Start Now',
+        nextLabel:'Next →',
+        prevLabel:'← Back',
+        skipLabel:'Skip'
+      }).onchange(function(el){speak(voiceTexts[this._currentStep]);}).oncomplete(()=>{
+        if(typeof confetti!=='undefined')confetti({particleCount:100,spread:70,origin:{y:0.6}});
+      }).start();
+      speak(voiceTexts[0]);
+    }
+    if(!localStorage.getItem('tourShown')){
+      setTimeout(()=>{startUserGuide();localStorage.setItem('tourShown','true')},2000);
+    }
+    window.addEventListener('beforeunload',()=>{if('speechSynthesis'in window)speechSynthesis.cancel();});
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,23 @@
+GETTEXT INSTALLATION - FOLLOW THESE STEPS:
+
+1. I've downloaded the installer: gettext-installer.exe
+
+2. Double-click "gettext-installer.exe" in this folder
+
+3. Follow the installation wizard (click Next, Next, Install)
+
+4. After installation, RESTART your terminal/command prompt
+
+5. Verify installation:
+   msgfmt --version
+
+6. Then run these commands:
+   python manage.py makemessages -l hi -l ta -l te -l bn -l mr -l kn -l ml -l pa
+   python manage.py compilemessages
+
+7. Restart Django server:
+   python manage.py runserver
+
+8. Test language switching at http://127.0.0.1:8000/
+
+The installer file is ready in your project folder!

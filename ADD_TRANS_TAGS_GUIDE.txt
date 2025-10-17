@@ -1,0 +1,81 @@
+COMPLETE TRANSLATION GUIDE FOR INDEX.HTML
+
+I've created ALL Hindi translations. Now you need to wrap remaining English text with {% trans %} tags.
+
+FIND AND REPLACE IN INDEX.HTML:
+
+1. Hero Slides (remaining):
+   Find: >Crop Yield Prediction<
+   Replace: >{% trans "Crop Yield Prediction" %}<
+
+   Find: >Data-driven insights using rainfall, temperature, and soil quality for better harvests<
+   Replace: >{% trans "Data-driven insights using rainfall, temperature, and soil quality for better harvests" %}<
+
+   Find: >Predict Yield<
+   Replace: >{% trans "Predict Yield" %}<
+
+   Find: >Government Schemes & Support<
+   Replace: >{% trans "Government Schemes & Support" %}<
+
+   Find: >Discover subsidies, loans, and support programs designed specifically for farmers<
+   Replace: >{% trans "Discover subsidies, loans, and support programs designed specifically for farmers" %}<
+
+   Find: >Find Schemes<
+   Replace: >{% trans "Find Schemes" %}<
+
+   Find: >Latest Farming News<
+   Replace: >{% trans "Latest Farming News" %}<
+
+   Find: >Stay informed with agricultural news, policy changes, and market trends<
+   Replace: >{% trans "Stay informed with agricultural news, policy changes, and market trends" %}<
+
+   Find: >Read More<
+   Replace: >{% trans "Read More" %}<
+
+   Find: >Farmer Community Forum<
+   Replace: >{% trans "Farmer Community Forum" %}<
+
+   Find: >Connect, share knowledge, and learn from experienced agricultural professionals<
+   Replace: >{% trans "Connect, share knowledge, and learn from experienced agricultural professionals" %}<
+
+   Find: >Join Forum<
+   Replace: >{% trans "Join Forum" %}<
+
+2. Features Section:
+   Find: >Empower Your Farm, Every Day<
+   Replace: >{% trans "Empower Your Farm, Every Day" %}<
+
+   Find: >Access tools, seeds, weather updates, and expert advice — everything you need to grow smarter and stronger<
+   Replace: >{% trans "Access tools, seeds, weather updates, and expert advice — everything you need to grow smarter and stronger" %}<
+
+   Find: >Premium Seeds<
+   Replace: >{% trans "Premium Seeds" %}<
+
+   Find: >High-yield certified seeds<
+   Replace: >{% trans "High-yield certified seeds" %}<
+
+   Find: >Weather Insights<
+   Replace: >{% trans "Weather Insights" %}<
+
+   Find: >Real-time forecasts<
+   Replace: >{% trans "Real-time forecasts" %}<
+
+   Find: >Expert Advice<
+   Replace: >{% trans "Expert Advice" %}<
+
+   Find: >24/7 agricultural support<
+   Replace: >{% trans "24/7 agricultural support" %}<
+
+   Find: >Modern Tools<
+   Replace: >{% trans "Modern Tools" %}<
+
+   Find: >Latest farming equipment<
+   Replace: >{% trans "Latest farming equipment" %}<
+
+AFTER ADDING ALL {% trans %} TAGS:
+
+1. Restart Django server
+2. Switch to Hindi
+3. ENTIRE page will be in Hindi!
+
+All translations are ready in django.po and compiled in django.mo!

@@ -1286,17 +1286,7 @@ def send_newsletter_view(request):
 
 
 @login_required(login_url=reverse_lazy("app:login"))
-
-
-@login_required(login_url=reverse_lazy("app:login"))
-def schemes(request):
-    from .scrape_schemes import scrape_government_schemes
-    schemes = scrape_government_schemes()
-    return render(request, 'app/schemes.html', {'schemes': schemes})
-
-
-@login_required(login_url=reverse_lazy("app:login"))
-def schemes(request):
+def government_schemes(request):
     from .scrape_schemes import scrape_government_schemes
     schemes = scrape_government_schemes()
     
@@ -1318,3 +1308,4 @@ def schemes(request):
         pass
     
     return render(request, 'app/schemes.html', {'schemes': schemes, 'subsidy_data': subsidy_data})
+

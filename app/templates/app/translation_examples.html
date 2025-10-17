@@ -1,0 +1,29 @@
+{% load i18n %}
+
+<!-- EXAMPLE: How to translate text in templates -->
+
+<!-- Simple translation -->
+<h1>{% trans "Welcome to Kisan Connect" %}</h1>
+
+<!-- Translation with variables -->
+<p>{% blocktrans with name=user.username %}Hello {{ name }}, welcome back!{% endblocktrans %}</p>
+
+<!-- Translation with pluralization -->
+<p>{% blocktrans count counter=product_count %}
+  You have {{ counter }} product in your cart.
+{% plural %}
+  You have {{ counter }} products in your cart.
+{% endblocktrans %}</p>
+
+<!-- Common translations for your project -->
+<button>{% trans "Buy Now" %}</button>
+<button>{% trans "Add to Cart" %}</button>
+<a href="#">{% trans "View Details" %}</a>
+<label>{% trans "Search Products" %}</label>
+<h2>{% trans "Government Schemes" %}</h2>
+<h2>{% trans "Weather Forecast" %}</h2>
+<h2>{% trans "Crop Recommendations" %}</h2>
+<h2>{% trans "Disease Detection" %}</h2>
+<span>{% trans "Price" %}</span>
+<span>{% trans "Quantity" %}</span>
+<span>{% trans "Total" %}</span>

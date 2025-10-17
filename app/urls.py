@@ -10,7 +10,8 @@ app_name = "app"
 urlpatterns = [
    # Basic pages
 path("", views.home, name="home"),              # loads index.html
-path("schemes/", views.home_page, name="schemes"),  # loads home.html
+path("schemes/", views.government_schemes, name="schemes"),  # loads schemes.html
+path("marketplace/", views.home_page, name="marketplace_home"),  # loads home.html
 path("about/", views.about, name="about"),
 path("contact/", views.contact, name="contact"),
 
